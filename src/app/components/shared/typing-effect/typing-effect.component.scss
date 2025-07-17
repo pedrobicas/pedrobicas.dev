@@ -1,0 +1,41 @@
+// typing-effect.component.scss
+$primary: #2c83d4;
+$secondary: #112240;
+$dark: #0a192f;
+$light: #e6f1ff;
+$gray: #8892b0;
+$accent: #3a8dde;
+
+.typing-effect-wrapper {
+  display: flex;
+  align-items: center;
+  min-height: 2.5rem;
+  font-size: 1.35rem;
+  font-family: 'Fira Mono', 'Consolas', monospace;
+  color: $light;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 12px rgba($primary, 0.18);
+  @media (max-width: 600px) {
+    font-size: 1.05rem;
+  }
+}
+
+.typing-text {
+  transition: color 0.2s;
+  color: $primary;
+}
+
+.typing-cursor {
+  width: 1.1ch;
+  height: 1.3em;
+  background: none;
+  border-right: 2.5px solid $accent;
+  margin-left: 2px;
+  animation: blink-cursor 0.8s steps(1) infinite;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { border-color: $accent; }
+  50% { border-color: transparent; }
+}

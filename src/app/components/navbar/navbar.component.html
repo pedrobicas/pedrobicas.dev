@@ -1,17 +1,32 @@
-<mat-toolbar color="primary" class="navbar">
-  <span class="logo">Pedro Bicas</span>
-  <span class="spacer"></span>
-  <nav class="navbar-links">
-    <a mat-button routerLink="/home">Home</a>
-    <a mat-button routerLink="/about">Sobre</a>
-    <a mat-button routerLink="/projects">Projetos</a>
-    <a mat-button routerLink="/contact">Contato</a>
-  </nav>
-  <div class="navbar-social">
-    <a href="#" target="_blank" aria-label="LinkedIn"><i class="material-icons">linkedin</i></a>
-    <a href="#" target="_blank" aria-label="GitHub"><i class="material-icons">code</i></a>
-    <a href="mailto:seu@email.com" aria-label="E-mail"><i class="material-icons">email</i></a>
+<mat-toolbar color="primary" class="navbar" role="navigation">
+  <div class="logo-container">
+    <span class="logo">Pedro Bicas</span>
   </div>
+
+  <span class="spacer"></span>
+
+  <!-- Links Desktop -->
+  <nav class="navbar-links">
+    <a mat-button href="" >Home</a>
+    <a mat-button href="#about-section">Sobre</a>
+    <a mat-button href="#projetos">Projetos</a>
+    <a mat-button href="#contato">Contato</a>
+  </nav>
+
+  <!-- Ícones sociais -->
+  <div class="navbar-social">
+    <a href="https://linkedin.com/in/seu-perfil" target="_blank" aria-label="LinkedIn">
+      <i class="material-icons">linkedin</i>
+    </a>
+    <a href="https://github.com/seu-usuario" target="_blank" aria-label="GitHub">
+      <i class="material-icons">code</i>
+    </a>
+    <a href="mailto:seu@email.com" aria-label="E-mail">
+      <i class="material-icons">email</i>
+    </a>
+  </div>
+
+  <!-- Ícone de menu mobile -->
   <button class="menu-icon" aria-label="Menu">
     <i class="material-icons">menu</i>
   </button>
