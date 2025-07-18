@@ -1,0 +1,12 @@
+<div class="skills-constellation">
+  <canvas #constellationCanvas class="constellation-canvas"></canvas>
+  <div *ngIf="hoveredSkill" class="skill-tooltip" [style.left.px]="hoveredPos.x" [style.top.px]="hoveredPos.y">
+    <div class="tooltip-glass">
+      <i [class]="hoveredSkill.icon" [style.color]="hoveredSkill.color"></i>
+      <div class="tooltip-content">
+        <span class="skill-name">{{hoveredSkill.name}}</span>
+        <span class="skill-desc">{{hoveredSkill.desc}}</span>
+      </div>
+    </div>
+  </div>
+</div> 

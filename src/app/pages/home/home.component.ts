@@ -5,6 +5,7 @@ import type { Container, IOptions, RecursivePartial } from "@tsparticles/engine"
 import { ParticlesComponent } from '../../components/shared/particles/particles.component';
 import { TypingEffectComponent } from '../../components/shared/typing-effect/typing-effect.component';
 import { CommonModule } from '@angular/common';
+import { SkillsConstellationComponent } from '../../components/shared/skills-constellation/skills-constellation.component';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -15,9 +16,14 @@ import { CommonModule } from '@angular/common';
 export class HomeComponent implements AfterViewInit {
   typingTexts = [
     "Desenvolvedor Full-Stack",
-    "Especialista em Angular",
-    "Arquiteto de Soluções"
+    "Estudante de Engenharia de Software"
   ];
+
+  // Para animação de entrada
+  nameLetters = Array.from('Pedro Bicas');
+  taglineWords = ['Código', 'Design', 'Inovação'];
+  introAnimDone = false;
+  showTyping = false;
 
   // Terminal fake
   commandList = ['skills', 'projetos', 'sobre', 'contato'];
@@ -82,6 +88,10 @@ export class HomeComponent implements AfterViewInit {
     // Iniciar o jogo automaticamente (ou pode ser por botão)
     setTimeout(() => this.startGame(), 800);
     this.animateHeroStacks();
+    setTimeout(() => {
+      this.introAnimDone = true;
+      setTimeout(() => this.showTyping = true, 400); // typing aparece logo após o nome
+    }, 1100); // animação mais rápida
   }
 
   ngOnDestroy() {

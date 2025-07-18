@@ -1,0 +1,6 @@
+<div class="stack-cards-glass">
+  <div class="stack-card" *ngFor="let stack of stacks" [ngStyle]="{'background': stack.bg}">
+    <i [class]="stack.icon"></i>
+    <span class="stack-name">{{stack.name}}</span>
+  </div>
+</div> 

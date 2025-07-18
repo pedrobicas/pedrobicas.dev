@@ -1,49 +1,33 @@
 <section class="home">
-  <section class="intro">
-    <app-particles></app-particles>
-    <div class="intro-container">
-      <div class="intro-content">
-        <div class="dynamic-tagline">
-          <span class="tagline-part">Código</span>
-          <span class="tagline-part">Design</span>
-          <span class="tagline-part">Inovação</span>
-        </div>
-
-        <h1 class="glitch-effect">
-          <span class="glitch-line">Pedro Bicas</span>
-          <span class="glitch-line">Pedro Bicas</span>
-          <span class="glitch-line">Pedro Bicas</span>
-        </h1>
-
-        <app-typing-effect [texts]="typingTexts" [typingSpeed]="100" [deletingSpeed]="50" [pauseTime]="2000">
-        </app-typing-effect>
-
-        <div class="circuit-path">
-          <svg viewBox="0 0 300 40">
-            <path d="M10,20 Q150,-30 290,20" />
-          </svg>
-        </div>
-
-        <div class="interactive-cta">
-          <button class="neuro-btn" (click)="scrollTo('projects')">
-            <span>Explorar</span>
-            <div class="neuro-light"></div>
-          </button>
-
-          <div class="social-circuit">
-            <a href="#" class="circuit-node" aria-label="LinkedIn">
-              <i class="fab fa-linkedin-in"></i>
-              <div class="circuit-line"></div>
-            </a>
-            <a href="#" class="circuit-node" aria-label="GitHub">
-              <i class="fab fa-github"></i>
-              <div class="circuit-line"></div>
-            </a>
-            <a href="#" class="circuit-node" aria-label="Email">
-              <i class="fas fa-envelope"></i>
-              <div class="circuit-line"></div>
-            </a>
-          </div>
+  <section class="home-intro-animated">
+    <div class="intro-bg-anim"></div>
+    <div class="intro-content-anim">
+      <h1 class="intro-name-anim clean-tech">Pedro Bicas</h1>
+      <app-typing-effect *ngIf="showTyping" [texts]="typingTexts" [typingSpeed]="100" [deletingSpeed]="50" [pauseTime]="2000"></app-typing-effect>
+      <div class="intro-tagline-anim">
+        <span *ngFor="let t of taglineWords; let i = index" [class.tagline-in]="introAnimDone" [style.transitionDelay.ms]="400 + i*250">{{t}}</span>
+      </div>
+      <svg class="intro-circuit-anim" viewBox="0 0 300 40">
+        <path d="M10,20 Q150,-30 290,20" [class.circuit-in]="introAnimDone"></path>
+      </svg>
+      <div class="intro-cta-anim" [class.cta-in]="introAnimDone">
+        <button class="neuro-btn" (click)="scrollTo('projects')">
+          <span>Explorar</span>
+          <div class="neuro-light"></div>
+        </button>
+        <div class="social-circuit">
+          <a href="#" class="circuit-node" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+            <div class="circuit-line"></div>
+          </a>
+          <a href="#" class="circuit-node" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+            <div class="circuit-line"></div>
+          </a>
+          <a href="#" class="circuit-node" aria-label="Email">
+            <i class="fas fa-envelope"></i>
+            <div class="circuit-line"></div>
+          </a>
         </div>
       </div>
     </div>
