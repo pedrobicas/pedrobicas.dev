@@ -1,16 +1,19 @@
 <section class="home">
-  <section class="home-intro-animated">
-    <div class="intro-bg-anim"></div>
+ <section class="home-intro-animated" id="home">
     <div class="intro-content-anim">
-      <h1 class="intro-name-anim clean-tech">Pedro Bicas</h1>
-      <app-typing-effect *ngIf="showTyping" [texts]="typingTexts" [typingSpeed]="100" [deletingSpeed]="50" [pauseTime]="2000"></app-typing-effect>
-      <div class="intro-tagline-anim">
-        <span *ngFor="let t of taglineWords; let i = index" [class.tagline-in]="introAnimDone" [style.transitionDelay.ms]="400 + i*250">{{t}}</span>
+      <!-- Nome com nova estilização -->
+      <h1 class="simple-name" [@fadeIn]>
+      <span class="name-part">Pedro</span>
+      <span class="name-part">Bicas</span>
+    </h1>
+    <app-typing-effect *ngIf="showTyping" [texts]="typingTexts" [typingSpeed]="100" [deletingSpeed]="50" [pauseTime]="2000"></app-typing-effect>
+      
+      <div class="intro-tagline" [@staggerFadeIn]>
+        <span *ngFor="let t of taglineWords; let i = index">{{t}}</span>
       </div>
-      <svg class="intro-circuit-anim" viewBox="0 0 300 40">
-        <path d="M10,20 Q150,-30 290,20" [class.circuit-in]="introAnimDone"></path>
-      </svg>
-      <div class="intro-cta-anim" [class.cta-in]="introAnimDone">
+      
+      <!-- Mantendo os botões exatamente como estão -->
+      <div class="intro-cta" [@fadeInUpDelay]>
         <button class="neuro-btn" (click)="scrollTo('projects')">
           <span>Explorar</span>
           <div class="neuro-light"></div>
@@ -33,61 +36,9 @@
     </div>
   </section>
 
-  <!-- Section exclusiva para o terminal -->
-  <section class="terminal-section">
-    <div class="fake-terminal">
-      <div class="terminal-header">
-        <span class="dot red"></span>
-        <span class="dot yellow"></span>
-        <span class="dot green"></span>
-        <span class="terminal-title">terminal</span>
-      </div>
-      <div class="terminal-body">
-        <div class="terminal-line">
-          <span class="prompt">&gt;</span>
-          <span class="typed-cmd">{{displayedCommand}}<span class="cursor" [class.blink]="cursorBlink">|</span></span>
-        </div>
-        <div class="terminal-response" [@fadeIn] *ngIf="displayedResponse">
-          <ng-container [ngSwitch]="currentCommand">
-            <div *ngSwitchCase="'skills'">
-              <span class="response-title">Skills principais:</span>
-              <div class="skills-list">
-                <span *ngFor="let skill of skills" class="skill-badge">{{skill.name}}</span>
-              </div>
-            </div>
-            <div *ngSwitchCase="'projetos'">
-              <span class="response-title">Projetos em destaque:</span>
-              <div class="projects-list">
-                <span *ngFor="let project of projetos" class="project-badge">{{project}}</span>
-              </div>
-            </div>
-            <div *ngSwitchCase="'sobre'">
-              <span class="response-title">Sobre mim:</span>
-              <div class="about-text">Sou um desenvolvedor fullstack apaixonado por tecnologia, design e inovação.</div>
-            </div>
-            <div *ngSwitchCase="'contato'">
-              <span class="response-title">Contato:</span>
-              <div class="contact-text">Email: <br>LinkedIn: /in/pedro-bicas</div>
-            </div>
-            <div *ngSwitchDefault>
-              <span class="response-title">Comando não reconhecido.</span>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-      <div class="terminal-actions">
-        <button *ngFor="let cmd of commandList" (click)="runCommand(cmd)">{{cmd}}</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Destaque -->
-  <section class="highlight-section">
-    <p><strong>+10 projetos fullstack entregues</strong> em aplicações web reais!</p>
-  </section>
 
   <!-- Sobre -->
-  <section class="about-section">
+  <section class="section" id="about">
     <h2>Sobre mim</h2>
     <p>
       Sou um desenvolvedor fullstack com sólida base técnica e experiência prática em projetos web modernos.
@@ -127,7 +78,7 @@
 
 
   <!-- Projetos -->
-  <section class="projects-section">
+  <section class="section" id="projects">
     <h2>Projetos em destaque</h2>
     <div class="projects-list">
       <div class="project-card">
@@ -143,53 +94,6 @@
       </div>
     </div>
   </section>
-
-  <!-- Jogo: Catch the Skill -->
-  <section class="catch-skill-section">
-    <div class="catch-header">
-      <h2>Catch the Skill!</h2>
-      <div class="catch-info">
-        <span>Pontuação: <strong>{{score}}</strong></span>
-        <span>Tempo: <strong>{{timeLeft}}</strong>s</span>
-      </div>
-    </div>
-    <div class="catch-game-area">
-      <canvas #catchCanvas class="catch-canvas"></canvas>
-      <div class="catch-feedback" *ngIf="feedback.show" [style.left.px]="feedback.x" [style.top.px]="feedback.y">
-        <div class="feedback-skill">
-          <i [class]="feedback.icon"></i>
-          <span>{{feedback.name}}</span>
-        </div>
-        <div class="feedback-desc">{{feedback.desc}}</div>
-      </div>
-      <div class="catch-overlay" *ngIf="gameOver">
-        <div class="overlay-content">
-          <h3>Fim de jogo!</h3>
-          <p>Sua pontuação: <strong>{{score}}</strong></p>
-          <button (click)="startGame()">Jogar novamente</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="contact-section">
-    <h2>Entre em contato</h2>
-    <p>Quer conversar sobre um projeto, oportunidade ou ideia? Me mande uma mensagem!</p>
-
-    <div class="contact-form">
-      <input type="text" placeholder="Seu nome" />
-      <input type="email" placeholder="Seu e-mail" />
-      <textarea rows="5" placeholder="Sua mensagem"></textarea>
-      <button>Enviar mensagem</button>
-    </div>
-
-    <div class="social-icons">
-      <a href="https://linkedin.com/in/seu-perfil" target="_blank" aria-label="LinkedIn"><i
-          class="material-icons">linkedin</i></a>
-      <a href="https://github.com/seu-usuario" target="_blank" aria-label="GitHub"><i
-          class="material-icons">code</i></a>
-      <a href="mailto:seu@email.com" aria-label="E-mail"><i class="material-icons">email</i></a>
-    </div>
-  </section>
+ 
 
 </section>
