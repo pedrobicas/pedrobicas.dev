@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@fortawesome/fontawesome-free": "^6.7.2",
+    "@glidejs/glide": "^3.7.1",
     "@tsparticles/angular": "^3.0.0",
     "@tsparticles/engine": "^3.8.1",
     "@tsparticles/slim": "^3.8.1",

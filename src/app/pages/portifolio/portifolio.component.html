@@ -1,108 +1,127 @@
 <div class="portfolio-page" [class.dark-theme]="darkTheme()" [class.light-theme]="!darkTheme()">
-  <!-- Navegação Fixa -->
-  <nav class="main-nav">
+  <div class="site-bg-anim"></div>
+  <!-- Barra de navegação minimalista lateral -->
+  <nav class="side-nav">
     <ul>
-      <li><a href="#home" (click)="scrollTo('home')" [class.active]="activeSection() === 'home'">Home</a></li>
-      <li><a href="#about" (click)="scrollTo('about')" [class.active]="activeSection() === 'about'">Sobre</a></li>
-      <li><a href="#projects" (click)="scrollTo('projects')" [class.active]="activeSection() === 'projects'">Projetos</a></li>
-      <li><a href="#skills" (click)="scrollTo('skills')" [class.active]="activeSection() === 'skills'">Skills</a></li>
-      <li><a href="#contact" (click)="scrollTo('contact')" [class.active]="activeSection() === 'contact'">Contato</a></li>
+      <li *ngFor="let id of sectionIds; let i = index">
+        <button class="nav-dot" [class.active]="activeSection() === id" (click)="scrollTo(id)" [attr.aria-label]="id">
+          <span class="dot"></span>
+        </button>
+      </li>
     </ul>
-    <button class="theme-toggle" (click)="toggleTheme()">
-      <i class="fas" [class.fa-moon]="!darkTheme()" [class.fa-sun]="darkTheme()"></i>
-    </button>
   </nav>
 
   <!-- Seção Hero -->
-  <section class="fullpage-section hero-section" id="home">
-    <div class="hero-content">
-      <div class="hero-text">
-        <h1 class="hero-title">
-          <span class="name-gradient">Pedro Bicas</span>
+  <!-- Seção Hero Modificada -->
+<section class="fullpage-section hero-section" id="home">
+  <div class="hero-content">
+    <!-- Parte esquerda - Nome e descrição -->
+    <div class="hero-text">
+      <!-- Container do nome com efeito de partículas -->
+      <div class="name-container" (mouseenter)="animateName()">
+        <h1 class="name-animated">
+          <span class="name-part" #firstName>Pedro</span>
+          <span class="name-part" #lastName>Bicas</span>
         </h1>
-        
-        <app-typing-effect 
-          *ngIf="showTyping()" 
-          [texts]="typingTexts" 
-          [typingSpeed]="100" 
-          [deletingSpeed]="50" 
-          [pauseTime]="2000">
-        </app-typing-effect>
-        
-        <div class="hero-buttons">
-          <button class="glow-button" (click)="scrollTo('projects')">
-            Ver Projetos
-            <div class="glow"></div>
-          </button>
-          <button class="outline-button" (click)="scrollTo('contact')">
-            Contato
-          </button>
+      </div>
+      
+      <!-- Título com efeito de circuito digital -->
+      <div class="title-container">
+        <div class="digital-circuit">
+          <div class="circuit-line horizontal"></div>
+          <div class="circuit-line vertical"></div>
+          <div class="title-wrapper">
+            <span class="title-text">Desenvolvedor</span>
+            <span class="title-highlight">
+              FullStack
+              <div class="underline-effect"></div>
+            </span>
+          </div>
+          <div class="circuit-node" *ngFor="let node of [1,2,3,4]"></div>
         </div>
       </div>
       
-      <div class="hero-image">
-        <div class="avatar-container">
-          <img src="assets/images/avatar.jpg" alt="Pedro Bicas" class="avatar">
-          <div class="tech-badge angular">Angular</div>
-          <div class="tech-badge node">Node.js</div>
-          <div class="tech-badge java">Java</div>
+      <!-- Mantendo os botões existentes -->
+      <div class="intro-cta">
+        <button class="neuro-btn" (click)="scrollTo('about')">
+          <span>Explorar</span>
+          <div class="neuro-light"></div>
+        </button>
+        <div class="social-circuit">
+          <a href="https://linkedin.com/in/pedrobicas" class="circuit-node" aria-label="LinkedIn" target="_blank">
+            <i class="fab fa-linkedin-in"></i>
+            <div class="circuit-line"></div>
+          </a>
+          <a href="https://github.com/pedrobicas" class="circuit-node" aria-label="GitHub" target="_blank">
+            <i class="fab fa-github"></i>
+            <div class="circuit-line"></div>
+          </a>
+          <a href="mailto:contato@pedrobicas.com" class="circuit-node" aria-label="Email">
+            <i class="fas fa-envelope"></i>
+            <div class="circuit-line"></div>
+          </a>
         </div>
       </div>
     </div>
     
-    <div class="scroll-indicator" (click)="scrollTo('about')">
-      <span>Scroll</span>
-      <div class="arrow"></div>
+    <!-- Parte direita - Imagem -->
+    <div class="hero-image">
+      <div class="avatar-container">
+        <img src="assets/images/developer-activity-animate.svg" alt="Pedro Bicas" class="avatar">
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- Seção Sobre -->
-  <section class="fullpage-section about-section" id="about">
-    <div class="section-content">
-      <h2 class="section-title"><span class="highlight">01.</span> Sobre Mim</h2>
-      
-      <div class="about-grid">
-        <div class="about-text">
-          <p>
-            Sou um desenvolvedor fullstack com sólida base técnica e experiência prática em projetos web modernos.
-            Atuo desde o planejamento até a entrega de soluções escaláveis, performáticas e com foco total na experiência do
-            usuário.
-          </p>
-          
-          <div class="experience-list">
-            <div class="experience-item" *ngFor="let exp of experiences">
-              <div class="exp-year">{{exp.year}}</div>
-              <div class="exp-details">
-                <h3>{{exp.title}}</h3>
-                <p>{{exp.description}}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+<!-- Seção Sobre -->
+<section class="fullpage-section about-section" id="about">
+  <div class="section-content">
+    <h2 class="section-title"><span class="highlight">01.</span> Sobre Mim</h2>
+    <div class="about-grid">
+      <!-- Texto sobre mim -->
+      <div class="about-text">
+        <p>
+          Sou Pedro Bicas, estudante de Engenharia de Software na FIAP e técnico em Desenvolvimento de Sistemas pelo SENAI.
+
+Atuo no desenvolvimento de software com linguagens modernas como TypeScript/JavaScript para interfaces dinâmicas (Angular, React), Java com Spring Boot para APIs robustas, Python para automações e SQL para bancos relacionais.
+        </p>
         
-        <div class="about-image">
-          <div class="image-frame">
-            <img src="assets/images/about-image.jpg" alt="Sobre Pedro Bicas">
+        <div class="tech-highlights">
+          <h3>Tecnologias que trabalho atualmente:</h3>
+          <ul>
+            <li>JavaScript  / TypeScript</li>
+            <li>Angular e React</li>
+            <li>JavaSpringBoot e NodeJs</li>
+            <li>PostgreSQL, MySQL e SQL</li>
+            <li>Docker, Git e Linux</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Linha do tempo -->
+      <div class="timeline-container">
+        <div class="timeline">
+          <div class="timeline-item" *ngFor="let exp of experiences; let last = last">
+            <div class="timeline-year">{{exp.year}}</div>
+            <div class="timeline-content">
+              <h3>{{exp.title}}</h3>
+              <p>{{exp.description}}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- Seção Projetos -->
-  <section class="fullpage-section projects-section" id="projects">
-    <div class="section-content">
-      <h2 class="section-title"><span class="highlight">02.</span> Projetos</h2>
-      
-      <app-project-slider />
-    </div>
-  </section>
+  
 
   <!-- Seção Habilidades -->
   <section class="fullpage-section skills-section" id="skills">
     <div class="section-content">
-      <h2 class="section-title"><span class="highlight">03.</span> Habilidades</h2>
-      
+      <h2 class="section-title"><span class="highlight">02.</span> Habilidades</h2>
       <div class="skills-container">
         <div class="skill-category" *ngFor="let category of skillCategories">
           <h3>{{category.name}}</h3>
@@ -123,17 +142,43 @@
       </div>
     </div>
   </section>
-
+<section class="fullpage-section projects-section" id="projects">
+    <div class="section-content">
+      <h2 class="section-title"><span class="highlight">03.</span> Projetos</h2>
+      <div class="projects-swiper">
+        <swiper-container [slides-per-view]="1" [space-between]="30" [loop]="true" [pagination]="{ clickable: true }" [navigation]="true">
+          <ng-container *ngFor="let project of projects">
+            <swiper-slide>
+              <div class="project-card">
+                <div class="project-image">
+                  <img [src]="project.image" [alt]="project.name" />
+                  <div class="project-links">
+                    <a *ngIf="project.github" [href]="project.github" target="_blank" class="link-button">GitHub</a>
+                    <a *ngIf="project.live" [href]="project.live" target="_blank" class="link-button">Ver Projeto</a>
+                  </div>
+                </div>
+                <div class="project-details">
+                  <h3>{{project.name}}</h3>
+                  <p>{{project.description}}</p>
+                  <div class="project-techs">
+                    <span *ngFor="let tech of project.techs">{{tech}}</span>
+                  </div>
+                </div>
+              </div>
+            </swiper-slide>
+          </ng-container>
+        </swiper-container>
+      </div>
+    </div>
+  </section>
   <!-- Seção Contato -->
   <section class="fullpage-section contact-section" id="contact">
     <div class="section-content">
       <h2 class="section-title"><span class="highlight">04.</span> Contato</h2>
-      
       <div class="contact-grid">
         <div class="contact-info">
           <h3>Vamos conversar!</h3>
           <p>Estou interessado em oportunidades freelance e colaborações. Se você tem um projeto que deseja começar, entre em contato!</p>
-          
           <div class="contact-details">
             <div class="contact-item">
               <i class="fas fa-envelope"></i>
@@ -144,7 +189,6 @@
               <span>+55 (11) 99999-9999</span>
             </div>
           </div>
-          
           <div class="social-links">
             <a href="https://github.com/pedrobicas" target="_blank" class="social-link">
               <i class="fab fa-github"></i>
@@ -154,27 +198,25 @@
             </a>
           </div>
         </div>
-        
         <div class="contact-form">
           <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
               <label for="name">Nome</label>
-              <input type="text" id="name" formControlName="name" required>
+              <input type="text" id="name" formControlName="name" required placeholder="Seu nome">
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" formControlName="email" required>
+              <input type="email" id="email" formControlName="email" required placeholder="seu@email.com">
             </div>
             <div class="form-group">
               <label for="message">Mensagem</label>
-              <textarea id="message" formControlName="message" rows="5" required></textarea>
+              <textarea id="message" formControlName="message" rows="5" required placeholder="Digite sua mensagem..."></textarea>
             </div>
             <button type="submit" class="submit-button" [disabled]="contactForm.invalid || submitting()">
               <span *ngIf="!submitting()">Enviar Mensagem</span>
               <span *ngIf="submitting()">Enviando...</span>
             </button>
           </form>
-          
           <div class="success-message" *ngIf="submitSuccess()">
             Mensagem enviada com sucesso!
           </div>
