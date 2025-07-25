@@ -1107,88 +1107,105 @@
 }
 
 // Habilidades
+/* Estilos para a seção de habilidades */
 .skills-section {
-  background-color: var(--bg-secondary);
-  
-  .skills-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+  .skills-intro {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+    line-height: 1.6;
   }
   
-  .skill-category {
-    h3 {
-      margin-bottom: 1.5rem;
-      color: var(--accent);
-      position: relative;
-      display: inline-block;
+  .tech-stack {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    
+    .tech-category {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid rgba(58, 141, 222, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
       
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 0;
-        width: 50%;
-        height: 2px;
-        background-color: var(--accent);
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(58, 141, 222, 0.1);
+        border-color: rgba(58, 141, 222, 0.3);
+      }
+      
+      h3 {
+        color: var(--accent);
+        margin-bottom: 1.5rem;
+        text-align: center;
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 40px;
+          height: 2px;
+          background: var(--accent);
+        }
+      }
+    }
+    
+    .tech-icons {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+      gap: 1.5rem;
+      justify-items: center;
+      
+      .tech-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(58, 141, 222, 0.1);
+        border-radius: 50%;
+        font-size: 1.8rem;
+        color: var(--accent);
+        transition: all 0.3s;
+        cursor: default;
+        
+        &:hover {
+          transform: scale(1.1);
+          background: var(--accent);
+          color: white;
+          box-shadow: 0 5px 15px rgba(58, 141, 222, 0.3);
+        }
+        
+        i {
+          transition: transform 0.3s;
+        }
+        
+        &:hover i {
+          transform: scale(1.1);
+        }
       }
     }
   }
   
-  .skills-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .skill-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.8rem;
-    background-color: rgba(255,255,255,0.05);
-    border-radius: 8px;
-    transition: transform 0.3s;
-    
-    &:hover {
-      transform: translateY(-5px);
-      background-color: rgba(58, 141, 222, 0.1);
-    }
-  }
-  
-  .skill-icon {
-    width: 40px;
-    height: 40px;
-    @include flex-center;
-    background-color: rgba(58, 141, 222, 0.1);
-    border-radius: 50%;
-    
-    i {
-      color: var(--accent);
-      font-size: 1.2rem;
-    }
-  }
-  
-  .skill-info {
-    flex: 1;
-    
-    h4 {
-      margin-bottom: 0.3rem;
-      font-size: 1rem;
-    }
-  }
-  
-  .skill-bar {
-    width: 100%;
-    height: 5px;
-    background-color: rgba(255,255,255,0.1);
-    border-radius: 5px;
-    overflow: hidden;
-    
-    .skill-level {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent-light));
-      border-radius: 5px;
+  @media (max-width: 768px) {
+    .tech-stack {
+      grid-template-columns: 1fr;
+      
+      .tech-icons {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 1rem;
+        
+        .tech-icon {
+          width: 40px;
+          height: 40px;
+          font-size: 1.5rem;
+        }
+      }
     }
   }
 }

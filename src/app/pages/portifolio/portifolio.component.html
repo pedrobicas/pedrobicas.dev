@@ -119,29 +119,30 @@ Atuo no desenvolvimento de software com linguagens modernas como TypeScript/Java
   
 
   <!-- Seção Habilidades -->
-  <section class="fullpage-section skills-section" id="skills">
-    <div class="section-content">
-      <h2 class="section-title"><span class="highlight">02.</span> Habilidades</h2>
-      <div class="skills-container">
-        <div class="skill-category" *ngFor="let category of skillCategories">
-          <h3>{{category.name}}</h3>
-          <div class="skills-grid">
-            <div class="skill-item" *ngFor="let skill of category.skills">
-              <div class="skill-icon">
-                <i [class]="skill.icon"></i>
-              </div>
-              <div class="skill-info">
-                <h4>{{skill.name}}</h4>
-                <div class="skill-bar">
-                  <div class="skill-level" [style.width.%]="skill.level"></div>
-                </div>
-              </div>
-            </div>
+  <!-- Seção Habilidades -->
+<section class="fullpage-section skills-section" id="skills">
+  <div class="section-content">
+    <h2 class="section-title"><span class="highlight">02.</span> Habilidades</h2>
+    
+    <div class="skills-intro">
+      <p>
+        Como desenvolvedor Full Stack, trabalho com diversas tecnologias modernas para criar aplicações web completas,
+        desde interfaces dinâmicas até APIs robustas e bancos de dados eficientes. Minha stack principal inclui:
+      </p>
+    </div>
+    
+    <div class="tech-stack">
+      <div class="tech-category" *ngFor="let category of skillCategories">
+        <h3>{{category.name}}</h3>
+        <div class="tech-icons">
+          <div class="tech-icon" *ngFor="let skill of category.skills" [title]="skill.name">
+            <i [class]="skill.icon"></i>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 <section class="fullpage-section projects-section" id="projects">
     <div class="section-content">
       <h2 class="section-title"><span class="highlight">03.</span> Projetos</h2>

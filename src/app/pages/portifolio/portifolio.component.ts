@@ -91,7 +91,7 @@ experiences = [
     description: 'Desenvolvimento de sistemas para saúde digital e análise de dados médicos'
   },
   {
-    year: '2023-Atual',
+    year: '2023-2026',
     title: 'Engenharia de Software',
     description: 'Graduação em andamento com foco em arquitetura de software e qualidade'
   },
@@ -103,33 +103,42 @@ experiences = [
 ];
 
   // Habilidades
-  skillCategories = [
-    {
-      name: 'Front-end',
-      skills: [
-        { name: 'Angular', icon: 'fab fa-angular', level: 90 },
-        { name: 'React', icon: 'fab fa-react', level: 80 },
-        { name: 'TypeScript', icon: 'fas fa-code', level: 85 },
-        { name: 'SCSS', icon: 'fab fa-sass', level: 80 }
-      ]
-    },
-    {
-      name: 'Back-end',
-      skills: [
-        { name: 'Node.js', icon: 'fab fa-node-js', level: 85 },
-        { name: 'Java Spring', icon: 'fab fa-java', level: 75 },
-        { name: 'REST APIs', icon: 'fas fa-server', level: 80 },
-        { name: 'JWT Auth', icon: 'fas fa-key', level: 75 }
-      ]
-    },
-    {
-      name: 'Banco de Dados',
-      skills: [
-        { name: 'PostgreSQL', icon: 'fas fa-database', level: 80 },
-        { name: 'MongoDB', icon: 'fas fa-leaf', level: 70 }
-      ]
-    }
-  ];
+  // No seu componente, atualize a estrutura de skillCategories para:
+skillCategories = [
+  {
+    name: 'Front-end',
+    skills: [
+      { name: 'Angular', icon: 'fab fa-angular' },
+      { name: 'React', icon: 'fab fa-react' },
+      { name: 'TypeScript', icon: 'fas fa-code' },
+      { name: 'JavaScript', icon: 'fab fa-js' },
+      { name: 'HTML5', icon: 'fab fa-html5' },
+      { name: 'CSS3', icon: 'fab fa-css3-alt' },
+      { name: 'Sass', icon: 'fab fa-sass' }
+    ]
+  },
+  {
+    name: 'Back-end',
+    skills: [
+      { name: 'Node.js', icon: 'fab fa-node-js' },
+      { name: 'Java', icon: 'fab fa-java' },
+      { name: 'Spring Boot', icon: 'fas fa-leaf' }, // Ícone alternativo para Spring
+      { name: 'Python', icon: 'fab fa-python' },
+      { name: 'Express', icon: 'fas fa-server' } // Ícone representando servidor
+    ]
+  },
+  {
+    name: 'Banco de Dados & DevOps',
+    skills: [
+      { name: 'PostgreSQL', icon: 'fas fa-database' },
+      { name: 'MySQL', icon: 'fas fa-database' },
+      { name: 'MongoDB', icon: 'fas fa-database' },
+      { name: 'Docker', icon: 'fab fa-docker' },
+      { name: 'Git', icon: 'fab fa-git-alt' },
+      { name: 'Linux', icon: 'fab fa-linux' }
+    ]
+  }
+];
 
   contactForm = this.fb.group({
     name: ['', Validators.required],
