@@ -1,0 +1,23 @@
+<section class="fullpage-section skills-section" id="skills">
+  <div class="section-content">
+    <h2 class="section-title"><span class="highlight">02.</span> Habilidades</h2>
+    <div class="skills-intro">
+      <p>
+        Como desenvolvedor Full Stack, trabalho com diversas tecnologias modernas para criar aplicações web completas,
+        desde interfaces dinâmicas até APIs robustas e bancos de dados eficientes. Minha stack principal inclui:
+      </p>
+    </div>
+    <div class="tech-stack">
+      <div class="tech-category glass-card" *ngFor="let category of skillCategories; let last = last">
+        <h3>{{category.name}}</h3>
+        <div class="tech-icons">
+          <div class="tech-icon animated" *ngFor="let skill of category.skills" [title]="skill.name">
+            <i [class]="skill.icon"></i>
+            <span class="skill-label">{{skill.name}}</span>
+          </div>
+        </div>
+        <div class="category-separator" *ngIf="!last"></div>
+      </div>
+    </div>
+  </div>
+</section>

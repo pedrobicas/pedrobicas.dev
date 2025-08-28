@@ -1,0 +1,47 @@
+<section class="fullpage-section projects-section" id="projects">
+  <div class="section-content">
+    <h2 class="section-title"><span class="highlight">03.</span> Projetos</h2>
+    <div class="projects-carousel improved">
+      <div class="carousel-arrow left" (click)="carouselPrev()" aria-label="Anterior">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </div>
+      <div class="carousel-track single">
+        <div class="carousel-slide active fade-slide-in">
+          <div class="carousel-content">
+            <h3>{{projects[activeProjectIndex]?.name}}</h3>
+            <p>{{projects[activeProjectIndex]?.description}}</p>
+            <div class="project-techs">
+              <span *ngFor="let tech of projects[activeProjectIndex]?.techs">
+                <i *ngIf="tech === 'Python'" class="devicon-python-plain colored"></i>
+                <i *ngIf="tech === 'Streamlit'" class="devicon-streamlit-plain colored"></i>
+                <i *ngIf="tech === 'Angular'" class="devicon-angular-plain colored"></i>
+                <i *ngIf="tech === 'TypeScript'" class="devicon-typescript-plain colored"></i>
+                <i *ngIf="tech === 'Java'" class="devicon-java-plain colored"></i>
+                <i *ngIf="tech === 'Spring Boot'" class="devicon-spring-plain colored"></i>
+                <i *ngIf="tech === 'SCSS'" class="devicon-sass-plain colored"></i>
+                <i *ngIf="tech === 'RxJS'" class="devicon-rxjs-original colored"></i>
+                <i *ngIf="tech === 'Maven'" class="devicon-maven-plain colored"></i>
+                <i *ngIf="tech === 'SockJS'" class="fas fa-plug"></i>
+                <i *ngIf="tech === 'STOMP.js'" class="fas fa-bolt"></i>
+                <i *ngIf="tech === 'Pandas'" class="devicon-pandas-original colored"></i>
+                <i *ngIf="tech === 'Plotly'" class="fas fa-chart-line"></i>
+                <i *ngIf="tech === 'CoinGecko API'" class="fas fa-coins"></i>
+                {{tech}}
+              </span>
+            </div>
+            <div class="project-links">
+              <a *ngIf="projects[activeProjectIndex]?.github" [href]="projects[activeProjectIndex]?.github" target="_blank" class="link-button">GitHub</a>
+              <a *ngIf="projects[activeProjectIndex]?.live" [href]="projects[activeProjectIndex]?.live" target="_blank" class="link-button">Ver Projeto</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-arrow right" (click)="carouselNext()" aria-label="Próximo">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+      </div>
+    </div>
+    <div class="carousel-indicators">
+      <button *ngFor="let project of projects; let i = index" class="carousel-dot" [class.active]="i === activeProjectIndex" (click)="goToProject(i)" aria-label="Ir para projeto" [attr.title]="project.name"></button>
+    </div>
+  </div>
+</section>

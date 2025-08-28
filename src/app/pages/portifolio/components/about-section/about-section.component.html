@@ -1,0 +1,27 @@
+<section class="fullpage-section about-section" id="about">
+  <div class="section-content">
+    <h2 class="section-title"><span class="highlight">01.</span> Sobre Mim</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p [innerHTML]="aboutText"></p>
+        <div class="tech-highlights" *ngIf="techHighlights.length">
+          <h3>Tecnologias que trabalho atualmente:</h3>
+          <ul>
+            <li *ngFor="let tech of techHighlights">{{tech}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-container">
+        <div class="timeline">
+          <div class="timeline-item" *ngFor="let exp of experiences">
+            <div class="timeline-year">{{exp.year}}</div>
+            <div class="timeline-content">
+              <h3>{{exp.title}}</h3>
+              <p>{{exp.description}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

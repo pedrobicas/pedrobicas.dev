@@ -1,0 +1,94 @@
+// Variáveis globais podem ser importadas se necessário
+@import '../../portifolio.component.scss';
+
+.contact-section {
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+  .contact-info {
+    h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+    p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+    .contact-details {
+      margin-bottom: 2rem;
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        margin-bottom: 0.7rem;
+        i {
+          color: var(--accent);
+        }
+      }
+    }
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      .social-link {
+        font-size: 1.5rem;
+        color: var(--accent-light);
+        transition: color 0.3s;
+        &:hover {
+          color: var(--accent);
+        }
+      }
+    }
+  }
+  .contact-form {
+    .form-group {
+      margin-bottom: 1.2rem;
+      label {
+        font-weight: 500;
+        color: var(--accent);
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 0.7rem;
+        border-radius: 6px;
+        border: 1px solid var(--accent-light);
+        background: rgba(44, 131, 212, 0.04);
+        color: var(--text-primary);
+        font-size: 1rem;
+        margin-top: 0.3rem;
+        transition: border 0.3s;
+        &:focus {
+          border: 1.5px solid var(--accent);
+          outline: none;
+        }
+      }
+    }
+    .submit-button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+      &:hover {
+        background: var(--accent-light);
+        color: #000;
+      }
+    }
+    .success-message {
+      color: var(--accent);
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+  }
+}

@@ -1,0 +1,86 @@
+@import '../../portifolio.component.scss';
+
+.about-section {
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+  .about-text {
+    p {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+    .tech-highlights {
+      margin-top: 1.5rem;
+      h3 {
+        font-size: 1.1rem;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+      }
+      ul {
+        padding-left: 1.2rem;
+        li {
+          margin-bottom: 0.3rem;
+        }
+      }
+    }
+  }
+  .timeline-container {
+    position: relative;
+    padding-left: 2.5rem;
+    margin-top: 1.5rem;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 15px;
+      height: 100%;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      border-radius: 3px;
+    }
+  }
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+  .timeline-item {
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+    .timeline-year {
+      min-width: 60px;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: 'Fira Code', monospace;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+      position: relative;
+      top: 3px;
+    }
+    .timeline-content {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 1.2rem;
+      flex: 1;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(58, 141, 222, 0.1);
+      transition: all 0.3s ease;
+      h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        margin-bottom: 0;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}

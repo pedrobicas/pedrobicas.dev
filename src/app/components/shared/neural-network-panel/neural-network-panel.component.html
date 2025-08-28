@@ -1,9 +1,0 @@
-<div class="neural-network-panel">
-  <canvas #neuralCanvas class="neural-canvas"></canvas>
-  <div *ngIf="hoveredNode" class="neural-tooltip" [style.left.px]="hoveredPos.x" [style.top.px]="hoveredPos.y">
-    <div class="tooltip-glass">
-      <span class="tooltip-label" [style.color]="hoveredNode.color">{{hoveredNode.label}}</span>
-      <span class="tooltip-desc">{{hoveredNode.desc}}</span>
-    </div>
-  </div>
-</div> 

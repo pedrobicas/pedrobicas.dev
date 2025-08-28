@@ -4,11 +4,16 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HeroSectionComponent } from './components/hero-section/hero-section.component';
+import { AboutSectionComponent } from './components/about-section/about-section.component';
+import { SkillsSectionComponent } from './components/skills-section/skills-section.component';
+import { ProjectsSectionComponent } from './components/projects-section/projects-section.component';
+import { ContactSectionComponent } from './components/contact-section/contact-section.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HeroSectionComponent, AboutSectionComponent, SkillsSectionComponent, ProjectsSectionComponent, ContactSectionComponent],
   templateUrl: './portifolio.component.html',
   styleUrls: ['./portifolio.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -28,11 +33,15 @@ export class PortifolioComponent implements OnInit {
     "Desenvolvedor Full-Stack",
   ];
   taglineWords = ['Código', 'Design', 'Inovação'];
+  socialLinks = [
+    { icon: 'fab fa-github', url: 'https://github.com/pedrobicas', label: 'GitHub' },
+    { icon: 'fab fa-linkedin-in', url: 'https://linkedin.com/in/pedrobicas', label: 'LinkedIn' },
+    { icon: 'fab fa-instagram', url: 'https://instagram.com/pedrobicas', label: 'Instagram' }
+  ];
 @ViewChild('firstName') firstName!: ElementRef;
   @ViewChild('lastName') lastName!: ElementRef;
 
   animateName() {
-    // Efeito de "pulo" no nome
     const firstName = this.firstName.nativeElement;
     const lastName = this.lastName.nativeElement;
     
@@ -58,37 +67,40 @@ export class PortifolioComponent implements OnInit {
   // Projetos em destaque
   projects = [
     {
-      name: 'Juno',
-      description: 'Plataforma para gerenciamento remoto de dados integrados com o Thingsboard',
-      image: 'assets/images/projects/juno.jpg',
-      techs: ['Angular', 'Java Spring', 'PostgreSQL'],
-      github: 'https://github.com/seu-usuario/juno',
-      live: 'https://juno-app.vercel.app'
+      name: 'Crypto Analysis & Forecast Platform',
+      description: 'Plataforma de análise técnica e previsão de criptomoedas com indicadores avançados, simulação de investimentos e análise de risco. Interface moderna em Streamlit, modelos SARIMAX e integração com CoinGecko.',
+      techs: ['Python', 'Streamlit', 'Pandas', 'Plotly', 'CoinGecko API'],
+      github: 'https://github.com/pedrobicas/crypto-plataform',
+      live: 'https://crypto-plataform.streamlit.app/'
     },
     {
-      name: 'VRCare Web',
-      description: 'Dashboard financeiro com gráficos dinâmicos e autenticação JWT',
-      image: 'assets/images/projects/finance.jpg',
-      techs: ['React', 'Node.js', 'MongoDB'],
-      github: 'https://github.com/seu-usuario/finance-dashboard',
-      live: 'https://finance-app.vercel.app'
+      name: 'Web Real Time Chat',
+      description: 'Frontend Angular para chat em tempo real, com tema claro/escuro, notificações, lista de usuários online, chat público e privado via WebSocket (STOMP) integrado ao backend Java.',
+      techs: ['Angular', 'TypeScript', 'SCSS', 'RxJS', 'SockJS', 'STOMP.js'],
+      github: 'https://github.com/pedrobicas/web-realtime-chat',
+      live: ''
+    },
+    {
+      name: 'Java Real Time Chat',
+      description: 'Backend em Java Spring Boot para chat em tempo real, com WebSocket (STOMP), chat público e privado, notificações, controle de usuários online e integração REST.',
+      techs: ['Java', 'Spring Boot', 'WebSocket', 'STOMP', 'Maven'],
+      github: 'https://github.com/pedrobicas/java-realtime-chat',
+      live: ''
     },
     {
       name: 'Portfólio',
       description: 'Meu portfólio pessoal, responsivo e animado',
-      image: 'assets/images/projects/portfolio.jpg',
       techs: ['Angular', 'SCSS'],
       github: 'https://github.com/seu-usuario/meu-portifolio',
       live: 'https://pedrobicas.com'
     }
   ];
 
-  // Experiências (linha do tempo)
 experiences = [
   {
     year: '2024-Atual',
-    title: 'Estagiário em Desenvolvimento - INCOR',
-    description: 'Desenvolvimento de sistemas para saúde digital e análise de dados médicos'
+    title: 'Bolsista em Desenvolvimento - INCOR',
+    description: 'Desenvolvimento de sistemas'
   },
   {
     year: '2023-2026',
@@ -110,7 +122,7 @@ skillCategories = [
     skills: [
       { name: 'Angular', icon: 'fab fa-angular' },
       { name: 'React', icon: 'fab fa-react' },
-      { name: 'TypeScript', icon: 'fas fa-code' },
+      { name: 'TypeScript', icon: 'devicon-typescript-plain colored' },
       { name: 'JavaScript', icon: 'fab fa-js' },
       { name: 'HTML5', icon: 'fab fa-html5' },
       { name: 'CSS3', icon: 'fab fa-css3-alt' },
@@ -122,16 +134,16 @@ skillCategories = [
     skills: [
       { name: 'Node.js', icon: 'fab fa-node-js' },
       { name: 'Java', icon: 'fab fa-java' },
-      { name: 'Spring Boot', icon: 'fas fa-leaf' }, // Ícone alternativo para Spring
+      { name: 'Spring Boot', icon: 'fas fa-leaf' },
       { name: 'Python', icon: 'fab fa-python' },
-      { name: 'Express', icon: 'fas fa-server' } // Ícone representando servidor
+      { name: 'Express', icon: 'fas fa-server' }
     ]
   },
   {
     name: 'Banco de Dados & DevOps',
     skills: [
-      { name: 'PostgreSQL', icon: 'fas fa-database' },
-      { name: 'MySQL', icon: 'fas fa-database' },
+      { name: 'PostgreSQL', icon: 'devicon-postgresql-plain colored' },
+      { name: 'MySQL', icon: 'devicon-mysql-plain colored' },
       { name: 'MongoDB', icon: 'fas fa-database' },
       { name: 'Docker', icon: 'fab fa-docker' },
       { name: 'Git', icon: 'fab fa-git-alt' },
@@ -157,6 +169,15 @@ animationState = signal({
     bubblesRevealed: false,
     ctaRevealed: false
   });
+  aboutText = `Sou Pedro Bicas, estudante de Engenharia de Software na FIAP e técnico em Desenvolvimento de Sistemas pelo SENAI.<br><br>Atuo no desenvolvimento de software com linguagens modernas como TypeScript/JavaScript para interfaces dinâmicas (Angular, React), Java com Spring Boot para APIs robustas, Python para automações e SQL para bancos relacionais.`;
+  techHighlights = [
+    'JavaScript  / TypeScript',
+    'Angular e React',
+    'JavaSpringBoot e NodeJs',
+    'PostgreSQL, MySQL e SQL',
+    'Docker, Git e Linux'
+  ];
+
   ngOnInit(): void {
     window.scrollTo(0, 0);
     this.checkInitialHash();
@@ -262,11 +283,10 @@ scrollToSectionByIndex() {
     const idx = this.sectionIds.indexOf(section);
     if (idx !== -1) {
       this.currentSectionIndex = idx;
-        this.scrollToSectionByIndex();
+      this.scrollToSectionByIndex();
+      this.activeSection.set(section);
+      this.updateSectionVisibility();
     }
-    document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
-    this.activeSection.set(section);
-    this.updateSectionVisibility();
   }
 private checkInitialHash() {
   const hash = window.location.hash.substring(1);
@@ -321,5 +341,9 @@ private checkInitialHash() {
       
       setTimeout(() => this.submitSuccess.set(false), 5000);
     }, 1500);
+  }
+
+  get activeSectionIndex(): number {
+    return this.sectionIds.indexOf(this.activeSection());
   }
 }
