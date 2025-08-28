@@ -1,3 +1,43 @@
+// Botão de ação inspirado na hero section
+.skills-btn.neuro-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 0.8rem 2rem;
+  color: #e6f1ff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 30px;
+  overflow: hidden;
+  cursor: pointer;
+  margin-top: 1.2rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 0 1px rgba(44,131,212, 0.3),
+              inset 0 0 10px rgba(44,131,212, 0.2);
+  z-index: 1;
+}
+.skills-btn.neuro-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(44,131,212,0.18) 0%, rgba(87,203,255,0.13) 100%);
+  opacity: 0.7;
+  z-index: -1;
+  transition: opacity 0.3s;
+}
+.skills-btn.neuro-btn:hover {
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(44,131,212, 0.5),
+              0 8px 32px 0 rgba(44,131,212,0.16);
+}
+.skills-btn.neuro-btn:active {
+  transform: scale(0.97);
+}
 @import '../../portifolio.component.scss';
 
 .skills-section {
@@ -7,102 +47,224 @@
     text-align: center;
     color: var(--text-secondary);
     line-height: 1.6;
+    font-size: 1rem;
   }
-  .tech-stack {
+
+  .tech-showcase {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
-    margin-top: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    
     .tech-category {
-      background: rgba(30, 40, 60, 0.22);
-      backdrop-filter: blur(10px);
-      border-radius: 18px;
-      box-shadow: 0 4px 24px 0 rgba(44,131,212,0.08);
-      padding: 2rem 1.2rem 1.5rem 1.2rem;
-      position: relative;
-      transition: box-shadow 0.3s;
-      &:hover {
-        box-shadow: 0 8px 32px 0 rgba(44,131,212,0.16);
-      }
-      h3 {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      
+      .category-title {
         font-size: 1.2rem;
         color: var(--accent);
-        margin-bottom: 0.7rem;
+        margin: 0 0 1.5rem 0;
+        text-align: center;
+        font-weight: 600;
         letter-spacing: 0.02em;
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -6px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 30px;
+          height: 2px;
+          background: linear-gradient(90deg, var(--accent), transparent);
+          border-radius: 1px;
+        }
       }
-      .tech-icons {
-        display: flex;
-        flex-wrap: wrap;
+      
+      .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
         gap: 1rem;
-        .tech-icon {
-          font-size: 2rem;
-          color: var(--accent-light);
-          background: rgba(44,131,212,0.08);
-          border-radius: 8px;
-          padding: 0.5rem 0.8rem;
-          transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
-          position: relative;
+        justify-items: center;
+        
+        .tech-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.8rem;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           cursor: pointer;
-          box-shadow: 0 2px 8px 0 rgba(44,131,212,0.06);
           opacity: 0;
-          transform: translateY(20px) scale(0.95);
-          animation: fadeInUp 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
-          animation-delay: calc(var(--i, 0) * 0.08s);
+          transform: translateY(15px) scale(0.95);
+          animation: fadeInScale 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          position: relative;
+          
           &:hover {
-            background: var(--accent);
-            color: #fff;
-            transform: scale(1.13) translateY(-2px);
-            box-shadow: 0 4px 16px 0 rgba(44,131,212,0.18);
-            z-index: 2;
-            .skill-label {
-              opacity: 1;
-              transform: translateY(0) scale(1);
-              pointer-events: auto;
-            }
+            transform: translateY(-3px) scale(1.05);
           }
-          .skill-label {
-            position: absolute;
-            left: 50%;
-            bottom: -2.2rem;
-            transform: translateX(-50%) translateY(10px) scale(0.95);
-            background: rgba(44,131,212,0.92);
-            color: #fff;
-            font-size: 0.92rem;
-            padding: 0.22rem 0.9rem;
-            border-radius: 8px;
-            white-space: nowrap;
-            box-shadow: 0 2px 12px 0 rgba(44,131,212,0.10);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.22s, transform 0.22s;
-            z-index: 10;
-            letter-spacing: 0.02em;
+          
+          // Forçar estilo para todos os ícones, independente da tag ou fonte
+          i, svg, span.icon, .iconify, .icon, .fa, .material-icons {
+            font-size: 1.8rem !important;
+            color: var(--accent) !important;
+            transition: color 0.3s, transform 0.3s, fill 0.3s, stroke 0.3s !important;
+            display: inline-block !important;
+            width: 1.8rem !important;
+            height: 1.8rem !important;
+            line-height: 1.8rem !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+            font-style: normal !important;
+            font-weight: normal !important;
+            filter: drop-shadow(0 0 2px rgba(44,131,212,0.18));
+            background: none !important;
+            box-shadow: none !important;
+            border: none !important;
+            stroke: var(--accent) !important;
+            fill: var(--accent) !important;
+          }
+          &:hover i,
+          &:hover svg,
+          &:hover span.icon,
+          &:hover .iconify,
+          &:hover .icon,
+          &:hover .fa,
+          &:hover .material-icons {
+            color: #57cbff !important;
+            stroke: #57cbff !important;
+            fill: #57cbff !important;
+            transform: scale(1.1) !important;
+          }
+          
+          .tech-name {
+            font-size: 0.75rem;
+            color: #e6f1ff;
+            font-weight: 500;
+            text-align: center;
+            letter-spacing: 0.01em;
+            line-height: 1.2;
           }
         }
-        .tech-icon.animated {
-          animation-name: fadeInUp;
-        }
       }
-      .category-separator {
-        width: 60%;
-        height: 1.5px;
-        background: linear-gradient(90deg, var(--accent-light), transparent);
-        opacity: 0.13;
-        margin: 2.2rem auto 0 auto;
-        border-radius: 2px;
-      }
-    }
-  }
-  @media (max-width: 768px) {
-    .tech-stack {
-      grid-template-columns: 1fr;
-    }
-    .tech-category {
-      padding: 1.2rem 0.5rem 1rem 0.5rem;
     }
   }
 }
-@keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+
+// Animações
+@keyframes slideInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .skills-section {
+    .tech-showcase {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      
+      .tech-category {
+        .tech-grid {
+          grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+          gap: 0.8rem;
+          
+          .tech-item {
+            padding: 0.6rem;
+            
+            i {
+              font-size: 1.6rem !important;
+              width: 1.6rem !important;
+              height: 1.6rem !important;
+              line-height: 1.6rem !important;
+            }
+            
+            i[class*="devicon-"] {
+              font-size: 1.6rem !important;
+            }
+            
+            i[class*="fab"],
+            i[class*="fas"],
+            i[class*="far"] {
+              font-size: 1.6rem !important;
+            }
+            
+            .tech-name {
+              font-size: 0.7rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .skills-section {
+    .skills-intro {
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .tech-showcase {
+      gap: 1.2rem;
+      
+      .tech-category {
+        .category-title {
+          font-size: 1.1rem;
+          margin-bottom: 1.2rem;
+        }
+        
+        .tech-grid {
+          grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
+          gap: 0.7rem;
+          
+          .tech-item {
+            padding: 0.5rem;
+            
+            i {
+              font-size: 1.4rem !important;
+              width: 1.4rem !important;
+              height: 1.4rem !important;
+              line-height: 1.4rem !important;
+            }
+            
+            i[class*="devicon-"] {
+              font-size: 1.4rem !important;
+            }
+            
+            i[class*="fab"],
+            i[class*="fas"],
+            i[class*="far"] {
+              font-size: 1.4rem !important;
+            }
+            
+            .tech-name {
+              font-size: 0.65rem;
+            }
+          }
+        }
+      }
+    }
+  }
 }

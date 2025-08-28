@@ -1,6 +1,7 @@
 <div class="hero-content" id="home">
   <div class="hero-text">
     <div class="name-container">
+      <span class="minimal-greeting">Olá, eu sou</span>
       <h1 class="name-animated-alt">
         <span class="letter" *ngFor="let l of firstNameLetters; let i = index" [style.animationDelay]="(i * 0.08)+'s'">{{l}}</span>
         <span> </span>
@@ -9,10 +10,6 @@
     </div>
     <div class="title-container">
       <h2 class="gradient-role">{{role}}</h2>
-      <p class="hero-subtitle">
-        Transformando ideias em soluções digitais modernas.<br>
-        Especialista em aplicações web, APIs e interfaces animadas.
-      </p>
     </div>
     <div class="intro-cta">
       <ng-content select=".cta-btn"></ng-content>

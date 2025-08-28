@@ -1,85 +1,310 @@
 @import '../../portifolio.component.scss';
 
 .about-section {
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    @media (max-width: 992px) {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+  .section-title {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .about-intro {
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 1.1rem;
+    
+    p {
+      margin: 0;
+      font-weight: 500;
     }
   }
-  .about-text {
-    p {
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
-      color: var(--text-secondary);
-    }
-    .tech-highlights {
-      margin-top: 1.5rem;
-      h3 {
-        font-size: 1.1rem;
-        color: var(--accent);
-        margin-bottom: 0.5rem;
+  
+  .about-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    
+    .about-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      
+      .about-text {
+        background: rgba(30, 40, 60, 0.15);
+        backdrop-filter: blur(12px);
+        border-radius: 16px;
+        padding: 1.8rem;
+        border: 1px solid rgba(44, 131, 212, 0.12);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        
+        &:hover {
+          border-color: rgba(44, 131, 212, 0.2);
+          box-shadow: 0 12px 35px rgba(44, 131, 212, 0.12);
+          transform: translateY(-2px);
+        }
+        
+        p {
+          color: var(--text-secondary);
+          font-size: 1rem;
+          line-height: 1.7;
+          margin: 0;
+          text-align: justify;
+        }
       }
-      ul {
-        padding-left: 1.2rem;
-        li {
-          margin-bottom: 0.3rem;
+      
+      .about-highlights {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.2rem;
+        
+        .highlight-item {
+          background: rgba(30, 40, 60, 0.12);
+          backdrop-filter: blur(8px);
+          border-radius: 14px;
+          padding: 1.3rem;
+          border: 1px solid rgba(44, 131, 212, 0.08);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          display: flex;
+          gap: 0.8rem;
+          align-items: flex-start;
+          
+          &:hover {
+            border-color: rgba(44, 131, 212, 0.2);
+            box-shadow: 0 8px 25px rgba(44, 131, 212, 0.12);
+            transform: translateY(-2px);
+          }
+          
+          .highlight-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, rgba(44, 131, 212, 0.18), rgba(87, 203, 255, 0.08));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            
+            i {
+              font-size: 1.2rem;
+              color: var(--accent);
+            }
+          }
+          
+          .highlight-content {
+            flex: 1;
+            
+            h4 {
+              font-size: 1rem;
+              color: #e6f1ff;
+              margin: 0 0 0.4rem 0;
+              font-weight: 600;
+              letter-spacing: 0.01em;
+            }
+            
+            p {
+              color: var(--text-secondary);
+              font-size: 0.85rem;
+              line-height: 1.5;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+    
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      
+      .stat-card {
+        background: rgba(30, 40, 60, 0.15);
+        backdrop-filter: blur(12px);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        border: 1px solid rgba(44, 131, 212, 0.12);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(44, 131, 212, 0.06), transparent);
+          transition: left 0.6s;
+        }
+        
+        &:hover {
+          border-color: rgba(44, 131, 212, 0.25);
+          box-shadow: 0 10px 30px rgba(44, 131, 212, 0.15);
+          transform: translateY(-2px);
+        }
+        
+        &:hover::before {
+          left: 100%;
+        }
+        
+        .stat-number {
+          font-size: 2.2rem;
+          font-weight: 700;
+          color: var(--accent);
+          margin-bottom: 0.4rem;
+          font-family: 'Fira Code', monospace;
+        }
+        
+        .stat-label {
+          color: var(--text-secondary);
+          font-size: 0.85rem;
+          font-weight: 500;
+          letter-spacing: 0.02em;
         }
       }
     }
   }
-  .timeline-container {
-    position: relative;
-    padding-left: 2.5rem;
-    margin-top: 1.5rem;
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 15px;
-      height: 100%;
-      width: 3px;
-      background: linear-gradient(to bottom, var(--accent), transparent);
-      border-radius: 3px;
-    }
-  }
-  .timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-  }
-  .timeline-item {
-    position: relative;
-    display: flex;
-    gap: 1.5rem;
-    .timeline-year {
-      min-width: 60px;
-      font-weight: 700;
-      color: var(--accent);
-      font-family: 'Fira Code', monospace;
-      font-size: 1rem;
-      transition: color 0.3s ease;
-      position: relative;
-      top: 3px;
-    }
-    .timeline-content {
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 12px;
-      padding: 1.2rem;
-      flex: 1;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(58, 141, 222, 0.1);
-      transition: all 0.3s ease;
-      h3 {
-        font-size: 1.1rem;
-        margin-bottom: 0.5rem;
+  
+  @media (max-width: 992px) {
+    .about-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      
+      .about-stats {
+        flex-direction: row;
+        justify-content: center;
+        
+        .stat-card {
+          flex: 1;
+          max-width: 180px;
+        }
       }
-      p {
-        margin-bottom: 0;
-        font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .about-intro {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .about-content {
+      gap: 1.5rem;
+      
+      .about-main {
+        gap: 1.5rem;
+        
+        .about-text {
+          padding: 1.4rem;
+          
+          p {
+            font-size: 0.95rem;
+          }
+        }
+        
+        .about-highlights {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+          
+          .highlight-item {
+            padding: 1.1rem;
+            
+            .highlight-icon {
+              width: 40px;
+              height: 40px;
+              
+              i {
+                font-size: 1.1rem;
+              }
+            }
+            
+            .highlight-content h4 {
+              font-size: 0.95rem;
+            }
+            
+            .highlight-content p {
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+      
+      .about-stats {
+        flex-direction: column;
+        align-items: center;
+        
+        .stat-card {
+          max-width: 100%;
+          width: 100%;
+          padding: 1.3rem;
+          
+          .stat-number {
+            font-size: 2rem;
+          }
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .about-intro {
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .about-content {
+      gap: 1.2rem;
+      
+      .about-main {
+        gap: 1.2rem;
+        
+        .about-text {
+          padding: 1.2rem;
+          
+          p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+          }
+        }
+        
+        .about-highlights .highlight-item {
+          padding: 1rem;
+          
+          .highlight-icon {
+            width: 35px;
+            height: 35px;
+            
+            i {
+              font-size: 1rem;
+            }
+          }
+          
+          .highlight-content h4 {
+            font-size: 0.9rem;
+          }
+          
+          .highlight-content p {
+            font-size: 0.75rem;
+          }
+        }
+      }
+      
+      .about-stats .stat-card {
+        padding: 1.1rem;
+        
+        .stat-number {
+          font-size: 1.8rem;
+        }
+        
+        .stat-label {
+          font-size: 0.8rem;
+        }
       }
     }
   }

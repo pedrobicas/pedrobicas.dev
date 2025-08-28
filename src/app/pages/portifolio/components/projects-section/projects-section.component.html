@@ -1,17 +1,28 @@
 <section class="fullpage-section projects-section" id="projects">
   <div class="section-content">
     <h2 class="section-title"><span class="highlight">03.</span> Projetos</h2>
-    <div class="projects-carousel improved">
-      <div class="carousel-arrow left" (click)="carouselPrev()" aria-label="Anterior">
-        <svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-      </div>
-      <div class="carousel-track single">
-        <div class="carousel-slide active fade-slide-in">
-          <div class="carousel-content">
-            <h3>{{projects[activeProjectIndex]?.name}}</h3>
-            <p>{{projects[activeProjectIndex]?.description}}</p>
-            <div class="project-techs">
-              <span *ngFor="let tech of projects[activeProjectIndex]?.techs">
+    <div class="projects-carousel improved" role="region" aria-roledescription="carousel" aria-label="Projetos" tabindex="0" (keydown)="onKeydown($event)" (mouseenter)="pauseAutoplay()" (mouseleave)="resumeAutoplay()" #carouselContainer [style.height.px]="containerHeight">
+      <div class="carousel-track coverflow" (touchstart)="onTouchStart($event)" (touchmove)="onTouchMove($event)" (touchend)="onTouchEnd()" aria-live="polite" [style.height.px]="trackHeight">
+        <div *ngFor="let project of projects; let i = index" class="carousel-slide" [ngClass]="getSlideClasses(i)" [attr.aria-hidden]="i === activeProjectIndex ? null : true" [attr.aria-label]="project.name">
+          <div class="carousel-content card" #cardRef>
+            <div class="card-header">
+              <div class="title">
+                <h3>{{project?.name}}</h3>
+                <span class="badge" *ngIf="project?.tag">{{project?.tag}}</span>
+              </div>
+              <div class="meta" *ngIf="project?.year || project?.role">
+                <span class="meta-item" *ngIf="project?.year">{{project?.year}}</span>
+                <span class="dot-sep" *ngIf="project?.year && project?.role"></span>
+                <span class="meta-item" *ngIf="project?.role">{{project?.role}}</span>
+              </div>
+            </div>
+            <div class="card-thumb" *ngIf="project?.thumbnail">
+              <img [src]="project?.thumbnail" [alt]="project?.name" loading="lazy">
+            </div>
+            <div class="card-body content-scroll">
+              <p class="description">{{project?.description}}</p>
+              <div class="project-techs">
+                <span *ngFor="let tech of project?.techs">
                 <i *ngIf="tech === 'Python'" class="devicon-python-plain colored"></i>
                 <i *ngIf="tech === 'Streamlit'" class="devicon-streamlit-plain colored"></i>
                 <i *ngIf="tech === 'Angular'" class="devicon-angular-plain colored"></i>
@@ -27,21 +38,42 @@
                 <i *ngIf="tech === 'Plotly'" class="fas fa-chart-line"></i>
                 <i *ngIf="tech === 'CoinGecko API'" class="fas fa-coins"></i>
                 {{tech}}
-              </span>
+                </span>
+              </div>
             </div>
-            <div class="project-links">
-              <a *ngIf="projects[activeProjectIndex]?.github" [href]="projects[activeProjectIndex]?.github" target="_blank" class="link-button">GitHub</a>
-              <a *ngIf="projects[activeProjectIndex]?.live" [href]="projects[activeProjectIndex]?.live" target="_blank" class="link-button">Ver Projeto</a>
+            <div class="card-footer project-links">
+              <a *ngIf="project?.github" [href]="project?.github" target="_blank" class="cta-btn">
+                <span class="neuro-light"></span>
+                GitHub
+              </a>
+              <a *ngIf="project?.live" [href]="project?.live" target="_blank" class="cta-btn">
+                <span class="neuro-light"></span>
+                Ver Projeto
+              </a>
             </div>
           </div>
         </div>
       </div>
-      <div class="carousel-arrow right" (click)="carouselNext()" aria-label="Próximo">
-        <svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+      
+      <div class="carousel-navbar" aria-label="Navegação do carrossel">
+      <button class="cta-btn nav-btn left" type="button" (click)="carouselPrev()" aria-label="Anterior">
+        <span class="neuro-light"></span>
+        <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+      <div class="nav-track" role="tablist" #navTrack>
+        <button #pillRef *ngFor="let project of projects; let i = index" role="tab" class="nav-pill" [class.active]="i === activeProjectIndex" (click)="goToProject(i)" [attr.aria-selected]="i === activeProjectIndex" [attr.aria-label]="'Projeto ' + (i + 1) + ' de ' + projects.length + ': ' + project.name">
+          <span class="index">{{i + 1 | number:'2.0'}}</span>
+          <span class="label">{{project.name}}</span>
+          <span class="underline" [style.width.%]="i === activeProjectIndex ? autoplayProgress : 0"></span>
+        </button>
       </div>
-    </div>
-    <div class="carousel-indicators">
-      <button *ngFor="let project of projects; let i = index" class="carousel-dot" [class.active]="i === activeProjectIndex" (click)="goToProject(i)" aria-label="Ir para projeto" [attr.title]="project.name"></button>
+      <button class="cta-btn nav-btn right" type="button" (click)="carouselNext()" aria-label="Próximo">
+        <span class="neuro-light"></span>
+        <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+      </button>
+      </div>
     </div>
   </div>
 </section>
+
+

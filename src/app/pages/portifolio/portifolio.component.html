@@ -1,21 +1,64 @@
 <div class="portfolio-page" [class.dark-theme]="darkTheme()" [class.light-theme]="!darkTheme()">
   <div class="site-bg-anim"></div>
-  <!-- Barra de navegação minimalista lateral -->
-  <nav class="side-nav">
-    <ul>
-      <li *ngFor="let id of sectionIds; let i = index">
-        <button class="nav-dot" [class.active]="activeSection() === id" (click)="scrollTo(id)" [attr.aria-label]="id">
-          <span class="nav-circle"></span>
-          <span class="nav-tooltip">{{
-            id === 'home' ? 'Início' :
-            id === 'about' ? 'Sobre' :
-            id === 'skills' ? 'Skills' :
-            id === 'projects' ? 'Projetos' :
-            id === 'contact' ? 'Contato' : id
-          }}</span>
+  
+  <!-- Navegação criativa e interativa -->
+  <nav class="creative-nav">
+    <div class="nav-container">
+      <div class="nav-progress">
+        <div class="progress-ring">
+          <svg class="progress-ring-svg" width="120" height="120">
+            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="54"></circle>
+            <circle 
+              class="progress-ring-circle" 
+              cx="60" cy="60" r="54"
+              [style.stroke-dasharray]="(2 * PI * 54).toString()"
+              [style.stroke-dashoffset]="getProgressOffset()">
+            </circle>
+          </svg>
+          <div class="progress-center">
+            <span class="current-section">{{getCurrentSectionName()}}</span>
+            <span class="section-counter">{{getCurrentSectionIndex() + 1}}/{{sectionIds.length}}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="nav-sections">
+        <div 
+          *ngFor="let id of sectionIds; let i = index" 
+          class="nav-section-item"
+          [class.active]="activeSection() === id"
+          (click)="scrollTo(id)"
+          [style.animation-delay]="(i * 0.1) + 's'">
+          
+          <div class="section-indicator">
+            <div class="section-dot"></div>
+            <div class="section-line"></div>
+          </div>
+          
+          <div class="section-info">
+            <div class="section-icon">
+              <i [class]="getSectionIcon(id)"></i>
+            </div>
+            <span class="section-name">{{getSectionDisplayName(id)}}</span>
+          </div>
+          
+          <div class="section-progress" *ngIf="activeSection() === id">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="nav-controls">
+        <button class="nav-btn prev" (click)="previousSection()" [disabled]="getCurrentSectionIndex() === 0">
+          <i class="fas fa-chevron-up"></i>
         </button>
-      </li>
-    </ul>
+        <button class="nav-btn next" (click)="nextSection()" [disabled]="getCurrentSectionIndex() === sectionIds.length - 1">
+          <i class="fas fa-chevron-down"></i>
+        </button>
+      </div>
+    </div>
   </nav>
 
   <!-- Seção Hero -->
@@ -34,9 +77,12 @@
   <!-- Seção Sobre -->
   <app-about-section
     [aboutText]="aboutText"
-    [techHighlights]="techHighlights"
-    [experiences]="experiences"
   ></app-about-section>
+
+  <!-- Seção Experiência -->
+  <app-experience-section
+    [experiences]="experiences"
+  ></app-experience-section>
 
   <!-- Seção Habilidades -->
   <app-skills-section [skillCategories]="skillCategories"></app-skills-section>

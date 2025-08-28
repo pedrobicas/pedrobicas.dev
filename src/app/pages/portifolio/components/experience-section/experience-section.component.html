@@ -1,0 +1,39 @@
+<section class="fullpage-section experience-section" id="experience">
+  <div class="section-content">
+    <h2 class="section-title"><span class="highlight">03.</span> Experiência</h2>
+    
+    <div class="experience-intro">
+      <p>
+        Minha jornada no desenvolvimento de software inclui experiências acadêmicas, 
+        projetos práticos e aprendizado contínuo em tecnologias modernas.
+      </p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item" *ngFor="let exp of experiences; let i = index">
+        <div class="timeline-marker">
+          <div class="timeline-year">{{exp.year}}</div>
+          <div class="timeline-dot"></div>
+        </div>
+        
+        <div class="timeline-content">
+          <div class="content-header">
+            <h3>{{exp.title}}</h3>
+            <div class="experience-badge">{{exp.type || 'Formação'}}</div>
+          </div>
+          <p class="experience-description">{{exp.description}}</p>
+          <div class="experience-details" *ngIf="exp.details">
+            <ul>
+              <li *ngFor="let detail of exp.details">{{detail}}</li>
+            </ul>
+          </div>
+          <div class="experience-tech" *ngIf="exp.technologies">
+            <div class="tech-tags">
+              <span class="tech-tag" *ngFor="let tech of exp.technologies">{{tech}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
