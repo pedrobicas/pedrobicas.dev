@@ -23,11 +23,19 @@
   gap: 4rem;
   min-height: 90vh;
   box-sizing: border-box;
+  
   @media (max-width: 768px) {
     flex-direction: column;
+    gap: 3rem;
+    padding: 4rem 1.5rem 2rem;
+    min-height: 100vh;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 3rem 1rem 2rem;
     gap: 2rem;
-    padding-top: 4rem;
-    min-height: 80vh;
   }
 }
 
@@ -74,18 +82,46 @@
   text-shadow: 0 2px 10px rgba(0,0,0,0.3);
   display: flex;
   flex-wrap: wrap;
+  gap: 0.3em;
+  
+  .first-name,
+  .last-name {
+    display: inline-flex;
+  }
+  
+  .name-space {
+    width: 0.3em;
+  }
+  
   .letter {
     display: inline-block;
     opacity: 0;
     transform: translateY(40px);
     animation: letterUp 0.5s forwards;
   }
+  
   .accent {
     color: var(--accent);
     background: linear-gradient(135deg, var(--accent), var(--accent-light));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+    text-align: center;
+    
+    .first-name,
+    .last-name {
+      justify-content: center;
+    }
+    
+    .name-space {
+      display: none;
+    }
   }
 }
 @keyframes letterUp {

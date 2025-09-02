@@ -19,4 +19,19 @@ interface Experience {
 })
 export class ExperienceSectionComponent {
   @Input() experiences: Experience[] = [];
+  dialogIndex: number | null = null;
+
+  openDialog(idx: number) {
+    this.dialogIndex = idx;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeDialog() {
+    this.dialogIndex = null;
+    document.body.style.overflow = '';
+  }
+
+  getSelectedExperience(): Experience | undefined {
+    return this.dialogIndex !== null ? this.experiences[this.dialogIndex] : undefined;
+  }
 }

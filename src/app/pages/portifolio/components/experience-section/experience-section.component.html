@@ -9,27 +9,73 @@
       </p>
     </div>
 
-    <div class="timeline">
-      <div class="timeline-item" *ngFor="let exp of experiences; let i = index">
-        <div class="timeline-marker">
-          <div class="timeline-year">{{exp.year}}</div>
-          <div class="timeline-dot"></div>
-        </div>
+    <div class="experience-list">
+      <div 
+        *ngFor="let exp of experiences; let i = index" 
+        class="experience-item"
+        [style.animation-delay]="(i * 0.15) + 's'">
         
-        <div class="timeline-content">
-          <div class="content-header">
-            <h3>{{exp.title}}</h3>
-            <div class="experience-badge">{{exp.type || 'Formação'}}</div>
+        <div class="experience-card">
+          <div class="card-header">
+            <div class="year-badge">{{exp.year}}</div>
+            <div class="type-badge">{{exp.type || 'Formação'}}</div>
           </div>
-          <p class="experience-description">{{exp.description}}</p>
-          <div class="experience-details" *ngIf="exp.details">
-            <ul>
-              <li *ngFor="let detail of exp.details">{{detail}}</li>
+          
+          <div class="card-content">
+            <h3 class="experience-title">{{exp.title}}</h3>
+            
+            <div class="card-footer">
+              <div class="tech-count" *ngIf="exp.technologies?.length">
+                <i class="fas fa-code"></i>
+                <span>{{exp.technologies?.length}} tecnologias</span>
+              </div>
+              <button class="details-btn" (click)="openDialog(i)">
+                <span>Ver detalhes</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog Modal -->
+  <div class="dialog-backdrop" *ngIf="dialogIndex !== null" (click)="closeDialog()">
+    <div class="experience-dialog" (click)="$event.stopPropagation()">
+      <div class="dialog-header">
+        <button class="close-btn" (click)="closeDialog()" aria-label="Fechar">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="dialog-info">
+          <h2 class="dialog-title">{{getSelectedExperience()?.title}}</h2>
+          <div class="dialog-meta">
+            <span class="dialog-year">{{getSelectedExperience()?.year}}</span>
+            <span class="dialog-type">{{getSelectedExperience()?.type || 'Experiência'}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dialog-scroll">
+        <div class="dialog-content">
+          <p class="dialog-description">{{getSelectedExperience()?.description}}</p>
+          
+          <div class="dialog-details" *ngIf="getSelectedExperience()?.details?.length">
+            <h4><i class="fas fa-tasks"></i> Principais atividades:</h4>
+            <ul class="details-list">
+              <li *ngFor="let detail of getSelectedExperience()?.details">
+                <i class="fas fa-check-circle"></i>
+                <span>{{detail}}</span>
+              </li>
             </ul>
           </div>
-          <div class="experience-tech" *ngIf="exp.technologies">
-            <div class="tech-tags">
-              <span class="tech-tag" *ngFor="let tech of exp.technologies">{{tech}}</span>
+
+          <div class="dialog-technologies" *ngIf="getSelectedExperience()?.technologies?.length">
+            <h4><i class="fas fa-code"></i> Tecnologias utilizadas:</h4>
+            <div class="tech-grid">
+              <span class="tech-tag" *ngFor="let tech of getSelectedExperience()?.technologies">
+                {{tech}}
+              </span>
             </div>
           </div>
         </div>

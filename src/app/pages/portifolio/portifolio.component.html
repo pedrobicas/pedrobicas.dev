@@ -1,100 +1,116 @@
 <div class="portfolio-page" [class.dark-theme]="darkTheme()" [class.light-theme]="!darkTheme()">
-  <div class="site-bg-anim"></div>
   
-  <!-- Navegação criativa e interativa -->
-  <nav class="creative-nav">
-    <div class="nav-container">
-      <div class="nav-progress">
-        <div class="progress-ring">
-          <svg class="progress-ring-svg" width="120" height="120">
-            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="54"></circle>
-            <circle 
-              class="progress-ring-circle" 
-              cx="60" cy="60" r="54"
-              [style.stroke-dasharray]="(2 * PI * 54).toString()"
-              [style.stroke-dashoffset]="getProgressOffset()">
-            </circle>
-          </svg>
-          <div class="progress-center">
-            <span class="current-section">{{getCurrentSectionName()}}</span>
-            <span class="section-counter">{{getCurrentSectionIndex() + 1}}/{{sectionIds.length}}</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="nav-sections">
-        <div 
-          *ngFor="let id of sectionIds; let i = index" 
-          class="nav-section-item"
-          [class.active]="activeSection() === id"
-          (click)="scrollTo(id)"
-          [style.animation-delay]="(i * 0.1) + 's'">
-          
-          <div class="section-indicator">
-            <div class="section-dot"></div>
-            <div class="section-line"></div>
-          </div>
-          
-          <div class="section-info">
-            <div class="section-icon">
-              <i [class]="getSectionIcon(id)"></i>
-            </div>
-            <span class="section-name">{{getSectionDisplayName(id)}}</span>
-          </div>
-          
-          <div class="section-progress" *ngIf="activeSection() === id">
-            <div class="progress-bar">
-              <div class="progress-fill"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="nav-controls">
-        <button class="nav-btn prev" (click)="previousSection()" [disabled]="getCurrentSectionIndex() === 0">
-          <i class="fas fa-chevron-up"></i>
-        </button>
-        <button class="nav-btn next" (click)="nextSection()" [disabled]="getCurrentSectionIndex() === sectionIds.length - 1">
-          <i class="fas fa-chevron-down"></i>
-        </button>
-      </div>
+  <!-- Sistema de Partículas Interativas -->
+  <div class="particles-system" #particlesContainer>
+    <canvas class="particles-canvas" #particlesCanvas></canvas>
+  </div>
+  
+  <!-- Navegação Ultra Minimalista -->
+  <nav class="ultra-minimal-nav" *ngIf="!isMobile">
+    <!-- Pontos de Navegação -->
+    <div class="nav-dots">
+      <button *ngFor="let section of sectionIds; let i = index"
+              class="nav-dot"
+              [class.active]="activeSection() === section"
+              [class.completed]="isVisited(section) && activeSection() !== section"
+              (click)="navigateToSection(i)"
+              [attr.aria-label]="getSectionDisplayName(section)">
+      </button>
+    </div>
+    
+    <!-- Indicador de Progresso -->
+    <div class="progress-line">
+      <div class="progress-fill" [style.height]="getProgressPercentage() + '%'"></div>
+    </div>
+    
+    <!-- Info da Seção (opcional, apenas no hover) -->
+    <div class="section-info" [class.visible]="showSectionInfo">
+      <span class="section-name">{{getSectionDisplayName(activeSection())}}</span>
+      <span class="section-progress">{{getCurrentSectionIndex() + 1}}/{{sectionIds.length}}</span>
     </div>
   </nav>
+  
 
-  <!-- Seção Hero -->
-  <app-hero-section
-    [name]="'Pedro Bicas'"
-    [role]="'Desenvolvedor FullStack'"
-    [avatar]="'assets/images/developer-activity-animate.svg'"
-    [socialLinks]="socialLinks"
-  >
-    <button class="neuro-btn cta-btn" (click)="scrollTo('about')">
-      <span>Explorar</span>
-      <div class="neuro-light"></div>
-    </button>
-  </app-hero-section>
+  
 
-  <!-- Seção Sobre -->
-  <app-about-section
-    [aboutText]="aboutText"
-  ></app-about-section>
+  
+  <!-- Container das Seções Moderno -->
+  <div class="sections-container" (wheel)="onSectionWheel($event)">
+    
+    <!-- Seção Hero -->
+    <section class="section" id="home" 
+             [class.active]="activeSection() === 'home'"
+             [class.entering]="isEntering('home')"
+             [class.leaving]="isLeaving('home')">
+      <div class="section-content">
+        <app-hero-section
+          [name]="'Pedro Bicas'"
+          [role]="'Desenvolvedor FullStack'"
+          [avatar]="'assets/images/developer-activity-animate.svg'"
+          [socialLinks]="socialLinks"
+        >
+          <button class="modern-btn cta-btn" (click)="nextSection()">
+            <span>Explorar Portfólio</span>
+            <i class="fas fa-arrow-down"></i>
+          </button>
+        </app-hero-section>
+      </div>
+    </section>
 
-  <!-- Seção Experiência -->
-  <app-experience-section
-    [experiences]="experiences"
-  ></app-experience-section>
+    <!-- Seção Sobre -->
+    <section class="section" id="about" 
+             [class.active]="activeSection() === 'about'"
+             [class.entering]="isEntering('about')"
+             [class.leaving]="isLeaving('about')">
+      <div class="section-content">
+        <app-about-section [aboutText]="aboutText"></app-about-section>
+      </div>
+    </section>
 
-  <!-- Seção Habilidades -->
-  <app-skills-section [skillCategories]="skillCategories"></app-skills-section>
+    <!-- Seção Experiência -->
+    <section class="section" id="experience" 
+             [class.active]="activeSection() === 'experience'"
+             [class.entering]="isEntering('experience')"
+             [class.leaving]="isLeaving('experience')">
+      <div class="section-content">
+        <app-experience-section [experiences]="experiences"></app-experience-section>
+      </div>
+    </section>
 
-  <!-- Seção Projetos -->
-  <app-projects-section [projects]="projects"></app-projects-section>
+    <!-- Seção Habilidades -->
+    <section class="section" id="skills" 
+             [class.active]="activeSection() === 'skills'"
+             [class.entering]="isEntering('skills')"
+             [class.leaving]="isLeaving('skills')">
+      <div class="section-content">
+        <app-skills-section [skillCategories]="skillCategories"></app-skills-section>
+      </div>
+    </section>
 
-  <!-- Seção Contato -->
-  <app-contact-section
-    [contactForm]="contactForm"
-    [submitting]="submitting"
-    [submitSuccess]="submitSuccess"
-    [onSubmit]="onSubmit.bind(this)"
-  ></app-contact-section>
+    <!-- Seção Projetos -->
+    <section class="section" id="projects" 
+             [class.active]="activeSection() === 'projects'"
+             [class.entering]="isEntering('projects')"
+             [class.leaving]="isLeaving('projects')">
+      <div class="section-content">
+        <app-projects-section [projects]="projects"></app-projects-section>
+      </div>
+    </section>
+
+    <!-- Seção Contato -->
+    <section class="section" id="contact" 
+             [class.active]="activeSection() === 'contact'"
+             [class.entering]="isEntering('contact')"
+             [class.leaving]="isLeaving('contact')">
+      <div class="section-content">
+        <app-contact-section
+          [contactForm]="contactForm"
+          [submitting]="submitting"
+          [submitSuccess]="submitSuccess"
+          [onSubmit]="onSubmit.bind(this)"
+        ></app-contact-section>
+      </div>
+    </section>
+    
+  </div>
 </div>

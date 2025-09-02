@@ -3,9 +3,13 @@
     <div class="name-container">
       <span class="minimal-greeting">Olá, eu sou</span>
       <h1 class="name-animated-alt">
-        <span class="letter" *ngFor="let l of firstNameLetters; let i = index" [style.animationDelay]="(i * 0.08)+'s'">{{l}}</span>
-        <span> </span>
-        <span class="letter accent" *ngFor="let l of lastNameLetters; let i = index" [style.animationDelay]="((i+6) * 0.08)+'s'">{{l}}</span>
+        <span class="first-name">
+          <span class="letter" *ngFor="let l of firstNameLetters; let i = index" [style.animationDelay]="(i * 0.08)+'s'">{{l}}</span>
+        </span>
+        <span class="name-space"> </span>
+        <span class="last-name">
+          <span class="letter accent" *ngFor="let l of lastNameLetters; let i = index" [style.animationDelay]="((i+firstNameLetters.length+1) * 0.08)+'s'">{{l}}</span>
+        </span>
       </h1>
     </div>
     <div class="title-container">

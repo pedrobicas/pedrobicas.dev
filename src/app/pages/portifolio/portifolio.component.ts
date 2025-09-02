@@ -1,5 +1,7 @@
 // home.component.ts
 import { Component, ElementRef, HostListener, OnInit, ViewChild, inject, signal } from '@angular/core';
+
+
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { register } from 'swiper/element/bundle';
@@ -102,35 +104,44 @@ experiences = [
     description: 'Desenvolvimento de sistemas médicos e aplicações para pesquisa cardiovascular, trabalhando com tecnologias modernas e metodologias ágeis.',
     type: 'Trabalho',
     details: [
-      'Desenvolvimento de aplicações web para análise de dados médicos',
-      'Implementação de APIs RESTful para integração de sistemas',
-      'Colaboração com equipe multidisciplinar de pesquisadores'
+      'Desenvolvimento de aplicações web para análise de dados médicos e pesquisa clínica',
+      'Implementação de APIs RESTful para integração entre sistemas hospitalares',
+      'Colaboração com equipe multidisciplinar de médicos, pesquisadores e desenvolvedores',
+      'Criação de dashboards interativos para visualização de dados cardiovasculares',
+      'Participação em projetos de pesquisa com publicação em revistas científicas',
+      'Implementação de práticas de DevOps e integração contínua'
     ],
-    technologies: ['Python', 'Django', 'React', 'PostgreSQL', 'Docker']
+    technologies: ['Python', 'Django', 'React', 'TypeScript', 'PostgreSQL', 'Docker', 'Redis', 'Celery', 'Git', 'Linux']
   },
   {
     year: '2023-2026',
-    title: 'Engenharia de Software',
+    title: 'Engenharia de Software - FIAP',
     description: 'Graduação em andamento com foco em arquitetura de software, qualidade de código e desenvolvimento de sistemas escaláveis.',
     type: 'Formação',
     details: [
-      'Arquitetura de software e padrões de projeto',
-      'Metodologias ágeis e DevOps',
-      'Inteligência artificial e machine learning aplicado'
+      'Arquitetura de software e padrões de projeto (MVC, Repository, Factory)',
+      'Metodologias ágeis (Scrum, Kanban) e práticas de DevOps',
+      'Desenvolvimento de aplicações empresariais com Spring Boot',
+      'Inteligência artificial e machine learning aplicado a negócios',
+      'Gestão de projetos e liderança técnica',
+      'Qualidade de software, testes automatizados e CI/CD'
     ],
-    technologies: ['Java', 'Spring Boot', 'Angular', 'Python', 'Docker']
+    technologies: ['Java', 'Spring Boot', 'Angular', 'Python', 'Docker', 'Kubernetes', 'AWS', 'Oracle', 'Maven', 'JUnit']
   },
   {
     year: '2021-2023',
-    title: 'Técnico em Análise e Desenvolvimento de Sistemas',
+    title: 'Técnico em Análise e Desenvolvimento de Sistemas - SENAI',
     description: 'Formação técnica com ênfase em programação, gestão de projetos e desenvolvimento de soluções tecnológicas.',
     type: 'Formação',
     details: [
-      'Desenvolvimento full-stack com tecnologias modernas',
-      'Gestão de projetos e metodologias ágeis',
-      'Banco de dados e arquitetura de sistemas'
+      'Desenvolvimento full-stack com foco em tecnologias web modernas',
+      'Fundamentos de programação orientada a objetos e estruturas de dados',
+      'Modelagem e administração de bancos de dados relacionais',
+      'Gestão de projetos de software e metodologias ágeis',
+      'Desenvolvimento de sistemas desktop e web responsivos',
+      'Versionamento de código e trabalho colaborativo'
     ],
-    technologies: ['JavaScript', 'Node.js', 'React', 'MySQL', 'Git']
+    technologies: ['JavaScript', 'Node.js', 'React', 'PHP', 'MySQL', 'HTML5', 'CSS3', 'Bootstrap', 'Git', 'Figma']
   }
 ];
 
@@ -184,6 +195,32 @@ skillCategories = [
   sectionIds = ['home', 'about', 'experience', 'skills', 'projects', 'contact'];
   private currentSectionIndex = 0;
   private isScrolling = false;
+  isMobile = false;
+  
+  // Sistema dinâmico e interativo
+  visitedSections = new Set<string>(['home']);
+  particlesEnabled = true;
+  sessionStartTime = Date.now();
+  
+  // Sistema minimalista
+  hoveredNavItem = -1;
+  private sectionTransitions: { [key: string]: 'entering' | 'leaving' | null } = {};
+  
+  // Ultra minimal navigation
+  showSectionInfo = false;
+  
+  // Sistema de partículas
+  @ViewChild('particlesCanvas', { static: false }) particlesCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('particlesContainer', { static: false }) particlesContainer!: ElementRef;
+  private particlesCtx!: CanvasRenderingContext2D;
+  private particles: any[] = [];
+  private animationFrame!: number;
+  
+
+  
+
+
+
   
   // Métodos para navegação criativa
   getCurrentSectionIndex(): number {
@@ -257,6 +294,7 @@ animationState = signal({
   aboutText = `Sou Pedro Bicas, estudante de Engenharia de Software na FIAP e técnico em Desenvolvimento de Sistemas pelo SENAI.<br><br>Atuo no desenvolvimento de fullstack com linguagens como TypeScript/JavaScript para interfaces (Angular, React), Java com Spring Boot, NodeJs para o backend, Python para automações e SQL para bancos relacionais.`;
 
   ngOnInit(): void {
+    this.detectMobileDevice();
     window.scrollTo(0, 0);
     this.checkInitialHash();
     setTimeout(() => this.showTyping.set(true), 1000);
@@ -264,8 +302,20 @@ animationState = signal({
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     this.darkTheme.set(prefersDark);
     this.setTheme();
-    window.addEventListener('wheel', this.handleWheel, { passive: false });
-    document.body.style.overflow = 'hidden';
+    
+    // Inicializa sistema dinâmico
+    this.initializeParticleSystem();
+    
+    // Navegação guiada apenas no desktop
+    if (!this.isMobile) {
+      window.addEventListener('wheel', this.handleWheel, { passive: false });
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Mobile: navegação livre com scroll normal
+      document.body.style.overflow = 'auto';
+      this.enableMobileFreeNavigation();
+    }
+    
      setTimeout(() => {
       this.animationState.update(state => ({
   ...state,
@@ -289,6 +339,10 @@ animationState = signal({
       this.animationState.update(state => ({ ...state, ctaRevealed: true }));
     }, 1500);
   }
+  
+  private detectMobileDevice() {
+    this.isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
 
   ngOnDestroy(): void {
     window.removeEventListener('wheel', this.handleWheel as any);
@@ -301,15 +355,16 @@ handleWheel = (event: WheelEvent) => {
     return;
   }
 
+  // Detecta scroll horizontal (ou vertical convertido para horizontal)
   const delta = Math.sign(event.deltaY);
-  if (delta === 0) return;
+  if (delta === 0 || Math.abs(event.deltaY) < 30) return;
 
   event.preventDefault();
   
   if (delta > 0) {
-    this.goToNextSection();
+    this.nextSection();
   } else {
-    this.goToPrevSection();
+    this.previousSection();
   }
 };
 
@@ -327,35 +382,50 @@ handleWheel = (event: WheelEvent) => {
     }
   }
 
-scrollToSectionByIndex() {
-  this.isScrolling = true;
-  const sectionId = this.sectionIds[this.currentSectionIndex];
-  const element = document.getElementById(sectionId);
-  
-  if (element) {
-    element.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'start' 
+  scrollToSectionByIndex() {
+    this.isScrolling = true;
+    const sectionId = this.sectionIds[this.currentSectionIndex];
+    const previousSectionId = this.activeSection();
+    
+    // Marca transições
+    if (previousSectionId) {
+      this.sectionTransitions[previousSectionId] = 'leaving';
+    }
+    this.sectionTransitions[sectionId] = 'entering';
+    
+    // Remove classe active de todas as seções
+    this.sectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove('active');
+      }
     });
     
-    this.activeSection.set(sectionId);
-    this.updateSectionVisibility();
+    // Adiciona classe active à seção atual
+    const currentElement = document.getElementById(sectionId);
+    if (currentElement) {
+      setTimeout(() => {
+        currentElement.classList.add('active');
+      }, 100);
+    }
     
+    this.activeSection.set(sectionId);
+    this.visitedSections.add(sectionId);
     history.replaceState(null, '', `#${sectionId}`);
-  }
 
-  setTimeout(() => {
-    this.isScrolling = false;
-  }, 1000);
-}
+    setTimeout(() => {
+      this.isScrolling = false;
+      // Limpa transições
+      this.sectionTransitions = {};
+    }, 800);
+  }
 
   scrollTo(section: string): void {
     const idx = this.sectionIds.indexOf(section);
     if (idx !== -1) {
       this.currentSectionIndex = idx;
-      this.scrollToSectionByIndex();
       this.activeSection.set(section);
-      this.updateSectionVisibility();
+      this.scrollToSectionByIndex();
     }
   }
 private checkInitialHash() {
@@ -363,9 +433,15 @@ private checkInitialHash() {
   if (hash && this.sectionIds.includes(hash)) {
     const idx = this.sectionIds.indexOf(hash);
     this.currentSectionIndex = idx;
+    this.activeSection.set(hash);
     setTimeout(() => {
       this.scrollToSectionByIndex();
-    }, 100);
+    }, 300);
+  } else {
+    // Se não há hash, mostra a primeira seção
+    setTimeout(() => {
+      this.updateSectionVisibility();
+    }, 500);
   }
 }
   updateSectionVisibility() {
@@ -373,16 +449,35 @@ private checkInitialHash() {
       const el = document.getElementById(id);
       if (el) {
         if (idx === this.currentSectionIndex) {
-          el.classList.add('section-visible');
+          setTimeout(() => {
+            el.classList.add('active');
+          }, 100);
         } else {
-          el.classList.remove('section-visible');
+          el.classList.remove('active');
         }
       }
     });
   }
 
+  // Novo método para navegar diretamente para uma seção
+  goToSection(index: number): void {
+    if (index >= 0 && index < this.sectionIds.length && index !== this.currentSectionIndex) {
+      this.currentSectionIndex = index;
+      this.scrollToSectionByIndex();
+    }
+  }
+
   ngAfterViewInit(): void {
-    setTimeout(() => this.updateSectionVisibility(), 100);
+    setTimeout(() => {
+      this.updateSectionVisibility();
+      // Garante que a primeira seção seja ativa no início
+      if (this.currentSectionIndex === 0) {
+        const firstElement = document.getElementById(this.sectionIds[0]);
+        if (firstElement) {
+          firstElement.classList.add('active');
+        }
+      }
+    }, 200);
   }
 
   toggleTheme(): void {
@@ -413,4 +508,209 @@ private checkInitialHash() {
   get activeSectionIndex(): number {
     return this.sectionIds.indexOf(this.activeSection());
   }
+
+  getProgressWidth(): string {
+    const total = Math.max(1, this.sectionIds.length - 1);
+    const pct = (this.getCurrentSectionIndex() / total) * 100;
+    return pct + '%';
+  }
+  getDotLeft(i: number): string {
+    const total = Math.max(1, this.sectionIds.length - 1);
+    const pct = (i / total) * 100;
+    return pct + '%';
+  }
+
+
+
+
+
+
+
+  navigateToSection(index: number): void {
+    this.goToSection(index);
+    this.visitedSections.add(this.sectionIds[index]);
+  }
+
+  onNavItemHover(index: number, isHovering: boolean): void {
+    this.hoveredNavItem = isHovering ? index : -1;
+  }
+
+  getProgressHeight(): number {
+    return ((this.getCurrentSectionIndex() + 1) / this.sectionIds.length) * 100;
+  }
+
+  isEntering(sectionId: string): boolean {
+    return this.sectionTransitions[sectionId] === 'entering';
+  }
+
+  isLeaving(sectionId: string): boolean {
+    return this.sectionTransitions[sectionId] === 'leaving';
+  }
+
+  toggleSectionInfo(show: boolean): void {
+    this.showSectionInfo = show;
+  }
+
+  enableMobileFreeNavigation(): void {
+    // Remove restrições de navegação guiada para mobile
+    const sectionsContainer = document.querySelector('.sections-container') as HTMLElement;
+    if (sectionsContainer) {
+      sectionsContainer.style.height = 'auto';
+      sectionsContainer.style.overflow = 'visible';
+    }
+
+    // Torna todas as seções visíveis no mobile
+    this.sectionIds.forEach(sectionId => {
+      const sectionElement = document.getElementById(sectionId);
+      if (sectionElement) {
+        sectionElement.style.position = 'static';
+        sectionElement.style.opacity = '1';
+        sectionElement.style.transform = 'none';
+        sectionElement.style.pointerEvents = 'auto';
+        sectionElement.style.height = 'auto';
+        sectionElement.style.minHeight = '100vh';
+      }
+    });
+
+    // Adiciona scroll spy para mobile
+    this.addMobileScrollSpy();
+  }
+
+  addMobileScrollSpy(): void {
+    if (this.isMobile) {
+      window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY + window.innerHeight / 2;
+        
+        this.sectionIds.forEach(sectionId => {
+          const element = document.getElementById(sectionId);
+          if (element) {
+            const offsetTop = element.offsetTop;
+            const offsetBottom = offsetTop + element.offsetHeight;
+            
+            if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+              this.activeSection.set(sectionId);
+              this.visitedSections.add(sectionId);
+            }
+          }
+        });
+      });
+    }
+  }
+
+  isVisited(sectionId: string): boolean {
+    return this.visitedSections.has(sectionId);
+  }
+
+  getProgressPercentage(): number {
+    return Math.round(((this.getCurrentSectionIndex() + 1) / this.sectionIds.length) * 100);
+  }
+
+  getVisitedCount(): number {
+    return this.visitedSections.size;
+  }
+
+  getSessionTime(): string {
+    const elapsed = Math.floor((Date.now() - this.sessionStartTime) / 1000);
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  toggleParticles(): void {
+    this.particlesEnabled = !this.particlesEnabled;
+    if (this.particlesEnabled) {
+      this.startParticleAnimation();
+    } else {
+      this.stopParticleAnimation();
+    }
+  }
+
+
+
+  resetView(): void {
+    this.goToSection(0);
+  }
+
+
+
+  onSectionWheel(event: WheelEvent): void {
+    this.handleWheel(event);
+  }
+
+
+
+  // Sistema de partículas
+  private initializeParticleSystem(): void {
+    if (this.particlesCanvas) {
+      this.particlesCtx = this.particlesCanvas.nativeElement.getContext('2d')!;
+      this.createParticles();
+      this.startParticleAnimation();
+    }
+  }
+
+  private createParticles(): void {
+    const canvas = this.particlesCanvas.nativeElement;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    for (let i = 0; i < 50; i++) {
+      this.particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        size: Math.random() * 3 + 1,
+        opacity: Math.random() * 0.5 + 0.2
+      });
+    }
+  }
+
+  private startParticleAnimation(): void {
+    const animate = () => {
+      if (!this.particlesEnabled) return;
+      
+      this.updateParticles();
+      this.drawParticles();
+      this.animationFrame = requestAnimationFrame(animate);
+    };
+    animate();
+  }
+
+  private stopParticleAnimation(): void {
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame);
+    }
+  }
+
+  private updateParticles(): void {
+    const canvas = this.particlesCanvas.nativeElement;
+    
+    this.particles.forEach(particle => {
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+      
+      if (particle.x < 0) particle.x = canvas.width;
+      if (particle.x > canvas.width) particle.x = 0;
+      if (particle.y < 0) particle.y = canvas.height;
+      if (particle.y > canvas.height) particle.y = 0;
+    });
+  }
+
+  private drawParticles(): void {
+    const ctx = this.particlesCtx;
+    const canvas = this.particlesCanvas.nativeElement;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    this.particles.forEach(particle => {
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(44, 131, 212, ${particle.opacity})`;
+      ctx.fill();
+    });
+  }
+
+
+
+
 }
