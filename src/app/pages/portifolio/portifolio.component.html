@@ -57,16 +57,6 @@
       </div>
     </section>
 
-    <!-- Seção Sobre -->
-    <section class="section" id="about" 
-             [class.active]="activeSection() === 'about'"
-             [class.entering]="isEntering('about')"
-             [class.leaving]="isLeaving('about')">
-      <div class="section-content">
-        <app-about-section [aboutText]="aboutText"></app-about-section>
-      </div>
-    </section>
-
     <!-- Seção Experiência -->
     <section class="section" id="experience" 
              [class.active]="activeSection() === 'experience'"
@@ -114,3 +104,6 @@
     
   </div>
 </div>
+
+<!-- Terminal Flutuante Inovador - COMPLETAMENTE INDEPENDENTE -->
+<app-floating-terminal></app-floating-terminal>

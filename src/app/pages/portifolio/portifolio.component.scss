@@ -26,9 +26,15 @@
 }
 
 @mixin section-padding {
-  padding: 0 10%;
+  padding: 0 8%;
+  @media (max-width: 1200px) {
+    padding: 0 6%;
+  }
   @media (max-width: 768px) {
-    padding: 0 5%;
+    padding: 0 4%;
+  }
+  @media (max-width: 480px) {
+    padding: 0 3%;
   }
 }
 
@@ -203,6 +209,8 @@
       transform: translateY(50px);
       transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: none;
+      overflow-y: auto;
+      overflow-x: hidden;
       
       &.active {
         opacity: 1;
@@ -235,37 +243,52 @@
       position: static !important;
       width: 100vw;
       height: auto !important;
-      min-height: 100vh;
+      min-height: auto !important;
       opacity: 1 !important;
       transform: none !important;
       pointer-events: auto !important;
       display: block !important;
+      overflow: visible !important;
       
       .section-content {
         opacity: 1 !important;
         transform: none !important;
-        padding: 2rem 1rem;
-        min-height: 90vh;
+        padding: 1rem !important;
+        min-height: auto !important;
+        height: auto !important;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 0 auto;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: visible !important;
       }
     }
   }
     
     .section-content {
       width: 100%;
-      height: 100%;
+      min-height: 100vh;
+      height: auto;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       padding: 2rem;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
       box-sizing: border-box;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow: visible;
       
       > * {
         opacity: 0;
         transform: translateY(30px);
         transition: all 0.6s ease 0.2s;
+        width: 100%;
+        max-width: 100%;
       }
     }
   }
@@ -274,7 +297,17 @@
 .section-content {
   width: 100%;
   max-width: 1200px;
+  margin: 0 auto;
   @include section-padding;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 100vh;
+  height: auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .section-title {
@@ -282,6 +315,8 @@
   margin-bottom: 3rem;
   position: relative;
   display: inline-block;
+  text-align: center;
+  width: 100%;
   
   .highlight {
     color: var(--accent);
@@ -293,10 +328,29 @@
     content: '';
     position: absolute;
     bottom: -10px;
-    left: 0;
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
     height: 2px;
     background: linear-gradient(90deg, var(--accent), transparent);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    
+    &::after {
+      width: 80%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    
+    &::after {
+      width: 90%;
+    }
   }
 }
 
@@ -1082,8 +1136,25 @@
 // Responsivo geral
 @media (max-width: 768px) {
   .main-nav ul { gap: 1rem; }
-  .section-title { font-size: 2rem; }
+  .section-title { 
+    font-size: 2rem;
+    text-align: center;
+    margin: 0 auto 2rem auto;
+    max-width: 90%;
+  }
   .hero-section .hero-content { padding-top: 2rem; }
   .about-section .about-grid { gap: 2rem; }
   .contact-section .contact-grid { gap: 2rem; }
+  
+  // Garantir centralização em todas as seções
+  .section {
+    .section-content {
+      text-align: center;
+      
+      > * {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
 }

@@ -7,16 +7,16 @@ import { CommonModule } from '@angular/common';
 import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HeroSectionComponent } from './components/hero-section/hero-section.component';
-import { AboutSectionComponent } from './components/about-section/about-section.component';
 import { SkillsSectionComponent } from './components/skills-section/skills-section.component';
 import { ProjectsSectionComponent } from './components/projects-section/projects-section.component';
 import { ContactSectionComponent } from './components/contact-section/contact-section.component';
 import { ExperienceSectionComponent } from './components/experience-section/experience-section.component';
+import { FloatingTerminalComponent } from './components/floating-terminal/floating-terminal.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HeroSectionComponent, AboutSectionComponent, SkillsSectionComponent, ProjectsSectionComponent, ContactSectionComponent, ExperienceSectionComponent],
+  imports: [CommonModule, ReactiveFormsModule, HeroSectionComponent, SkillsSectionComponent, ProjectsSectionComponent, ContactSectionComponent, ExperienceSectionComponent, FloatingTerminalComponent],
   templateUrl: './portifolio.component.html',
   styleUrls: ['./portifolio.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -192,7 +192,7 @@ skillCategories = [
   });
 
   // Seções para navegação guiada
-  sectionIds = ['home', 'about', 'experience', 'skills', 'projects', 'contact'];
+  sectionIds = ['home', 'skills', 'experience' , 'projects', 'contact'];
   private currentSectionIndex = 0;
   private isScrolling = false;
   isMobile = false;
