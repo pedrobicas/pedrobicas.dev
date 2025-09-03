@@ -317,11 +317,52 @@
   display: inline-block;
   text-align: center;
   width: 100%;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   
   .highlight {
     color: var(--accent);
-    font-family: 'Fira Code', monospace;
-    font-size: 1.8rem;
+    font-family: 'JetBrains Mono', 'Space Mono', 'Fira Code', monospace;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    position: relative;
+    margin-right: 0.8rem;
+    display: inline-block;
+    text-shadow: 
+      0 0 10px rgba(58, 141, 222, 0.3),
+      0 0 20px rgba(58, 141, 222, 0.2),
+      0 0 30px rgba(58, 141, 222, 0.1);
+    
+    // Efeito de terminal/hacker
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -2px;
+      right: -2px;
+      bottom: 0;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(58, 141, 222, 0.1) 50%, 
+        transparent 100%);
+      z-index: -1;
+      border-radius: 4px;
+      animation: code-scan 3s ease-in-out infinite;
+    }
+    
+    // Bracket decorativo
+    &::after {
+      content: '>';
+      position: absolute;
+      right: -0.6em;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8em;
+      color: var(--accent-light);
+      opacity: 0.7;
+      animation: cursor-blink 1.5s ease-in-out infinite;
+    }
   }
   
   &::after {
@@ -332,12 +373,21 @@
     transform: translateX(-50%);
     width: 60%;
     height: 2px;
-    background: linear-gradient(90deg, var(--accent), transparent);
+    background: linear-gradient(90deg, 
+      var(--accent), 
+      var(--accent-light), 
+      transparent);
+    box-shadow: 0 0 10px rgba(58, 141, 222, 0.3);
   }
   
   @media (max-width: 768px) {
     font-size: 2rem;
     margin-bottom: 2rem;
+    
+    .highlight {
+      font-size: 1.6rem;
+      margin-right: 0.6rem;
+    }
     
     &::after {
       width: 80%;
@@ -347,6 +397,11 @@
   @media (max-width: 480px) {
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
+    
+    .highlight {
+      font-size: 1.4rem;
+      margin-right: 0.5rem;
+    }
     
     &::after {
       width: 90%;
@@ -951,6 +1006,27 @@
   to { 
     opacity: 0; 
     transform: translateY(-30px); 
+  }
+}
+
+// Animações Dev/Hacker para os títulos
+@keyframes code-scan {
+  0%, 100% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes cursor-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
   }
 }
 
