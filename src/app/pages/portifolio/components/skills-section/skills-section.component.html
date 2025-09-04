@@ -1,34 +1,70 @@
 <section class="fullpage-section skills-section" id="skills">
   <div class="section-content">
     <h2 class="section-title"><span class="highlight">01.</span> Habilidades</h2>
-    
-    <div class="skills-intro">
-      <p>
-        Como desenvolvedor Full Stack, trabalho com diversas tecnologias modernas para criar aplicações web completas,
-        desde interfaces dinâmicas até APIs robustas e bancos de dados eficientes.
-      </p>
-    </div>
 
-    <!-- Grid limpo de tecnologias -->
-    <div class="tech-showcase">
-      <div 
-        *ngFor="let category of skillCategories; let i = index" 
-        class="tech-category"
-        [style.animation-delay]="(i * 0.15) + 's'">
-        
-        <h3 class="category-title">{{category.name}}</h3>
-        
-        <div class="tech-grid">
-          <div 
-            *ngFor="let skill of category.skills; let j = index" 
-            class="tech-item"
-            [style.animation-delay]="(i * 0.15 + j * 0.08) + 's'"
-            [title]="skill.name">
-            <i [class]="skill.icon"></i>
-            <span class="tech-name">{{skill.name}}</span>
-          </div>
+    <div class="skills-minimal">
+      <!-- Category Filter Pills -->
+      <div class="category-filters">
+        <button class="filter-pill active" 
+                data-category="all"
+                (click)="filterByCategory('all')">
+          <span class="pill-text">Todas</span>
+        </button>
+        <button class="filter-pill" 
+                data-category="Front-end"
+                (click)="filterByCategory('Front-end')">
+          <span class="pill-text">Frontend</span>
+        </button>
+        <button class="filter-pill" 
+                data-category="Back-end"
+                (click)="filterByCategory('Back-end')">
+          <span class="pill-text">Backend</span>
+        </button>
+        <button class="filter-pill" 
+                data-category="Banco de Dados"
+                (click)="filterByCategory('Banco de Dados')">
+          <span class="pill-text">Database</span>
+        </button>
+        <button class="filter-pill" 
+                data-category="Outros"
+                (click)="filterByCategory('Outros')">
+          <span class="pill-text">Outros</span>
+        </button>
+      </div>
+
+      <!-- Skills Grid Container -->
+      <div class="icon-grid-wrap">
+        <div class="icon-grid">
+          <button class="icon-cell" *ngFor="let s of filteredIcons(); let i = index"
+                  (mouseenter)="onIconEnter(i)"
+                  (mouseleave)="onIconLeave()"
+                  [class.dimmed]="hoveredIndex() !== null && hoveredIndex() !== i"
+                  [attr.data-cat]="s._category"
+                  [style.animation-delay]="(i * 30) + 'ms'">
+            <div class="icon-bg"></div>
+            <span class="glow"></span>
+            <i [class]="s.icon"></i>
+            <div class="skill-level" *ngIf="s.level">
+              <div class="level-bar" [style.width.%]="s.level"></div>
+            </div>
+            <div class="tooltip">
+              <div class="tooltip-header">
+                <span class="skill-name">{{ s.name }}</span>
+                <span class="skill-category">{{ s._category }}</span>
+              </div>
+              <div class="tooltip-content" *ngIf="s.desc">
+                <p>{{ s.desc }}</p>
+              </div>
+              <div class="tooltip-footer" *ngIf="s.level">
+                <div class="level-indicator">
+                  <span>Nível: {{ s.level }}%</span>
+                </div>
+              </div>
+            </div>
+          </button>
         </div>
       </div>
+
     </div>
   </div>
 </section>

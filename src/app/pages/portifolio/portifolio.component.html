@@ -35,7 +35,7 @@
 
   
   <!-- Container das Seções Moderno -->
-  <div class="sections-container" (wheel)="onSectionWheel($event)">
+  <div class="sections-container">
     
     <!-- Seção Hero -->
     <section class="section" id="home" 
@@ -51,19 +51,8 @@
         >
           <button class="modern-btn cta-btn" (click)="nextSection()">
             <span>Explorar Portfólio</span>
-            <i class="fas fa-arrow-down"></i>
           </button>
         </app-hero-section>
-      </div>
-    </section>
-
-    <!-- Seção Experiência -->
-    <section class="section" id="experience" 
-             [class.active]="activeSection() === 'experience'"
-             [class.entering]="isEntering('experience')"
-             [class.leaving]="isLeaving('experience')">
-      <div class="section-content">
-        <app-experience-section [experiences]="experiences"></app-experience-section>
       </div>
     </section>
 
@@ -74,6 +63,16 @@
              [class.leaving]="isLeaving('skills')">
       <div class="section-content">
         <app-skills-section [skillCategories]="skillCategories"></app-skills-section>
+      </div>
+    </section>
+
+    <!-- Seção Experiência -->
+    <section class="section" id="experience" 
+             [class.active]="activeSection() === 'experience'"
+             [class.entering]="isEntering('experience')"
+             [class.leaving]="isLeaving('experience')">
+      <div class="section-content">
+        <app-experience-section [experiences]="experiences"></app-experience-section>
       </div>
     </section>
 

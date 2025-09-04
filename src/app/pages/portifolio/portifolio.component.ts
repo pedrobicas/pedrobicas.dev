@@ -1,8 +1,10 @@
 // home.component.ts
-import { Component, ElementRef, HostListener, OnInit, ViewChild, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, OnDestroy, ViewChild, inject, signal } from '@angular/core';
 
 
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NavigationService } from '../../services/navigation.service';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -21,8 +23,10 @@ import { FloatingTerminalComponent } from './components/floating-terminal/floati
   styleUrls: ['./portifolio.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class PortifolioComponent implements OnInit {
+export class PortifolioComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
+  private navigationService = inject(NavigationService);
+  private navigationSubscription?: Subscription;
   
   darkTheme = signal(true);
   showTyping = signal(false);
@@ -192,7 +196,7 @@ skillCategories = [
   });
 
   // Seções para navegação guiada
-  sectionIds = ['home', 'skills', 'experience' , 'projects', 'contact'];
+  sectionIds = ['home', 'skills', 'experience', 'projects', 'contact'];
   private currentSectionIndex = 0;
   private isScrolling = false;
   isMobile = false;
@@ -338,6 +342,11 @@ animationState = signal({
     setTimeout(() => {
       this.animationState.update(state => ({ ...state, ctaRevealed: true }));
     }, 1500);
+    
+    // Subscrever aos eventos de navegação do terminal
+    this.navigationSubscription = this.navigationService.navigation$.subscribe(sectionId => {
+      this.scrollTo(sectionId);
+    });
   }
   
   private detectMobileDevice() {
@@ -347,11 +356,23 @@ animationState = signal({
   ngOnDestroy(): void {
     window.removeEventListener('wheel', this.handleWheel as any);
     document.body.style.overflow = '';
+    
+    // Limpar inscrição do serviço de navegação
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
   }
 
 handleWheel = (event: WheelEvent) => {
   if (this.isScrolling) {
     event.preventDefault();
+    return;
+  }
+
+  // Verifica se o scroll está ocorrendo dentro do terminal
+  const target = event.target as HTMLElement;
+  if (target && this.isElementInsideTerminal(target)) {
+    // Permite scroll normal dentro do terminal, não intercepta
     return;
   }
 
@@ -633,8 +654,29 @@ private checkInitialHash() {
 
 
 
-  onSectionWheel(event: WheelEvent): void {
-    this.handleWheel(event);
+  // Método para verificar se o elemento está dentro do terminal
+  private isElementInsideTerminal(element: HTMLElement): boolean {
+    // Verifica se o elemento ou algum de seus pais tem classes relacionadas ao terminal
+    let currentElement: HTMLElement | null = element;
+    
+    while (currentElement) {
+      // Verifica classes específicas do terminal
+      if (currentElement.classList.contains('floating-terminal') ||
+          currentElement.classList.contains('terminal-body') ||
+          currentElement.classList.contains('console-output') ||
+          currentElement.classList.contains('floating-terminal-overlay')) {
+        return true;
+      }
+      
+      // Verifica se é o componente app-floating-terminal
+      if (currentElement.tagName === 'APP-FLOATING-TERMINAL') {
+        return true;
+      }
+      
+      currentElement = currentElement.parentElement;
+    }
+    
+    return false;
   }
 
 

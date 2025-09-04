@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef,
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
+import { NavigationService } from '../../../../services/navigation.service';
 
 @Component({
   selector: 'app-floating-terminal',
@@ -16,7 +17,8 @@ export class FloatingTerminalComponent implements OnInit, OnDestroy {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private navigationService: NavigationService
   ) {}
 
   // Terminal state
@@ -793,39 +795,8 @@ export class FloatingTerminalComponent implements OnInit, OnDestroy {
   }
 
   private navigateToSection(sectionId: string): void {
-    // Try multiple ways to find the section
-    let element = this.document.getElementById(sectionId);
-    
-    // If not found by ID, try by querySelector
-    if (!element) {
-      element = this.document.querySelector(`#${sectionId}`) as HTMLElement;
-    }
-    
-    // If still not found, try finding section with class
-    if (!element) {
-      element = this.document.querySelector(`section[id="${sectionId}"]`) as HTMLElement;
-    }
-    
-    if (element) {
-      // Scroll to element
-      element.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center',
-        inline: 'nearest'
-      });
-      
-      // Also try using window.scrollTo as backup
-      const rect = element.getBoundingClientRect();
-      const scrollTop = window.pageYOffset || this.document.documentElement.scrollTop;
-      const targetPosition = rect.top + scrollTop - 100; // Offset for header
-      
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-      });
-    } else {
-      console.error(`Seção '${sectionId}' não encontrada no DOM`);
-    }
+    // Usar o serviço de navegação para comunicar com o componente principal
+    this.navigationService.navigateToSection(sectionId);
   }
 }
 
