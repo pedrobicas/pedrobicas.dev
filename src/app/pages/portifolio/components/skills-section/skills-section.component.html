@@ -48,18 +48,7 @@
               <div class="level-bar" [style.width.%]="s.level"></div>
             </div>
             <div class="tooltip">
-              <div class="tooltip-header">
-                <span class="skill-name">{{ s.name }}</span>
-                <span class="skill-category">{{ s._category }}</span>
-              </div>
-              <div class="tooltip-content" *ngIf="s.desc">
-                <p>{{ s.desc }}</p>
-              </div>
-              <div class="tooltip-footer" *ngIf="s.level">
-                <div class="level-indicator">
-                  <span>Nível: {{ s.level }}%</span>
-                </div>
-              </div>
+              {{ s.name }}
             </div>
           </button>
         </div>
