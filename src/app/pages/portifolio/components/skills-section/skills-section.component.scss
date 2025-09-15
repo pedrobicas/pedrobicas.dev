@@ -1,3 +1,10 @@
+// SEÇÃO SKILLS COM FUNDO PRETO
+.skills-section {
+  background: #000000 !important;
+  padding: 4rem 0;
+  position: relative;
+}
+
 // Botão de ação inspirado na hero section
 .skills-btn.neuro-btn {
   position: relative;
@@ -266,9 +273,9 @@
           &:hover .icon,
           &:hover .fa,
           &:hover .material-icons {
-            color: #57cbff !important;
-            stroke: #57cbff !important;
-            fill: #57cbff !important;
+            color: var(--accent-light) !important;
+            stroke: var(--accent-light) !important;
+            fill: var(--accent-light) !important;
             transform: scale(1.1) !important;
           }
           
@@ -345,7 +352,7 @@
     inset: 0;
     background: radial-gradient(circle at center, 
       rgba(44, 131, 212, 0.08) 0%,
-      rgba(87, 203, 255, 0.04) 50%,
+      rgba(59, 130, 246, 0.04) 50%,
       transparent 70%);
     border-radius: 24px;
     z-index: -1;
@@ -398,14 +405,14 @@ max-width: 600px;
       
       .pill-text {
         color: var(--accent-light);
-        text-shadow: 0 0 10px rgba(87, 203, 255, 0.5);
+        text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
       }
     }
     
     &.active {
       .pill-text {
         color: var(--accent-light);
-        text-shadow: 0 0 15px rgba(87, 203, 255, 0.7);
+        text-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
         font-weight: 700;
       }
     }
@@ -493,7 +500,7 @@ max-width: 600px;
     border-radius: 24px;
     background: linear-gradient(135deg, 
       rgba(44, 131, 212, 0.1) 0%,
-      rgba(87, 203, 255, 0.05) 50%,
+      rgba(59, 130, 246, 0.05) 50%,
       rgba(44, 131, 212, 0.08) 100%);
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -507,7 +514,7 @@ max-width: 600px;
     border-radius: 26px;
     background: linear-gradient(135deg, 
       rgba(44, 131, 212, 0.4) 0%,
-      rgba(87, 203, 255, 0.2) 50%,
+      rgba(59, 130, 246, 0.2) 50%,
       rgba(44, 131, 212, 0.3) 100%);
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -522,7 +529,7 @@ max-width: 600px;
     border-radius: 24px;
     background: linear-gradient(135deg, 
       rgba(44, 131, 212, 0.2) 0%,
-      rgba(87, 203, 255, 0.1) 50%,
+      rgba(59, 130, 246, 0.1) 50%,
       rgba(44, 131, 212, 0.15) 100%);
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -609,7 +616,7 @@ max-width: 600px;
   color: var(--accent-light) !important; 
   fill: var(--accent-light) !important; 
   stroke: var(--accent-light) !important; 
-  filter: drop-shadow(0 0 15px rgba(87, 203, 255, 0.6)); 
+  filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6)); 
 }
 
 /* Skill Level Indicator */

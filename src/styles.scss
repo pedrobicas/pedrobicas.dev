@@ -1,8 +1,8 @@
-// Variáveis de tema
+// Variáveis de tema - FUNDO PRETO GLOBAL
 
 :root {
-  --bg-primary: #101014;
-  --bg-secondary: #181a22;
+  --bg-primary: #000000;
+  --bg-secondary: #000000;
   --text-primary: #e6f1ff;
   --text-secondary: #7a8bbd;
   --accent: #3a8dde;
@@ -11,12 +11,12 @@
 }
 
 [data-theme="light"] {
-  --bg-primary: #fff;
-  --bg-secondary: #f4f6fa;
-  --text-primary: #181a22;
-  --text-secondary: #495057;
-  --accent: #2c83d4;
-  --accent-light: #3a8dde;
+  --bg-primary: #000000;
+  --bg-secondary: #000000;
+  --text-primary: #e6f1ff;
+  --text-secondary: #7a8bbd;
+  --accent: #3a8dde;
+  --accent-light: #57cbff;
 }
 
 // Reset e estilos globais
@@ -31,11 +31,13 @@ html {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  background: #000000 !important;
 }
 
 body {
   font-family: 'Montserrat', sans-serif;
-  background-color: var(--bg-primary);
+  background-color: #000000 !important;
+  background: #000000 !important;
   color: var(--text-primary);
   line-height: 1.6;
   width: 100%;
@@ -43,6 +45,25 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+}
+
+// FORÇAR FUNDO PRETO EM TODAS AS SEÇÕES
+* {
+  &[class*="section"] {
+    background: #000000 !important;
+  }
+}
+
+app-root, 
+.portfolio-page,
+.hero-section,
+.skills-section,
+.experience-section,
+.projects-section,
+.contact-section,
+section {
+  background: #000000 !important;
+  background-color: #000000 !important;
 }
 
 a {

@@ -1,101 +1,123 @@
 <section class="fullpage-section experience-section" id="experience">
   <div class="section-content">
     <h2 class="section-title"><span class="highlight">02.</span> Experiência</h2>
-    
+
     <div class="experience-intro">
-      <p>
-        Minha jornada no desenvolvimento de software inclui experiências acadêmicas, 
-        projetos práticos e aprendizado contínuo em tecnologias modernas.
-      </p>
+      <p>Minha jornada no desenvolvimento de software</p>
     </div>
 
+    <!-- Container principal com slide -->
     <div class="experience-container">
-      <!-- Main Experience List -->
-      <div class="experience-list" [class.slide-left]="dialogIndex !== null">
-        <div 
-          *ngFor="let exp of experiences; let i = index" 
+      <!-- Grid de experiências -->
+      <div class="experience-grid">
+        <div
           class="experience-item"
-          [style.animation-delay]="(i * 0.1) + 's'">
-          
-          <div class="experience-card" (click)="openDialog(i)">
-            <div class="card-timeline">
-              <div class="timeline-dot"></div>
-              <div class="timeline-line" *ngIf="i < experiences.length - 1"></div>
+          *ngFor="let exp of experiences; let i = index"
+          [style.animation-delay]="(i * 0.1) + 's'"
+          [attr.data-index]="i"
+          (click)="openDialog(i)"
+        >
+          <!-- Main content -->
+          <div class="item-content">
+            <div class="item-header">
+              <div class="header-left">
+                <span class="year">{{ exp.year }}</span>
+                <span class="type">{{ exp.type || 'Formação' }}</span>
+              </div>
+              <div class="header-icon">
+                <i class="fas fa-briefcase"></i>
+              </div>
             </div>
+
+            <h3 class="title">{{ exp.title }}</h3>
             
-            <div class="card-content">
-              <div class="card-header">
-                <span class="year">{{exp.year}}</span>
-                <span class="type">{{exp.type || 'Formação'}}</span>
-              </div>
-              
-              <h3 class="title">{{exp.title}}</h3>
-              
-              <div class="preview-description" *ngIf="exp.description">
-                {{exp.description.length > 80 ? (exp.description | slice:0:80) + '...' : exp.description}}
-              </div>
-              
-              <div class="card-footer">
-                <div class="tech-preview" *ngIf="exp.technologies?.length">
-                  <span *ngFor="let tech of exp.technologies | slice:0:3" class="tech-pill">
-                    {{tech}}
-                  </span>
-                  <span *ngIf="exp.technologies && exp.technologies.length > 3" class="more-tech">
-                    +{{exp.technologies.length - 3}}
-                  </span>
-                </div>
-                <div class="expand-hint">
-                  <i class="fas fa-chevron-right"></i>
-                </div>
+            <div class="description-preview">
+              <p>{{ exp.description | slice:0:100 }}{{ exp.description && exp.description.length > 100 ? '...' : '' }}</p>
+            </div>
+
+            <div class="item-footer">
+              <div class="expand-hint">
+                <span>Ver detalhes</span>
+                <i class="fas fa-arrow-right"></i>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <!-- Slide Details Panel -->
-      <div class="experience-details" [class.active]="dialogIndex !== null">
-        <div class="details-header">
-          <button class="back-btn" (click)="closeDialog()">
-            <i class="fas fa-arrow-left"></i>
-            <span>Voltar</span>
-          </button>
-        </div>
+  <!-- Painel de detalhes diferenciado -->
+  <div class="details-panel" [class.active]="dialogIndex !== null">
+    <!-- Background particles -->
+    <div class="bg-particles">
+      <div class="particle" *ngFor="let p of [1,2,3,4,5,6]"></div>
+    </div>
+    
+    <div class="panel-header">
+      <button class="back-btn" (click)="closeDialog()">
+        <i class="fas fa-arrow-left"></i>
+        <span>Voltar</span>
+      </button>
+      
+      <div class="panel-indicator">
+        <span>{{ (dialogIndex || 0) + 1 }} / {{ experiences.length || 0 }}</span>
+      </div>
+    </div>
 
-        <div class="details-content" *ngIf="dialogIndex !== null">
+    <div class="panel-content" *ngIf="dialogIndex !== null">
+      <div class="content-columns">
+        <!-- Coluna esquerda com informações principais -->
+        <div class="left-column">
           <div class="details-hero">
-            <h2 class="details-title">{{getSelectedExperience()?.title}}</h2>
+            <div class="hero-badge">Experiência Profissional</div>
+            
+            <h2 class="details-title">{{ getSelectedExperience()?.title }}</h2>
+            
             <div class="details-meta">
-              <span class="meta-year">{{getSelectedExperience()?.year}}</span>
-              <span class="meta-type">{{getSelectedExperience()?.type || 'Experiência'}}</span>
-            </div>
-          </div>
-
-          <div class="details-scroll">
-            <div class="details-description">
-              <p>{{getSelectedExperience()?.description}}</p>
+              <span class="meta-year">
+                <i class="fas fa-calendar"></i>
+                {{ getSelectedExperience()?.year }}
+              </span>
+              <span class="meta-type">
+                <i class="fas fa-tag"></i>
+                {{ getSelectedExperience()?.type }}
+              </span>
             </div>
             
-            <div class="details-section" *ngIf="getSelectedExperience()?.details?.length">
-              <h4>Principais atividades</h4>
-              <ul class="activities-list">
-                <li *ngFor="let detail of getSelectedExperience()?.details">
-                  <i class="fas fa-check"></i>
-                  <span>{{detail}}</span>
-                </li>
-              </ul>
-            </div>
-
-            <div class="details-section" *ngIf="getSelectedExperience()?.technologies?.length">
-              <h4>Tecnologias utilizadas</h4>
-              <div class="tech-grid">
-                <span class="tech-tag" *ngFor="let tech of getSelectedExperience()?.technologies">
-                  {{tech}}
-                </span>
-              </div>
+            <div class="description-section">
+              <h4>Descrição</h4>
+              <p>{{ getSelectedExperience()?.description }}</p>
             </div>
           </div>
         </div>
+
+        <!-- Coluna direita com atividades -->
+        <div class="right-column" *ngIf="getSelectedExperience()?.details?.length">
+          <div class="activities-section">
+            <h4>Principais atividades</h4>
+            <ul class="activities-list">
+              <li *ngFor="let detail of getSelectedExperience()?.details; let i = index" 
+                  [style.animation-delay]="(i * 0.08) + 's'"
+                  class="activity-item">
+                <div class="activity-icon">
+                  <i class="fas fa-check"></i>
+                </div>
+                <span>{{ detail }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Navigation arrows -->
+      <div class="navigation-arrows" *ngIf="experiences && experiences.length > 1">
+        <button class="arrow prev" (click)="navigateExperience(-1)" [disabled]="dialogIndex === 0">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="arrow next" (click)="navigateExperience(1)" [disabled]="dialogIndex === experiences.length - 1">
+          <i class="fas fa-chevron-right"></i>
+        </button>
       </div>
     </div>
   </div>

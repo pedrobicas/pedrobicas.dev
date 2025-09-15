@@ -1,11 +1,15 @@
 .projects-section {
+  background: #000000 !important;
+  padding: 4rem 0;
+  position: relative;
+  
   .carousel-content.card {
-    background: rgba(18, 22, 34, 0.82);
-    box-shadow: 0 8px 32px -8px rgba(44,131,212,0.22), 0 1.5px 8px 0 rgba(44,131,212,0.10);
-    border: 1.5px solid rgba(87, 203, 255, 0.22);
+    background: rgba(0, 0, 0, 0.82);
+    box-shadow: 0 8px 32px -8px rgba(37,99,235,0.22), 0 1.5px 8px 0 rgba(37,99,235,0.10);
+    border: 1.5px solid rgba(59, 130, 246, 0.22);
     transition: box-shadow 0.3s, transform 0.3s;
     &:hover {
-      box-shadow: 0 16px 48px -8px rgba(44,131,212,0.28), 0 2px 12px 0 rgba(44,131,212,0.13);
+      box-shadow: 0 16px 48px -8px rgba(37,99,235,0.28), 0 2px 12px 0 rgba(37,99,235,0.13);
       transform: translateY(-2px) scale(1.012);
     }
     .card-header {
@@ -209,8 +213,8 @@
     border-radius: 14px !important;
     gap: 0.5rem;
     background: rgba(30, 40, 60, 0.28) !important;
-    border: 1px solid rgba(87, 203, 255, 0.28) !important;
-    box-shadow: 0 6px 20px -6px rgba(44,131,212,0.28) !important;
+    border: 1px solid rgba(59, 130, 246, 0.28) !important;
+    box-shadow: 0 6px 20px -6px rgba(37,99,235,0.28) !important;
     svg { color: #e6f1ff; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35)); }
     &:hover { transform: translateY(-1px); filter: brightness(1.05); }
     &.left { backdrop-filter: blur(8px); }
@@ -259,8 +263,8 @@
       position: relative;
       background: rgba(20, 24, 34, 0.55);
       border-radius: 18px;
-      border: 1px solid rgba(87, 203, 255, 0.18);
-      box-shadow: 0 12px 40px -12px rgba(44,131,212,0.28), inset 0 0 0 1px rgba(44,131,212,0.12);
+      border: 1px solid rgba(59, 130, 246, 0.18);
+      box-shadow: 0 12px 40px -12px rgba(37,99,235,0.28), inset 0 0 0 1px rgba(37,99,235,0.12);
       padding: 1.6rem 1.6rem 1.1rem 1.6rem;
       width: 100%;
       min-height: 380px;

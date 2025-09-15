@@ -2,6 +2,10 @@
 @import '../../portifolio.component.scss';
 
 .contact-section {
+  background: #000000 !important;
+  padding: 4rem 0;
+  position: relative;
+  
   .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
