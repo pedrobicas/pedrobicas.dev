@@ -1,5 +1,5 @@
 // home.component.ts
-import { Component, ElementRef, HostListener, OnInit, OnDestroy, ViewChild, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, OnDestroy, ViewChild, inject, signal, AfterViewInit } from '@angular/core';
 
 
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -23,7 +23,7 @@ import { FloatingTerminalComponent } from './components/floating-terminal/floati
   styleUrls: ['./portifolio.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class PortifolioComponent implements OnInit, OnDestroy {
+export class PortifolioComponent implements OnInit, OnDestroy, AfterViewInit {
   private fb = inject(FormBuilder);
   private navigationService = inject(NavigationService);
   private navigationSubscription?: Subscription;
@@ -43,8 +43,29 @@ export class PortifolioComponent implements OnInit, OnDestroy {
     { icon: 'fab fa-linkedin-in', url: 'https://linkedin.com/in/pedrobicas', label: 'LinkedIn' },
     { icon: 'fab fa-instagram', url: 'https://instagram.com/pedrobicas', label: 'Instagram' }
   ];
-@ViewChild('firstName') firstName!: ElementRef;
+
+  // ViewChild references for sections
+  @ViewChild('homeSection') homeSection!: ElementRef;
+  @ViewChild('skillsSection') skillsSection!: ElementRef;
+  @ViewChild('experienceSection') experienceSection!: ElementRef;
+  @ViewChild('projectsSection') projectsSection!: ElementRef;
+  @ViewChild('contactSection') contactSection!: ElementRef;
+
+  @ViewChild('firstName') firstName!: ElementRef;
   @ViewChild('lastName') lastName!: ElementRef;
+
+  // Intersection Observer for scroll animations
+  private intersectionObserver!: IntersectionObserver;
+  private animatedSections = new Set<string>();
+
+  // Animation states for each section
+  sectionAnimations = signal({
+    home: { visible: false, animated: false },
+    skills: { visible: false, animated: false },
+    experience: { visible: false, animated: false },
+    projects: { visible: false, animated: false },
+    contact: { visible: false, animated: false }
+  });
 
   animateName() {
     const firstName = this.firstName.nativeElement;
@@ -309,16 +330,11 @@ animationState = signal({
     
     // Inicializa sistema dinâmico
     this.initializeParticleSystem();
+    this.setupScrollAnimations();
     
-    // Navegação guiada apenas no desktop
-    if (!this.isMobile) {
-      window.addEventListener('wheel', this.handleWheel, { passive: false });
-      document.body.style.overflow = 'hidden';
-    } else {
-      // Mobile: navegação livre com scroll normal
-      document.body.style.overflow = 'auto';
-      this.enableMobileFreeNavigation();
-    }
+    // Navegação livre com scroll normal para todas as plataformas
+    document.body.style.overflow = 'auto';
+    this.enableMobileFreeNavigation();
     
      setTimeout(() => {
       this.animationState.update(state => ({
@@ -354,40 +370,109 @@ animationState = signal({
   }
 
   ngOnDestroy(): void {
-    window.removeEventListener('wheel', this.handleWheel as any);
     document.body.style.overflow = '';
     
     // Limpar inscrição do serviço de navegação
     if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();
     }
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
+    }
+    this.stopParticleAnimation();
   }
 
-handleWheel = (event: WheelEvent) => {
-  if (this.isScrolling) {
-    event.preventDefault();
-    return;
+  private setupScrollAnimations(): void {
+    // Remove wheel event listener for guided navigation
+    // Enable natural scroll behavior
+    document.body.style.overflow = 'auto';
   }
 
-  // Verifica se o scroll está ocorrendo dentro do terminal
-  const target = event.target as HTMLElement;
-  if (target && this.isElementInsideTerminal(target)) {
-    // Permite scroll normal dentro do terminal, não intercepta
-    return;
+  private setupIntersectionObserver(): void {
+    const options = {
+      root: null,
+      rootMargin: '-10% 0px -10% 0px', // Reduzido de -20% para -10% para começar animações mais cedo
+      threshold: 0.2 // Reduzido de 0.3 para 0.2 para detectar seções mais cedo
+    };
+
+    this.intersectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const sectionId = entry.target.id;
+        const isVisible = entry.isIntersecting;
+        
+        // Update active section
+        if (isVisible) {
+          this.activeSection.set(sectionId);
+        }
+
+        // Update animation state
+        const currentAnimations = this.sectionAnimations();
+        if (sectionId in currentAnimations) {
+          currentAnimations[sectionId as keyof typeof currentAnimations].visible = isVisible;
+          
+          // Trigger animation only once when section becomes visible
+          if (isVisible && !this.animatedSections.has(sectionId)) {
+            this.animatedSections.add(sectionId);
+            currentAnimations[sectionId as keyof typeof currentAnimations].animated = true;
+            this.triggerSectionAnimation(sectionId);
+          }
+          
+          this.sectionAnimations.set({...currentAnimations});
+        }
+      });
+    }, options);
+
+    // Observe all sections
+    const sections = [
+      this.homeSection,
+      this.skillsSection,
+      this.experienceSection,
+      this.projectsSection,
+      this.contactSection
+    ];
+
+    sections.forEach(section => {
+      if (section?.nativeElement) {
+        this.intersectionObserver.observe(section.nativeElement);
+      }
+    });
   }
 
-  // Detecta scroll horizontal (ou vertical convertido para horizontal)
-  const delta = Math.sign(event.deltaY);
-  if (delta === 0 || Math.abs(event.deltaY) < 30) return;
+  private triggerSectionAnimation(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (!element) return;
 
-  event.preventDefault();
-  
-  if (delta > 0) {
-    this.nextSection();
-  } else {
-    this.previousSection();
+    // Add specific animation class based on section
+    switch (sectionId) {
+      case 'home':
+        element.classList.add('animate-hero');
+        break;
+      case 'skills':
+        element.classList.add('animate-skills');
+        break;
+      case 'experience':
+        element.classList.add('animate-experience');
+        break;
+      case 'projects':
+        element.classList.add('animate-projects');
+        break;
+      case 'contact':
+        element.classList.add('animate-contact');
+        break;
+    }
   }
-};
+
+  scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }
+
+  // Método removido - navegação agora é livre com scroll normal
 
   goToNextSection() {
     if (this.currentSectionIndex < this.sectionIds.length - 1) {
@@ -489,6 +574,8 @@ private checkInitialHash() {
   }
 
   ngAfterViewInit(): void {
+    this.setupIntersectionObserver();
+    
     setTimeout(() => {
       this.updateSectionVisibility();
       // Garante que a primeira seção seja ativa no início
@@ -499,6 +586,13 @@ private checkInitialHash() {
         }
       }
     }, 200);
+    
+    // Initialize particles after view is ready
+    setTimeout(() => {
+      if (this.particlesCanvas && this.particlesContainer) {
+        this.initializeParticleSystem();
+      }
+    }, 100);
   }
 
   toggleTheme(): void {
@@ -725,12 +819,14 @@ private checkInitialHash() {
   }
 
   private updateParticles(): void {
+    if (!this.particlesCanvas) return;
+
     const canvas = this.particlesCanvas.nativeElement;
-    
-    this.particles.forEach(particle => {
+
+    this.particles.forEach((particle: any) => {
       particle.x += particle.vx;
       particle.y += particle.vy;
-      
+
       if (particle.x < 0) particle.x = canvas.width;
       if (particle.x > canvas.width) particle.x = 0;
       if (particle.y < 0) particle.y = canvas.height;
@@ -739,20 +835,18 @@ private checkInitialHash() {
   }
 
   private drawParticles(): void {
+    if (!this.particlesCtx || !this.particlesCanvas) return;
+    
     const ctx = this.particlesCtx;
     const canvas = this.particlesCanvas.nativeElement;
-    
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    this.particles.forEach(particle => {
+
+    this.particles.forEach((particle: any) => {
       ctx.beginPath();
       ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(44, 131, 212, ${particle.opacity})`;
       ctx.fill();
     });
   }
-
-
-
-
 }

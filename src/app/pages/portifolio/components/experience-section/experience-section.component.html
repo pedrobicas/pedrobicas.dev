@@ -1,106 +1,59 @@
 <section class="fullpage-section experience-section" id="experience">
   <div class="section-content">
-    <!-- Header da seção -->
     <div class="section-header">
       <h2 class="section-title">
-        <span class="highlight">02.</span> 
-        Experiência
+        <span class="highlight">02.</span> Experiência
       </h2>
-      <p class="section-subtitle">Minha jornada no desenvolvimento</p>
+      <p class="section-subtitle">Trajetória profissional e conquistas na carreira</p>
     </div>
 
-    <!-- Timeline interativa -->
-    <div class="experience-timeline">
-      <!-- Linha central -->
-      <div class="timeline-line"></div>
-      
-      <!-- Itens da timeline -->
-      <div 
-        class="timeline-item" 
-        *ngFor="let exp of experiences; let i = index"
-        [class.left]="i % 2 === 0"
-        [class.right]="i % 2 === 1"
-        [class.active]="activeIndex === i"
-        [style.--animation-delay]="(i * 0.2) + 's'"
-        (click)="setActive(i)"
-        role="button"
-        tabindex="0"
-        [attr.aria-label]="'Experiência: ' + exp.title + ' ano: ' + exp.year"
-      >
-        <!-- Ponto da timeline -->
+    <div class="experience-timeline" #timelineContainer
+         [class.leaving]="isLeaving"
+         [class.entering]="isEntering"
+         [class.dir-next]="switchDirection === 'next'"
+         [class.dir-prev]="switchDirection === 'prev'">
+      <!-- Os itens da timeline serão renderizados aqui -->
+      <div *ngFor="let experience of visibleExperiences; let i = index" 
+           class="timeline-item"
+           [style.--item-index]="i">
+        
         <div class="timeline-dot">
           <div class="dot-inner">
-            <i class="fas fa-code"></i>
+            <i [class]="experience.icon || 'fas fa-briefcase'"></i>
           </div>
-          <div class="dot-pulse"></div>
         </div>
-        
-        <!-- Card de conteúdo -->
+
         <div class="timeline-card">
           <div class="card-header">
-            <span class="year-badge">{{ exp.year }}</span>
-            <span class="type-badge">{{ exp.type || 'Formação' }}</span>
+            <div class="year-badge">{{ experience.year }}</div>
+            <div class="type-badge">{{ experience.type }}</div>
           </div>
-          
-          <h3 class="card-title">{{ exp.title }}</h3>
-          
-          <p class="card-description">
-            {{ exp.description }}
-          </p>
-          
-          <!-- Tecnologias -->
-          <div class="tech-stack" *ngIf="exp.technologies">
-            <span 
-              class="tech-item" 
-              *ngFor="let tech of exp.technologies?.slice(0, 4)"
-            >
-              {{ tech }}
-            </span>
-            <span class="tech-more" *ngIf="exp.technologies && exp.technologies.length > 4">
-              +{{ exp.technologies.length - 4 }}
-            </span>
+          <h3 class="card-title">{{ experience.title }}</h3>
+          <p class="card-description">{{ experience.description }}</p>
+          <div class="tech-stack" *ngIf="experience.technologies && experience.technologies.length > 0">
+            <div class="tech-item" *ngFor="let tech of experience.technologies.slice(0, 4)">{{ tech }}</div>
+            <div class="tech-more" *ngIf="experience.technologies.length > 4">+{{ experience.technologies.length - 4 }}</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Controles de navegação com efeitos de hover aprimorados -->
-    <div class="timeline-controls">
-      <button 
-        class="prev" 
-        [disabled]="activeIndex === 0" 
-        (click)="navigate(-1)" 
-        (keydown.enter)="navigate(-1)"
-        aria-label="Experiência anterior"
-      >
+    <div class="timeline-controls" *ngIf="totalPages > 1">
+      <button class="control-btn prev" (click)="prevPage()" [disabled]="isPrevDisabled()">
         <i class="fas fa-chevron-left"></i>
-        <span class="btn-glow"></span>
       </button>
-      
-      <!-- Indicador de progresso -->
-      <div class="timeline-progress">
-        <div class="progress-track">
-          <div 
-            class="progress-indicator" 
-            [style.width.%]="(activeIndex / (experiences.length - 1)) * 100"
-          ></div>
-        </div>
-        <div class="progress-labels">
-          <span class="progress-label">{{experiences[0].year}}</span>
-          <span class="progress-label">{{experiences[experiences.length-1].year}}</span>
-        </div>
+      <div class="pagination-dots" role="tablist" aria-label="Paginação de experiências">
+        <button type="button"
+                class="dot"
+                *ngFor="let p of pagesArray; let idx = index"
+                [class.active]="currentPage === (idx + 1)"
+                [attr.aria-selected]="currentPage === (idx + 1)"
+                [attr.aria-label]="'Ir para página ' + (idx + 1)"
+                (click)="goToPageAnimated(idx + 1)"></button>
       </div>
-      
-      <button 
-        class="next" 
-        [disabled]="activeIndex === experiences.length - 1" 
-        (click)="navigate(1)" 
-        (keydown.enter)="navigate(1)"
-        aria-label="Próxima experiência"
-      >
+      <button class="control-btn next" (click)="nextPage()" [disabled]="isNextDisabled()">
         <i class="fas fa-chevron-right"></i>
-        <span class="btn-glow"></span>
       </button>
     </div>
-  
+  </div>
 </section>

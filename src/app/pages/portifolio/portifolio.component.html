@@ -5,43 +5,23 @@
     <canvas class="particles-canvas" #particlesCanvas></canvas>
   </div>
   
-  <!-- Navegação Ultra Minimalista -->
-  <nav class="ultra-minimal-nav" *ngIf="!isMobile">
-    <!-- Pontos de Navegação -->
+  <!-- Navegação Simplificada para Scroll -->
+  <nav class="scroll-nav" *ngIf="!isMobile">
     <div class="nav-dots">
       <button *ngFor="let section of sectionIds; let i = index"
               class="nav-dot"
               [class.active]="activeSection() === section"
-              [class.completed]="isVisited(section) && activeSection() !== section"
-              (click)="navigateToSection(i)"
+              (click)="scrollToSection(section)"
               [attr.aria-label]="getSectionDisplayName(section)">
       </button>
     </div>
-    
-    <!-- Indicador de Progresso -->
-    <div class="progress-line">
-      <div class="progress-fill" [style.height]="getProgressPercentage() + '%'"></div>
-    </div>
-    
-    <!-- Info da Seção (opcional, apenas no hover) -->
-    <div class="section-info" [class.visible]="showSectionInfo">
-      <span class="section-name">{{getSectionDisplayName(activeSection())}}</span>
-      <span class="section-progress">{{getCurrentSectionIndex() + 1}}/{{sectionIds.length}}</span>
-    </div>
   </nav>
   
-
-  
-
-  
-  <!-- Container das Seções Moderno -->
+  <!-- Container das Seções com Scroll Normal -->
   <div class="sections-container">
     
     <!-- Seção Hero -->
-    <section class="section" id="home" 
-             [class.active]="activeSection() === 'home'"
-             [class.entering]="isEntering('home')"
-             [class.leaving]="isLeaving('home')">
+    <section class="section animate-section animate-hero" id="home" #homeSection>
       <div class="section-content">
         <app-hero-section
           [name]="'Pedro Bicas'"
@@ -49,7 +29,7 @@
           [avatar]="'assets/images/developer-activity-animate.svg'"
           [socialLinks]="socialLinks"
         >
-          <button class="modern-btn cta-btn" (click)="nextSection()">
+          <button class="modern-btn cta-btn" (click)="scrollToSection('skills')">
             <span>Explorar Portfólio</span>
           </button>
         </app-hero-section>
@@ -57,40 +37,28 @@
     </section>
 
     <!-- Seção Habilidades -->
-    <section class="section" id="skills" 
-             [class.active]="activeSection() === 'skills'"
-             [class.entering]="isEntering('skills')"
-             [class.leaving]="isLeaving('skills')">
+    <section class="section animate-section" id="skills" #skillsSection>
       <div class="section-content">
         <app-skills-section [skillCategories]="skillCategories"></app-skills-section>
       </div>
     </section>
 
     <!-- Seção Experiência -->
-    <section class="section" id="experience" 
-             [class.active]="activeSection() === 'experience'"
-             [class.entering]="isEntering('experience')"
-             [class.leaving]="isLeaving('experience')">
+    <section class="section animate-section" id="experience" #experienceSection>
       <div class="section-content">
         <app-experience-section [experiences]="experiences"></app-experience-section>
       </div>
     </section>
 
     <!-- Seção Projetos -->
-    <section class="section" id="projects" 
-             [class.active]="activeSection() === 'projects'"
-             [class.entering]="isEntering('projects')"
-             [class.leaving]="isLeaving('projects')">
+    <section class="section animate-section" id="projects" #projectsSection>
       <div class="section-content">
         <app-projects-section [projects]="projects"></app-projects-section>
       </div>
     </section>
 
     <!-- Seção Contato -->
-    <section class="section" id="contact" 
-             [class.active]="activeSection() === 'contact'"
-             [class.entering]="isEntering('contact')"
-             [class.leaving]="isLeaving('contact')">
+    <section class="section animate-section" id="contact" #contactSection>
       <div class="section-content">
         <app-contact-section
           [contactForm]="contactForm"

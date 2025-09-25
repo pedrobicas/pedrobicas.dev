@@ -1,14 +1,13 @@
-import { Component, HostListener, Input, OnDestroy, OnInit, AfterViewInit, ElementRef, Renderer2, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { animate, style, transition, trigger, state } from '@angular/animations';
 
 interface Experience {
   year: string;
   title: string;
   description: string;
   type?: string;
-  details?: string[];
   technologies?: string[];
+  icon?: string;
 }
 
 @Component({
@@ -17,294 +16,161 @@ interface Experience {
   imports: [CommonModule],
   templateUrl: './experience-section.component.html',
   styleUrls: ['./experience-section.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: [
-    trigger('fadeInOut', [
-      state('void', style({
-        opacity: 0,
-        transform: 'translateY(20px)'
-      })),
-      transition('void <=> *', [
-        animate('0.6s cubic-bezier(0.23, 1, 0.32, 1)')
-      ])
-    ])
-  ]
 })
-export class ExperienceSectionComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ExperienceSectionComponent implements OnInit, AfterViewInit {
   @Input() experiences: Experience[] = [];
   @ViewChild('timelineContainer') timelineContainer!: ElementRef;
-  
-  activeIndex: number = 0;
-  private autoPlayInterval?: any;
+
+  visibleExperiences: Experience[] = [];
   private observer?: IntersectionObserver;
-  private mouseMoveUnlisten?: () => void;
-  private mouseLeaveUnlisten?: () => void;
-  private timelineEl!: HTMLElement;
   private prefersReducedMotion: boolean = false;
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {
-    // Verificar preferência de redução de movimento
+  // Paginação
+  currentPage: number = 1;
+  itemsPerPage: number = 3;
+  totalPages: number = 1;
+  pagesArray: number[] = [];
+
+  // Estados de transição
+  isLeaving = false;
+  isEntering = false;
+  switchDirection: 'next' | 'prev' | null = null;
+
+  constructor(private cdr: ChangeDetectorRef) {
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 
   ngOnInit() {
-    console.log('Experiences received:', this.experiences);
-    if (!this.prefersReducedMotion) {
-      this.startAutoPlay();
-    }
+    this.totalPages = Math.ceil(this.experiences.length / this.itemsPerPage) || 1;
+    this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    this.updateVisibleExperiences();
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
+    if (!this.prefersReducedMotion) {
       this.initializeAnimations();
+    }
+    
+    // Adicionar classe animated com atraso para cada card
+    setTimeout(() => {
+      const cards = this.timelineContainer.nativeElement.querySelectorAll('.timeline-item');
+      cards.forEach((card: HTMLElement) => {
+        card.classList.add('animated');
+      });
     }, 100);
   }
 
   private initializeAnimations(): void {
-    try {
-      this.timelineEl = this.timelineContainer?.nativeElement || document.querySelector('.experience-timeline');
-      if (!this.timelineEl) return;
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
 
-      // Configurar observador de interseção para animar itens quando entrarem no viewport
-      const items = this.timelineEl.querySelectorAll('.timeline-item') || [];
-      this.observer = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          const target = e.target as HTMLElement;
-          if (e.isIntersecting) {
-            target.classList.add('in-view');
-            // Adicionar efeito de destaque temporário
-            if (!this.prefersReducedMotion) {
-              setTimeout(() => {
-                target.classList.add('highlight-pulse');
-                setTimeout(() => target.classList.remove('highlight-pulse'), 1000);
-              }, 300);
-            }
-          } else {
-            target.classList.remove('in-view');
-          }
-        });
-      }, { 
-        root: null, // viewport
-        threshold: 0.15,
-        rootMargin: '0px 0px -10% 0px'
-      });
-
-      items.forEach(i => this.observer?.observe(i));
-
-      // Adicionar efeito de entrada inicial aos itens
-      Array.from(items).forEach((item, index) => {
-        const el = item as HTMLElement;
-        if (!this.prefersReducedMotion) {
-          el.style.animationDelay = `${index * 0.15}s`;
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          this.observer?.unobserve(entry.target);
         }
       });
+    }, options);
 
-      // Inicializar efeito parallax 3D
-      this.initializeParallaxEffect();
-    } catch (err) {
-      console.warn('Animações inicializadas com erro:', err);
-    }
+    // Adia a observação para garantir que os elementos estejam no DOM
+    setTimeout(() => this.observeElements(), 0);
   }
 
-  private initializeParallaxEffect(): void {
-    if (this.prefersReducedMotion || !this.timelineEl) return;
-    
-    // Adicionar efeito parallax ao container
-    this.timelineEl.classList.add('parallax-enabled');
-    
-    // Adiciona efeito de partículas em movimento
-    this.createParticleEffect();
-    
-    // Adiciona efeito de grid pulsante
-    this.createGridEffect();
-  }
-  
-  // Cria efeito de partículas em movimento
-  private createParticleEffect(): void {
-    const section = this.el.nativeElement.querySelector('.experience-section');
-    if (!section) return;
-    
-    const particleContainer = document.createElement('div');
-    particleContainer.className = 'particle-container';
-    section.appendChild(particleContainer);
-    
-    // Cria partículas dinâmicas
-    for (let i = 0; i < 30; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'floating-particle';
-      
-      // Posição aleatória
-      const posX = Math.random() * 100;
-      const posY = Math.random() * 100;
-      const size = Math.random() * 5 + 2;
-      const duration = Math.random() * 20 + 10;
-      const delay = Math.random() * 5;
-      
-      particle.style.cssText = `
-        left: ${posX}%;
-        top: ${posY}%;
-        width: ${size}px;
-        height: ${size}px;
-        animation-duration: ${duration}s;
-        animation-delay: ${delay}s;
-        opacity: ${Math.random() * 0.5 + 0.1};
-      `;
-      
-      particleContainer.appendChild(particle);
-    }
-  }
-  
-  // Cria efeito de grid pulsante
-  private createGridEffect(): void {
-    const section = this.el.nativeElement.querySelector('.experience-section');
-    if (!section) return;
-    
-    const gridContainer = document.createElement('div');
-    gridContainer.className = 'grid-effect';
-    section.appendChild(gridContainer);
+  private observeElements(): void {
+    const items = this.timelineContainer.nativeElement.querySelectorAll('.timeline-item');
+    items.forEach((item: HTMLElement, index: number) => {
+      // Configurar variável CSS para animação cronológica
+      item.style.setProperty('--item-index', index.toString());
+      this.observer?.observe(item);
+    });
   }
 
-  ngOnDestroy(): void {
-    this.stopAutoPlay();
-    if (this.observer) this.observer.disconnect();
-    if (this.mouseMoveUnlisten) this.mouseMoveUnlisten();
-    if (this.mouseLeaveUnlisten) this.mouseLeaveUnlisten();
+  // Lógica de Paginação
+  updateVisibleExperiences(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.visibleExperiences = this.experiences.slice(startIndex, endIndex);
     
-    // Remove elementos dinâmicos
-    const section = this.el.nativeElement.querySelector('.experience-section');
-    if (section) {
-      const particleContainer = section.querySelector('.particle-container');
-      if (particleContainer) section.removeChild(particleContainer);
-      
-      const gridContainer = section.querySelector('.grid-effect');
-      if (gridContainer) section.removeChild(gridContainer);
-    }
-  }
-
-  setActive(index: number): void {
-    // Adicionar efeito de transição ao mudar o item ativo
-    const prevIndex = this.activeIndex;
-    this.activeIndex = index;
-    
+    // Força a detecção de mudanças e re-observa os elementos
+    this.cdr.detectChanges();
     if (!this.prefersReducedMotion) {
-      const items = this.timelineEl?.querySelectorAll('.timeline-item');
-      if (items && items[prevIndex]) {
-        const prevItem = items[prevIndex] as HTMLElement;
-        prevItem.classList.add('fade-out');
-        setTimeout(() => prevItem.classList.remove('fade-out'), 300);
-      }
-      
-      if (items && items[index]) {
-        const newItem = items[index] as HTMLElement;
-        newItem.classList.add('pop-in');
-        setTimeout(() => newItem.classList.remove('pop-in'), 500);
-      }
-    }
-    
-    this.restartAutoPlay();
-  }
-
-  navigate(direction: number): void {
-    const newIndex = this.activeIndex + direction;
-    if (newIndex >= 0 && newIndex < this.experiences.length) {
-      this.setActive(newIndex);
+      this.observeElements();
     }
   }
 
-  // Efeito de hover nos itens
-  onItemHover(event: MouseEvent): void {
-    if (this.prefersReducedMotion) return;
-    
-    const target = event.currentTarget as HTMLElement;
-    target.classList.add('hover-effect');
-    
-    // Adicionar efeito de brilho temporário ao dot
-    const dot = target.querySelector('.dot-inner');
-    if (dot) {
-      dot.classList.add('glow');
-      setTimeout(() => dot.classList.remove('glow'), 1000);
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updateVisibleExperiences();
     }
   }
 
-  // Efeito de movimento do mouse dentro do item
-  onItemMouseMove(event: MouseEvent): void {
-    if (this.prefersReducedMotion) return;
-    
-    const target = event.currentTarget as HTMLElement;
-    const rect = target.getBoundingClientRect();
-    
-    // Calcular posição relativa do mouse dentro do elemento (0-100%)
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-    
-    // Aplicar efeito de luz baseado na posição do mouse
-    this.renderer.setStyle(target, '--x', `${x}%`);
-    this.renderer.setStyle(target, '--y', `${y}%`);
+  private triggerSwitch(direction: 'next' | 'prev'): void {
+    if (this.prefersReducedMotion) {
+      return; // Evita animações em usuários com redução de movimento
+    }
+    this.switchDirection = direction;
+    this.isLeaving = true;
+    this.isEntering = false;
+    setTimeout(() => {
+      this.isLeaving = false;
+      this.isEntering = true;
+      setTimeout(() => {
+        this.isEntering = false;
+        this.switchDirection = null;
+      }, 300); // duração de entrada
+    }, 250); // duração de saída
   }
 
-  private startAutoPlay(): void {
-    this.autoPlayInterval = setInterval(() => {
-      this.activeIndex = (this.activeIndex + 1) % this.experiences.length;
-      
-      // Adicionar efeito de transição suave
-      const items = this.timelineEl?.querySelectorAll('.timeline-item');
-      if (items && items[this.activeIndex]) {
-        const activeItem = items[this.activeIndex] as HTMLElement;
-        activeItem.classList.add('auto-transition');
-        setTimeout(() => activeItem.classList.remove('auto-transition'), 500);
-      }
-    }, 6000); // Aumentado para 6 segundos para dar mais tempo de leitura
+  goToPageAnimated(page: number): void {
+    if (page === this.currentPage) return;
+    const direction: 'next' | 'prev' = page > this.currentPage ? 'next' : 'prev';
+    this.triggerSwitch(direction);
+    setTimeout(() => {
+      this.currentPage = page;
+      this.updateVisibleExperiences();
+    }, 250);
   }
 
-  private stopAutoPlay(): void {
-    if (this.autoPlayInterval) {
-      clearInterval(this.autoPlayInterval);
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.triggerSwitch('next');
+      setTimeout(() => {
+        this.currentPage++;
+        this.updateVisibleExperiences();
+      }, 250);
     }
   }
 
-  private restartAutoPlay(): void {
-    this.stopAutoPlay();
-    if (!this.prefersReducedMotion) {
-      this.startAutoPlay();
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.triggerSwitch('prev');
+      setTimeout(() => {
+        this.currentPage--;
+        this.updateVisibleExperiences();
+      }, 250);
     }
   }
 
-  @HostListener('document:keydown.arrowLeft')
-  onArrowLeft(): void {
-    this.navigate(-1);
+  isPrevDisabled(): boolean {
+    return this.currentPage === 1;
   }
 
-  @HostListener('document:keydown.arrowRight')
-  onArrowRight(): void {
-    this.navigate(1);
+  isNextDisabled(): boolean {
+    return this.currentPage === this.totalPages;
   }
 
-  // Efeito parallax avançado
-  onMouseMove(event: MouseEvent): void {
-    if (this.prefersReducedMotion || !this.timelineEl) return;
-    
-    const rect = this.timelineEl.getBoundingClientRect();
-    
-    // Calcular posição relativa do mouse em relação ao centro do elemento
-    const px = ((event.clientX - rect.left) - rect.width / 2) / 10;
-    const py = ((event.clientY - rect.top) - rect.height / 2) / 10;
-    
-    // Aplicar efeito parallax com suavização
-    this.renderer.setStyle(this.timelineEl, '--px', `${px.toFixed(2)}`);
-    this.renderer.setStyle(this.timelineEl, '--py', `${py.toFixed(2)}`);
-    
-    // Adicionar classe para ativar o efeito 3D
-    this.timelineEl.classList.add('parallax');
-  }
-
-  resetParallax(): void {
-    if (!this.timelineEl) return;
-    
-    // Resetar variáveis CSS com transição suave
-    this.renderer.setStyle(this.timelineEl, '--px', '0');
-    this.renderer.setStyle(this.timelineEl, '--py', '0');
-    
-    // Remover classe de efeito parallax
-    this.timelineEl.classList.remove('parallax');
+  // Navegação por teclado
+  @HostListener('document:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'ArrowLeft') {
+      this.prevPage();
+    } else if (event.key === 'ArrowRight') {
+      this.nextPage();
+    }
   }
 }

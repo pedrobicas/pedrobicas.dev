@@ -51,6 +51,10 @@
   .section-title {
     margin-bottom: 1.5rem;
     text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.2s;
   }
   
   .skills-minimal {
@@ -76,6 +80,10 @@
     background: rgba(44,131,212,0.06);
     padding: 1rem;
     box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.4s;
   }
 
   .details-card .header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; }
@@ -83,13 +91,44 @@
   .details-card .header .meta h4 { margin: 0; color: var(--text-primary); }
   .details-card .header .meta .category { color: var(--text-secondary); font-size: 0.9rem; }
 
-  .meter { position: relative; width: 160px; height: 160px; margin: 0.6rem auto 1rem; }
+  .meter { 
+    position: relative; 
+    width: 160px; 
+    height: 160px; 
+    margin: 0.6rem auto 1rem; 
+    opacity: 0;
+    transform: scale(0.8);
+    animation: scaleIn 1s ease forwards;
+    animation-delay: 0.6s;
+  }
   .meter svg { width: 160px; height: 160px; transform: rotate(-90deg); }
   .meter .track { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 10; }
-  .meter .progress { fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; }
+  .meter .progress { 
+    fill: none; 
+    stroke: var(--accent); 
+    stroke-width: 10; 
+    stroke-linecap: round; 
+    transition: stroke-dashoffset 0.6s ease; 
+    stroke-dasharray: 0 283;
+    animation: progressFill 1.5s ease forwards;
+    animation-delay: 1s;
+  }
   .meter-center { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
-  .meter-center .value { color: var(--text-primary); font-weight: 800; font-size: 1.6rem; }
-  .meter-center .label { color: var(--text-secondary); font-size: 0.85rem; }
+  .meter-center .value { 
+    color: var(--text-primary); 
+    font-weight: 800; 
+    font-size: 1.6rem; 
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 1.2s;
+  }
+  .meter-center .label { 
+    color: var(--text-secondary); 
+    font-size: 0.85rem; 
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 1.3s;
+  }
 
   .details-card .actions { display: flex; gap: 0.6rem; justify-content: center; }
   .details-card .btn { padding: 0.5rem 0.9rem; border-radius: 10px; border: 1px solid rgba(44,131,212,0.35); color: var(--accent); background: rgba(44,131,212,0.08); font-weight: 700; }
@@ -101,6 +140,50 @@
     gap: 1rem;
     margin: 0 auto 1.2rem;
     max-width: 1000px;
+  }
+}
+
+// Keyframes para animações
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes progressFill {
+  from {
+    stroke-dasharray: 0 283;
+  }
+  to {
+    stroke-dasharray: 283 283;
+  }
+}
+
 
     .search-box {
       flex: 1;
@@ -144,7 +227,7 @@
         box-shadow: 0 6px 20px rgba(44,131,212,0.15);
       }
     }
-  }
+  
 
   .skills-filters {
     display: flex;
@@ -332,7 +415,7 @@
       .level-label { color: var(--text-secondary); font-size: 0.85rem; font-weight: 700; }
     }
   }
-}
+
 
 
 .skills-minimal { 
@@ -361,8 +444,7 @@
 
 /* Minimalist Category Filter Pills - Fixed Position */
 .category-filters {
-  position: sticky;
-  top: 90px; // Fica fixo no topo da viewport
+  position: relative; /* Alterado de sticky para relative */
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
@@ -372,6 +454,7 @@ max-width: 600px;
   margin: 0 auto 0;
   z-index: 100; // Z-index alto para ficar sobre o conteúdo
   border-radius: 0 0 20px 20px;
+  background: transparent; /* Removido o fundo escuro */
  
   // Responsive overflow handling
   
@@ -434,7 +517,6 @@ max-width: 600px;
   align-items: center;
 }
 
-/* Centered, wrapping grid using flex so the last row stays centered */
 .icon-grid { 
   display: flex; 
   flex-wrap: wrap; 
@@ -444,7 +526,6 @@ max-width: 600px;
   max-width: 1000px; 
   margin: 0 auto; 
   justify-content: center; 
-  animation: icon-enter 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
   
   // Responsive grid adaptation
   @media (max-width: 1200px) {
@@ -486,7 +567,44 @@ max-width: 600px;
   overflow: visible; 
   cursor: pointer; 
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
-  animation: icon-enter 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+  
+  // Animação temática de circuito/rede tecnológica
+  opacity: 0;
+  transform: scale(0.3) rotate(45deg);
+  filter: brightness(0.3);
+  animation: circuitNodeActivation 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  animation-delay: calc(var(--circuit-delay, 0) * 0.15s);
+  
+  // Linhas de circuito conectando os nós
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.8), transparent);
+    transform: translateY(-50%) scaleX(0);
+    transform-origin: left;
+    animation: circuitConnection 0.8s ease-out forwards;
+    animation-delay: calc(var(--circuit-delay, 0) * 0.15s + 0.3s);
+  }
+  
+  // Pulsos de energia percorrendo o circuito
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    box-shadow: 0 0 10px var(--accent);
+    animation: energyPulse 2s ease-in-out infinite;
+    animation-delay: calc(var(--circuit-delay, 0) * 0.15s + 1s);
+  }
   
   // Touch-friendly minimum size
   @media (hover: none) and (pointer: coarse) {
@@ -586,15 +704,16 @@ max-width: 600px;
   transform: translateY(-4px) scale(1.05); 
   
   .icon-bg {
-    opacity: 0;
+    opacity: 1;
+    transform: scale(1.2);
   }
   
   &::before {
-    opacity: 0;
+    opacity: 1;
   }
   
   &::after {
-    opacity: 0;
+    opacity: 1;
   }
 }
 
@@ -733,19 +852,71 @@ max-width: 600px;
 .legend { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.9rem; margin-top: 14px; justify-content: center; }
 .legend .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
 
-@keyframes icon-enter { 
-  0% { 
-    opacity: 0; 
-    transform: translateY(30px) scale(0.7) rotateX(20deg) rotateY(10deg); 
-  } 
-  50% {
-    opacity: 0.8;
-    transform: translateY(-5px) scale(1.05) rotateX(-5deg) rotateY(-2deg);
+@keyframes circuitNodeActivation {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(45deg);
+    filter: brightness(0.3) hue-rotate(180deg);
   }
-  100% { 
-    opacity: 1; 
-    transform: translateY(0) scale(1) rotateX(0deg) rotateY(0deg); 
-  } 
+  30% {
+    opacity: 0.6;
+    transform: scale(0.8) rotate(20deg);
+    filter: brightness(0.7) hue-rotate(90deg);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1.1) rotate(-5deg);
+    filter: brightness(1.2) hue-rotate(20deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1) hue-rotate(0deg);
+  }
+}
+
+@keyframes circuitConnection {
+  0% {
+    transform: translateY(-50%) scaleX(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-50%) scaleX(1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes energyPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes circuitOverload {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
 }
 
 @keyframes icon-pulse {

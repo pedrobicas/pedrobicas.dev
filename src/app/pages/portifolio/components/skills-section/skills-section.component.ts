@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, computed, signal, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './skills-section.component.html',
   styleUrls: ['./skills-section.component.scss']
 })
-export class SkillsSectionComponent implements OnInit {
+export class SkillsSectionComponent implements OnInit, AfterViewInit {
   @Input() skillCategories: any[] = [];
   @ViewChild('iconGrid') iconGrid!: ElementRef;
 
@@ -32,37 +32,46 @@ export class SkillsSectionComponent implements OnInit {
 
   // hover highlight state
   hoveredIndex = signal<number | null>(null);
-  onIconEnter(idx: number) { this.hoveredIndex.set(idx); }
-  onIconLeave() { this.hoveredIndex.set(null); }
 
   ngOnInit() {
-    // No need for manual event listeners since we're using Angular click handlers
+    // Initialization logic if needed
+  }
+
+  ngAfterViewInit() {
+    this.setupCircuitAnimation();
+  }
+
+  private setupCircuitAnimation() {
+    const iconCells = document.querySelectorAll('.icon-cell');
+    
+    iconCells.forEach((cell, index) => {
+      // Criar padrão de ativação de circuito baseado na posição
+      const row = Math.floor(index / 6); // Assumindo 6 colunas
+      const col = index % 6;
+      
+      // Algoritmo de ativação em padrão de circuito integrado
+      const circuitDelay = (row * 2) + (col * 0.5) + Math.random() * 0.3;
+      
+      (cell as HTMLElement).style.setProperty('--circuit-delay', circuitDelay.toString());
+    });
   }
 
   filterByCategory(category: string) {
-    console.log('Filtering by category:', category);
     this.selectedCategory.set(category);
     
-    // Update active pill
-    const pills = document.querySelectorAll('.filter-pill');
-    pills.forEach(pill => {
-      pill.classList.remove('active');
-      if (pill.getAttribute('data-category') === category) {
-        pill.classList.add('active');
-      }
-    });
+    // Update active filter pill
+    document.querySelectorAll('.filter-pill').forEach(pill => pill.classList.remove('active'));
+    document.querySelector(`[data-category="${category}"]`)?.classList.add('active');
+    
+    // Reconfigurar animação após filtro
+    setTimeout(() => this.setupCircuitAnimation(), 50);
+  }
 
-    // Simple grid animation
-    const cells = document.querySelectorAll('.icon-cell');
-    cells.forEach((cell, index) => {
-      (cell as HTMLElement).style.opacity = '0';
-      (cell as HTMLElement).style.transform = 'translateY(10px) scale(0.9)';
-      
-      setTimeout(() => {
-        (cell as HTMLElement).style.opacity = '1';
-        (cell as HTMLElement).style.transform = 'translateY(0) scale(1)';
-        (cell as HTMLElement).style.transition = 'all 0.3s ease';
-      }, index * 50);
-    });
+  onIconEnter(index: number) {
+    this.hoveredIndex.set(index);
+  }
+
+  onIconLeave() {
+    this.hoveredIndex.set(null);
   }
 }
