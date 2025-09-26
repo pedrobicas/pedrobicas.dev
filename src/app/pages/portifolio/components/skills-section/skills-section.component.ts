@@ -14,6 +14,10 @@ export class SkillsSectionComponent implements OnInit, AfterViewInit {
 
   // Current filter state
   selectedCategory = signal<string>('all');
+  
+  // Animation state
+  isVisible = signal<boolean>(false);
+  private observer?: IntersectionObserver;
 
   // flatten skills for minimalist grid
   flatIcons = computed(() => {
@@ -38,10 +42,36 @@ export class SkillsSectionComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.setupCircuitAnimation();
+    this.setupIntersectionObserver();
+  }
+
+  private setupIntersectionObserver() {
+    const options = {
+      root: null,
+      rootMargin: '-20% 0px -20% 0px', // Trigger when 20% of the section is visible
+      threshold: 0.3
+    };
+
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !this.isVisible()) {
+          this.isVisible.set(true);
+          this.setupCircuitAnimation();
+        }
+      });
+    }, options);
+
+    // Observe the skills section element
+    const skillsSection = document.querySelector('.skills-section');
+    if (skillsSection) {
+      this.observer.observe(skillsSection);
+    }
   }
 
   private setupCircuitAnimation() {
+    // Only run animation if section is visible
+    if (!this.isVisible()) return;
+    
     const iconCells = document.querySelectorAll('.icon-cell');
     
     iconCells.forEach((cell, index) => {
@@ -53,6 +83,9 @@ export class SkillsSectionComponent implements OnInit, AfterViewInit {
       const circuitDelay = (row * 1.5) + (col * 0.8) + Math.random() * 0.5;
       
       (cell as HTMLElement).style.setProperty('--circuit-delay', circuitDelay.toString());
+      
+      // Add animation class to trigger CSS animations
+      (cell as HTMLElement).classList.add('animate-in');
     });
   }
 
@@ -63,8 +96,10 @@ export class SkillsSectionComponent implements OnInit, AfterViewInit {
     document.querySelectorAll('.filter-pill').forEach(pill => pill.classList.remove('active'));
     document.querySelector(`[data-category="${category}"]`)?.classList.add('active');
     
-    // Reconfigurar animação após filtro
-    setTimeout(() => this.setupCircuitAnimation(), 50);
+    // Reconfigurar animação após filtro apenas se a seção estiver visível
+    if (this.isVisible()) {
+      setTimeout(() => this.setupCircuitAnimation(), 50);
+    }
   }
 
   onIconEnter(index: number) {
@@ -73,5 +108,11 @@ export class SkillsSectionComponent implements OnInit, AfterViewInit {
 
   onIconLeave() {
     this.hoveredIndex.set(null);
+  }
+
+  ngOnDestroy() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
 }

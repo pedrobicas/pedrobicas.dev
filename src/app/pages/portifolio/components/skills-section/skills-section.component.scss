@@ -566,44 +566,48 @@ max-width: 600px;
   border: 2px solid transparent; 
   overflow: visible; 
   cursor: pointer; 
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1); 
   
-  // Animação temática de circuito/rede tecnológica
+  // Estado inicial - sem animação
   opacity: 0;
   transform: scale(0.3) rotate(45deg);
   filter: brightness(0.3);
-  animation: circuitNodeActivation 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-  animation-delay: calc(var(--circuit-delay, 0) * 0.4s);
   
-  // Linhas de circuito conectando os nós
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    width: 20px;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.8), transparent);
-    transform: translateY(-50%) scaleX(0);
-    transform-origin: left;
-    animation: circuitConnection 1.5s ease-out forwards;
-    animation-delay: calc(var(--circuit-delay, 0) * 0.4s + 0.8s);
-  }
-  
-  // Pulsos de energia percorrendo o circuito
-  &::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 4px;
-    height: 4px;
-    background: var(--accent);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    box-shadow: 0 0 10px var(--accent);
-    animation: energyPulse 3s ease-in-out infinite;
-    animation-delay: calc(var(--circuit-delay, 0) * 0.4s + 2s);
+  // Animação só acontece quando a classe animate-in é adicionada
+  &.animate-in {
+    animation: circuitNodeActivation 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    animation-delay: calc(var(--circuit-delay, 0) * 0.4s);
+    
+    // Linhas de circuito conectando os nós
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      width: 20px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.8), transparent);
+      transform: translateY(-50%) scaleX(0);
+      transform-origin: left;
+      animation: circuitConnection 1.5s ease-out forwards;
+      animation-delay: calc(var(--circuit-delay, 0) * 0.4s + 0.8s);
+    }
+    
+    // Pulsos de energia percorrendo o circuito
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      box-shadow: 0 0 10px var(--accent);
+      animation: energyPulse 3s ease-in-out infinite;
+      animation-delay: calc(var(--circuit-delay, 0) * 0.4s + 2s);
+    }
   }
   
   // Touch-friendly minimum size
@@ -675,7 +679,7 @@ max-width: 600px;
   fill: var(--accent) !important; 
   stroke: var(--accent) !important; 
   filter: drop-shadow(0 0 8px rgba(44,131,212,0.3)); 
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important; 
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1) !important; 
   animation: icon-float 4s ease-in-out infinite;
 }
 
@@ -685,7 +689,7 @@ max-width: 600px;
   line-height: 2rem !important; 
   color: var(--accent) !important; 
   display: inline-block !important; 
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1) !important;
   animation: icon-float 4s ease-in-out infinite;
 }
 /* Specific fixes for PostgreSQL/MySQL */
@@ -823,7 +827,7 @@ max-width: 600px;
 
 // Enhanced hover effect for icon cells
 .icon-cell {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
     transform: translateY(-6px) scale(1.05);
@@ -831,7 +835,7 @@ max-width: 600px;
     i {
       transform: scale(1.1);
       filter: drop-shadow(0 6px 12px rgba(44, 131, 212, 0.3));
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .tooltip {
@@ -964,7 +968,6 @@ max-width: 600px;
     }
     
     .category-filters {
-      top: 85px;
       max-width: 90%;
       padding: 0.9rem 0.8rem 1.3rem;
       gap: 10px;
@@ -1018,7 +1021,6 @@ max-width: 600px;
     }
     
     .category-filters {
-      top: 80px;
       max-width: 95%;
       padding: 0.8rem 0.6rem 1.2rem;
       gap: 8px;
@@ -1080,12 +1082,11 @@ max-width: 600px;
   }
   
   .category-filters {
-    position: sticky;
-    top: 75px; // Posição fixa ajustada para mobile
+    position: relative; /* Mantém como relative para não ficar fixo */
     gap: 6px;
     padding: 0.6rem 0.4rem 1rem;
-    background: rgba(16, 16, 20, 0.98);
-    backdrop-filter: blur(8px);
+    background: transparent; /* Remove o fundo para não ficar fixo */
+    backdrop-filter: none; /* Remove o blur para não ficar fixo */
     max-width: 98%;
     margin: 0 auto 0.8rem;
     
