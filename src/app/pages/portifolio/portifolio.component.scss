@@ -173,12 +173,12 @@
   .section {
   position: relative;
   width: 100vw;
-  min-height: 90vh; // Reduzido de 100vh para 90vh para diminuir espaçamento
+  min-height: 80vh; // Reduzido de 90vh para 80vh para diminuir ainda mais o espaçamento
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
   overflow: visible;
-  padding: 2rem 0; // Adicionado padding menor para melhor espaçamento
+  padding: 0.5rem 0; // Reduzido de 2rem para 0.5rem para melhor espaçamento
   
   // Estilos iniciais das seções (visíveis por padrão)
   .section-content {

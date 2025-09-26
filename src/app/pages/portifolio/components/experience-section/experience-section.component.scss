@@ -1,524 +1,172 @@
-/* Estilização avançada com animações fluidas, efeitos 3D e interatividade */
 @import '../../portifolio.component.scss';
 
-$accent: var(--accent);
-$accent-light: var(--accent-light);
-$text-primary: var(--text-primary);
-$text-secondary: var(--text-secondary);
-$bg-dark: var(--bg-primary);
-
-// Mixins (mantidos para possíveis extensões)
-@mixin glass-morphism($opacity: 0.06, $blur: 12px) {
-  background: rgba(255,255,255,$opacity);
-  backdrop-filter: blur($blur);
-  border: 1px solid rgba(255,255,255,0.05);
-  box-shadow: 
-    0 8px 32px rgba(0,0,0,0.1),
-    0 2px 8px rgba(0,0,0,0.05),
-    inset 0 1px 1px rgba(255,255,255,0.03);
-}
-
-/* Seção de Experiências - Design Moderno, Dinâmico e Minimalista */
 .experience-section {
+  background: #000000 !important;
+  padding: 1rem 0;
   position: relative;
-  width: 100%;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5rem 2rem;
-  overflow: hidden;
-
-  .section-content {
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.2s;
   }
-
-  .section-header { 
-    text-align: center; 
-    margin-bottom: 2rem;
-    
-    .section-title {
-      font-size: 2.8rem;
-      font-weight: 700;
-      margin-bottom: 0.8rem;
-      color: $text-primary;
-      
-      .highlight { color: $accent; }
-    }
-    
-    .section-subtitle {
-      color: $text-secondary;
-      font-size: 1.2rem;
-      font-weight: 300;
-      margin-bottom: 2rem;
-      line-height: 1.6;
-    }
-  }
-
-  /* Timeline em grid + estados de transição */
-  .experience-timeline {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
+  
+  .timeline-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
     position: relative;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-    z-index: 1;
-    min-height: 400px; // Garantir altura mínima
-
-    &.leaving.dir-next { transform: translateX(-2%); opacity: 0.8; }
-    &.leaving.dir-prev { transform: translateX(2%);  opacity: 0.8; }
-    &.entering.dir-next { transform: translateX(0);   opacity: 1; }
-    &.entering.dir-prev { transform: translateX(0);   opacity: 1; }
-
-    .timeline-item {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: transform, opacity, box-shadow;
-      z-index: 2;
-      min-height: 200px; // Garantir altura mínima para os cards
-      
-      // Animação simples de aparição sequencial
-      opacity: 0;
-      transform: translateY(30px) scale(0.95);
-      animation: simpleCardReveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      animation-delay: calc(0.1s + var(--item-index, 0) * 0.15s); // Delay menor para aparecer mais rápido
-      
-      // Efeito de brilho sutil
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, 
-          rgba(255, 255, 255, 0.1) 0%, 
-          transparent 50%, 
-          rgba(255, 255, 255, 0.05) 100%);
-        border-radius: inherit;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-      }
-      
-      &:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 
-          0 20px 40px rgba(0, 0, 0, 0.15),
-          0 8px 16px rgba(0, 0, 0, 0.1),
-          0 0 0 1px rgba(255, 255, 255, 0.1);
-        border-color: rgba($accent, 0.3);
-        
-        &::before {
-          opacity: 1;
-        }
-      }
-
-      .timeline-dot {
-      position: absolute;
-      left: -12px;
-      top: 1.5rem;
-      width: 24px;
-      height: 24px;
-      background: linear-gradient(135deg, $accent 0%, $accent-light 100%);
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      z-index: 2;
-      
-      // Animação temática de timeline - aparição cronológica
-      opacity: 0;
-      transform: scale(0);
-      animation: chronologicalAppear 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-      animation-delay: calc(0.1s + var(--item-index, 0) * 0.4s);
-      
-      // Ondas de tempo expandindo
-      &::before {
-        content: '';
-        position: absolute;
-        top: -8px;
-        left: -8px;
-        right: -8px;
-        bottom: -8px;
-        border: 2px solid rgba($accent, 0.4);
-        border-radius: 50%;
-        opacity: 0;
-        animation: timeWaves 2s ease-out infinite;
-        animation-delay: calc(0.3s + var(--item-index, 0) * 0.4s);
-      }
-      
-      // Núcleo pulsante do tempo
-      &::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 8px;
-        height: 8px;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        opacity: 0;
-        animation: timeCore 1.5s ease-in-out infinite;
-        animation-delay: calc(0.5s + var(--item-index, 0) * 0.4s);
-      }
-    }
-
-      .timeline-card {
-        position: relative;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        padding: 2rem;
-        margin-left: 2rem;
-        backdrop-filter: blur(10px);
-        
-        // Animação temática de timeline - construção progressiva
-        opacity: 0;
-        transform: translateX(100px) perspective(1000px) rotateY(-15deg);
-        filter: blur(8px);
-        animation: timelineConstruction 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-        animation-delay: calc(0.3s + var(--item-index, 0) * 0.4s);
-        
-        // Efeito de "construção" do card
-        &::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(90deg, 
-            transparent 0%, 
-            rgba($accent, 0.1) 50%, 
-            transparent 100%);
-          border-radius: 16px;
-          transform: translateX(-100%);
-          animation: constructionSweep 1.5s ease-out forwards;
-          animation-delay: calc(0.5s + var(--item-index, 0) * 0.4s);
-        }
-        
-        // Linha de conexão animada
-        &::after {
-          content: '';
-          position: absolute;
-          left: -2rem;
-          top: 1.5rem;
-          width: 2rem;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, $accent);
-          opacity: 0;
-          animation: connectionLine 0.8s ease-out forwards;
-          animation-delay: calc(0.8s + var(--item-index, 0) * 0.4s);
-        }
-        
-        &:hover {
-          transform: translateX(10px) scale(1.02);
-          border-color: rgba($accent, 0.3);
-          box-shadow: 0 10px 30px rgba($accent, 0.15);
-        }
-        
-        .card-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1rem;
-          
-          .year-badge {
-            background: rgba($accent, 0.1);
-            color: $accent-light;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
-          }
-          
-          .type-badge {
-            color: $text-secondary;
-            font-size: 0.8rem;
-            font-weight: 500;
-          }
-        }
-        
-        .card-title {
-          font-size: 1.25rem;
-          font-weight: 600;
-          color: $text-primary;
-          margin-bottom: 0.8rem;
-        }
-        
-        .card-description {
-          color: $text-secondary;
-          font-size: 0.95rem;
-          line-height: 1.6;
-          margin-bottom: 1.2rem;
-        }
-        
-        .tech-stack {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.6rem;
-          
-          .tech-item {
-            background: rgba(255, 255, 255, 0.05);
-            color: $text-secondary;
-            padding: 0.3rem 0.7rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            transition: background 0.25s ease, color 0.25s ease;
-            
-            &:hover {
-              background: rgba($accent, 0.2);
-              color: $accent-light;
-            }
-          }
-          
-          .tech-more {
-            color: $text-secondary;
-            font-size: 0.8rem;
-          }
-        }
-      }
+  }
+  
+  .timeline-item {
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    
+    &:last-child {
+      margin-bottom: 0;
     }
   }
-
-  /* Controles de navegação */
-  .timeline-controls {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2rem;
+  
+  .experience-card {
+    background: transparent;
+    border: 1px solid rgba(44, 131, 212, 0.2);
+    border-radius: 8px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
     
-    .control-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: $text-primary;
-      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+    &:hover {
+      border-color: rgba(44, 131, 212, 0.4);
+      background: rgba(44, 131, 212, 0.03);
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
       
-      &:hover:not(:disabled) {
-        background: $accent;
-        color: #fff;
-        border-color: $accent;
-        transform: translateY(-2px);
+      .header-left {
+        flex: 1;
+        min-width: 0;
       }
       
-      &:disabled {
-        opacity: 0.45;
-        cursor: not-allowed;
+      .header-right {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        flex-shrink: 0;
       }
     }
     
-    .pagination-dots {
+    .year-badge {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 500;
+      font-family: 'Fira Code', monospace;
+    }
+    
+    .type-badge {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    
+    .card-description {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+    
+    .tech-stack {
       display: flex;
+      flex-wrap: wrap;
       gap: 0.5rem;
       
-      .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.2);
-        border: 1px solid rgba(255,255,255,0.25);
-        transition: transform 0.2s ease, background 0.25s ease, border-color 0.25s ease;
+      .tech-item {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-family: 'Fira Code', monospace;
         
-        &:hover { transform: scale(1.2); }
-        &.active { background: $accent; border-color: $accent; }
+        &:not(:last-child)::after {
+          content: '·';
+          margin-left: 0.5rem;
+          color: var(--accent);
+        }
       }
     }
   }
-
-  /* Responsividade */
+  
+  // Responsividade
   @media (max-width: 768px) {
-
-    .experience-timeline { grid-template-columns: 1fr; }
-    .timeline-item .timeline-dot { left: -15px; }
-    .timeline-item .timeline-card { padding-left: 2.5rem; }
-  }
-
-  @media (max-width: 1200px) {
-    .experience-timeline {
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
+    padding: 3rem 0;
+    
+    .timeline-container {
+      padding: 0 1rem;
+    }
+    
+    .experience-card {
+      padding: 1.5rem;
+      
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        
+        .header-right {
+          gap: 1rem;
+        }
+      }
+      
+      .card-title {
+        font-size: 1.2rem;
+      }
     }
   }
-
-  @media (max-width: 900px) {
-    .section-content { gap: 2rem; }
-
-    .experience-timeline { grid-template-columns: 1fr; gap: 1.5rem; }
-    .section-header .section-title { font-size: 2.5rem; }
-  }
-
-  @media (max-width: 600px) {
-    .timeline-item .timeline-card { padding: 1.5rem; margin-top: 25px; }
-    .timeline-item .timeline-dot .dot-inner { width: 50px; height: 50px; font-size: 1.2rem; }
-    .section-header .section-title { font-size: 2rem; }
-  }
-
-
-/* Keyframes para animações */
-@keyframes timelineConstruction {
-  0% {
-    opacity: 0;
-    transform: translateX(100px) perspective(1000px) rotateY(-15deg);
-    filter: blur(8px);
-  }
-  30% {
-    opacity: 0.3;
-    transform: translateX(50px) perspective(1000px) rotateY(-8deg);
-    filter: blur(4px);
-  }
-  70% {
-    opacity: 0.8;
-    transform: translateX(10px) perspective(1000px) rotateY(-2deg);
-    filter: blur(1px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) perspective(1000px) rotateY(0deg);
-    filter: blur(0px);
+  
+  @media (max-width: 480px) {
+    .experience-card {
+      padding: 1rem;
+      
+      .card-title {
+        font-size: 1.1rem;
+      }
+      
+      .card-description {
+        font-size: 0.9rem;
+      }
+      
+      .tech-stack .tech-item {
+        font-size: 0.8rem;
+      }
+    }
   }
 }
 
-@keyframes constructionSweep {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-
-@keyframes connectionLine {
-  0% {
-    width: 0;
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    width: 2rem;
-    opacity: 0.8;
-  }
-}
-
-@keyframes chronologicalAppear {
-  0% {
-    opacity: 0;
-    transform: scale(0) rotate(-180deg);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.3) rotate(-90deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
-}
-
-@keyframes timeWaves {
-  0% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.3;
-    transform: scale(2);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(3);
-  }
-}
-
-@keyframes timeCore {
-  0%, 100% {
-    opacity: 0.4;
-    transform: translate(-50%, -50%) scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2);
-  }
-}
-
-@keyframes scaleIn {
+// Animações
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: scale(0);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
   }
 }
-
-@keyframes cardReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  }
-  50% {
-    opacity: 0.8;
-    transform: translateY(10px) scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-  }
-}
-
-@keyframes cardSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateX(-100px) scale(0.8);
-  }
-  60% {
-    opacity: 1;
-    transform: translateX(20px) scale(1.05);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
-
-@keyframes simpleCardReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Preferências de movimento reduzido */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}}

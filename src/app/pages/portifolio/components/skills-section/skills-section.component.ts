@@ -49,8 +49,8 @@ export class SkillsSectionComponent implements OnInit, AfterViewInit {
       const row = Math.floor(index / 6); // Assumindo 6 colunas
       const col = index % 6;
       
-      // Algoritmo de ativação em padrão de circuito integrado
-      const circuitDelay = (row * 2) + (col * 0.5) + Math.random() * 0.3;
+      // Algoritmo de ativação em padrão de circuito integrado mais lento
+      const circuitDelay = (row * 1.5) + (col * 0.8) + Math.random() * 0.5;
       
       (cell as HTMLElement).style.setProperty('--circuit-delay', circuitDelay.toString());
     });

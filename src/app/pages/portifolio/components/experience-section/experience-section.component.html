@@ -1,59 +1,33 @@
-<section class="fullpage-section experience-section" id="experience">
+<section class="experience-section" id="experience">
   <div class="section-content">
     <div class="section-header">
       <h2 class="section-title">
         <span class="highlight">02.</span> Experiência
       </h2>
-      <p class="section-subtitle">Trajetória profissional e conquistas na carreira</p>
     </div>
 
-    <div class="experience-timeline" #timelineContainer
-         [class.leaving]="isLeaving"
-         [class.entering]="isEntering"
-         [class.dir-next]="switchDirection === 'next'"
-         [class.dir-prev]="switchDirection === 'prev'">
-      <!-- Os itens da timeline serão renderizados aqui -->
-      <div *ngFor="let experience of visibleExperiences; let i = index" 
-           class="timeline-item"
-           [style.--item-index]="i">
+    <div class="timeline-container" #timelineContainer>
+      <div *ngFor="let experience of experiences; let i = index" 
+           class="timeline-item">
         
-        <div class="timeline-dot">
-          <div class="dot-inner">
-            <i [class]="experience.icon || 'fas fa-briefcase'"></i>
-          </div>
-        </div>
-
-        <div class="timeline-card">
+        <div class="experience-card">
           <div class="card-header">
-            <div class="year-badge">{{ experience.year }}</div>
-            <div class="type-badge">{{ experience.type }}</div>
+            <div class="header-left">
+              <h3 class="card-title">{{ experience.title }}</h3>
+            </div>
+            <div class="header-right">
+              <div class="year-badge">{{ experience.year }}</div>
+              <div class="type-badge">{{ experience.type }}</div>
+            </div>
           </div>
-          <h3 class="card-title">{{ experience.title }}</h3>
+          
           <p class="card-description">{{ experience.description }}</p>
+          
           <div class="tech-stack" *ngIf="experience.technologies && experience.technologies.length > 0">
-            <div class="tech-item" *ngFor="let tech of experience.technologies.slice(0, 4)">{{ tech }}</div>
-            <div class="tech-more" *ngIf="experience.technologies.length > 4">+{{ experience.technologies.length - 4 }}</div>
+            <span class="tech-item" *ngFor="let tech of experience.technologies">{{ tech }}</span>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="timeline-controls" *ngIf="totalPages > 1">
-      <button class="control-btn prev" (click)="prevPage()" [disabled]="isPrevDisabled()">
-        <i class="fas fa-chevron-left"></i>
-      </button>
-      <div class="pagination-dots" role="tablist" aria-label="Paginação de experiências">
-        <button type="button"
-                class="dot"
-                *ngFor="let p of pagesArray; let idx = index"
-                [class.active]="currentPage === (idx + 1)"
-                [attr.aria-selected]="currentPage === (idx + 1)"
-                [attr.aria-label]="'Ir para página ' + (idx + 1)"
-                (click)="goToPageAnimated(idx + 1)"></button>
-      </div>
-      <button class="control-btn next" (click)="nextPage()" [disabled]="isNextDisabled()">
-        <i class="fas fa-chevron-right"></i>
-      </button>
     </div>
   </div>
 </section>

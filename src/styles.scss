@@ -83,6 +83,50 @@ button {
 // Importar Font Awesome (adicionar no angular.json)
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
+// Estilização da barra de rolagem
+::-webkit-scrollbar {
+  width: 12px;
+  height: 0px; // Remove a barra de rolagem horizontal
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--accent), var(--accent-light));
+  border-radius: 10px;
+  border: 2px solid #1a1a1a;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, var(--accent-light), #2196f3);
+  box-shadow: 0 0 10px rgba(28, 87, 175, 0.5);
+  transform: scale(1.1);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(45deg, #0d47a1, var(--accent));
+}
+
+::-webkit-scrollbar-corner {
+  background: #1a1a1a;
+}
+
+// Para Firefox
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) #1a1a1a;
+  overflow-x: hidden !important; // Força remoção do scroll horizontal
+}
+
+body {
+  overflow-x: hidden !important; // Força remoção do scroll horizontal no body também
+}
+
 // Estilos do Swiper
 swiper-container {
   padding: 20px 0;

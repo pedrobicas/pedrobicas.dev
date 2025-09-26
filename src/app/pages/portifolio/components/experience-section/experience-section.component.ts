@@ -81,12 +81,23 @@ export class ExperienceSectionComponent implements OnInit, AfterViewInit {
   }
 
   private observeElements(): void {
-    const items = this.timelineContainer.nativeElement.querySelectorAll('.timeline-item');
-    items.forEach((item: HTMLElement, index: number) => {
-      // Configurar variável CSS para animação cronológica
-      item.style.setProperty('--item-index', index.toString());
-      this.observer?.observe(item);
-    });
+    const timelineItems = this.timelineContainer?.nativeElement.querySelectorAll('.timeline-item');
+    
+    if (timelineItems) {
+      timelineItems.forEach((item: Element, index: number) => {
+        const htmlItem = item as HTMLElement;
+        
+        // Animação ultra simples
+        htmlItem.style.opacity = '0';
+        htmlItem.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+          htmlItem.style.transition = 'all 0.6s ease';
+          htmlItem.style.opacity = '1';
+          htmlItem.style.transform = 'translateY(0)';
+        }, index * 200);
+      });
+    }
   }
 
   // Lógica de Paginação
