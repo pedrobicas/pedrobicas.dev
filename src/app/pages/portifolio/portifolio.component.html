@@ -60,11 +60,12 @@
     <!-- Seção Contato -->
     <section class="section animate-section" id="contact" #contactSection>
       <div class="section-content">
-        <app-contact-section
+        <app-contact-section 
           [contactForm]="contactForm"
-          [submitting]="submitting"
-          [submitSuccess]="submitSuccess"
-          [onSubmit]="onSubmit.bind(this)"
+          [submitting]="submitting()"
+          [submitSuccess]="submitSuccess()"
+          [submitError]="submitError()"
+          [onSubmit]="onContactFormSubmit"
         ></app-contact-section>
       </div>
     </section>
@@ -72,5 +73,3 @@
   </div>
 </div>
 
-<!-- Terminal Flutuante Inovador - COMPLETAMENTE INDEPENDENTE -->
-<app-floating-terminal></app-floating-terminal>
