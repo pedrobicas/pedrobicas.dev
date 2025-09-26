@@ -14,11 +14,12 @@ import { ProjectsSectionComponent } from './components/projects-section/projects
 import { ContactSectionComponent } from './components/contact-section/contact-section.component';
 import { ExperienceSectionComponent } from './components/experience-section/experience-section.component';
 import { FloatingTerminalComponent } from './components/floating-terminal/floating-terminal.component';
+import { DynamicBackgroundComponent } from '../../components/dynamic-background/dynamic-background.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HeroSectionComponent, SkillsSectionComponent, ProjectsSectionComponent, ContactSectionComponent, ExperienceSectionComponent, FloatingTerminalComponent],
+  imports: [CommonModule, ReactiveFormsModule, HeroSectionComponent, SkillsSectionComponent, ProjectsSectionComponent, ContactSectionComponent, ExperienceSectionComponent, FloatingTerminalComponent, DynamicBackgroundComponent],
   templateUrl: './portifolio.component.html',
   styleUrls: ['./portifolio.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

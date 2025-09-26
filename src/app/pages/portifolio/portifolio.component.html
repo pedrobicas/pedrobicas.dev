@@ -1,9 +1,7 @@
 <div class="portfolio-page" [class.dark-theme]="darkTheme()" [class.light-theme]="!darkTheme()">
   
-  <!-- Sistema de Partículas Interativas -->
-  <div class="particles-system" #particlesContainer>
-    <canvas class="particles-canvas" #particlesCanvas></canvas>
-  </div>
+  <!-- Fundo Dinâmico e Animado -->
+  <app-dynamic-background></app-dynamic-background>
   
   <!-- Navegação Simplificada para Scroll -->
   <nav class="scroll-nav" *ngIf="!isMobile">

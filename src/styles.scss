@@ -49,10 +49,10 @@ body {
   overflow-x: hidden;
 }
 
-// FORÇAR FUNDO PRETO EM TODAS AS SEÇÕES
+// SEÇÕES TRANSPARENTES PARA MOSTRAR O FUNDO DINÂMICO
 * {
   &[class*="section"] {
-    background: #000000 !important;
+    background: transparent !important;
   }
 }
 
@@ -64,8 +64,8 @@ app-root,
 .projects-section,
 .contact-section,
 section {
-  background: #000000 !important;
-  background-color: #000000 !important;
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 a {
