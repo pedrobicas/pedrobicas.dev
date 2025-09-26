@@ -100,14 +100,14 @@ export class PortifolioComponent implements OnInit, OnDestroy, AfterViewInit {
       live: 'https://crypto-plataform.streamlit.app/'
     },
     {
-      name: 'Web Real Time Chat',
+      name: 'Chat em tempo real Frontend',
       description: 'Frontend Angular para chat em tempo real, com tema claro/escuro, notificações, lista de usuários online, chat público e privado via WebSocket (STOMP) integrado ao backend Java.',
       techs: ['Angular', 'TypeScript', 'SCSS', 'RxJS', 'SockJS', 'STOMP.js'],
       github: 'https://github.com/pedrobicas/web-realtime-chat',
       live: ''
     },
     {
-      name: 'Java Real Time Chat',
+      name: 'Chat em tempo real Backend',
       description: 'Backend em Java Spring Boot para chat em tempo real, com WebSocket (STOMP), chat público e privado, notificações, controle de usuários online e integração REST.',
       techs: ['Java', 'Spring Boot', 'WebSocket', 'STOMP', 'Maven'],
       github: 'https://github.com/pedrobicas/java-realtime-chat',
@@ -119,54 +119,61 @@ export class PortifolioComponent implements OnInit, OnDestroy, AfterViewInit {
       techs: ['Angular', 'SCSS'],
       github: 'https://github.com/seu-usuario/meu-portifolio',
       live: 'https://pedrobicas.com'
+    },
+    {
+      name: 'My Spotify Universe',
+      description: 'Um projeto completo que integra com a API do Spotify, permitindo autenticação OAuth2 e acesso aos dados do usuário.',
+      techs: ['React', 'Node', 'JavaScript'],
+      github: 'https://github.com/pedrobicas/spotify-project',
+      live: 'https://my-universe-spotify.vercel.app/dashboard'
     }
   ];
 
 experiences = [
   {
     year: '2024-Atual',
-    title: 'Bolsista em Desenvolvimento - INCOR',
-    description: 'Desenvolvimento de sistemas médicos e aplicações para pesquisa cardiovascular, trabalhando com tecnologias modernas e metodologias ágeis.',
+    title: 'Bolsista em Desenvolvimento - INCOR (Instituto do Coração)',
+    description: 'Desenvolvimento de sistemas e aplicações para pesquisa no Hospital das Clínicas da FMUSP.',
     type: 'Trabalho',
     details: [
-      'Desenvolvimento de aplicações web para análise de dados médicos e pesquisa clínica',
-      'Implementação de APIs RESTful para integração entre sistemas hospitalares',
-      'Colaboração com equipe multidisciplinar de médicos, pesquisadores e desenvolvedores',
-      'Criação de dashboards interativos para visualização de dados cardiovasculares',
-      'Participação em projetos de pesquisa com publicação em revistas científicas',
-      'Implementação de práticas de DevOps e integração contínua'
+      'Desenvolvimento de aplicações web',
+      'Implementação de APIs RESTful para integração entre sistemas',
+      'Criação de dashboards interativos para visualização de dados clínicos',
+      'Implementação de práticas de DevOps e integração contínua',
+      'Colaboração com equipes para desenvolvimento de soluções tecnológicas'
     ],
-    technologies: ['Python', 'Django', 'React', 'TypeScript', 'PostgreSQL', 'Docker', 'Redis', 'Celery', 'Git', 'Linux']
+    technologies: ['Python', 'Django', 'React', 'TypeScript', 'PostgreSQL', 'Docker', 'Git', 'Linux', 'REST APIs']
   },
   {
     year: '2023-2026',
-    title: 'Engenharia de Software - FIAP',
-    description: 'Graduação em andamento com foco em arquitetura de software, qualidade de código e desenvolvimento de sistemas escaláveis.',
+    title: 'Bacharelado em Engenharia de Software - FIAP',
+    description: 'Graduação em andamento com foco em arquitetura de software, qualidade de código, desenvolvimento de sistemas escaláveis e tecnologias emergentes. Formação voltada para o mercado de trabalho com projetos práticos.',
     type: 'Formação',
     details: [
-      'Arquitetura de software e padrões de projeto (MVC, Repository, Factory)',
-      'Metodologias ágeis (Scrum, Kanban) e práticas de DevOps',
-      'Desenvolvimento de aplicações empresariais com Spring Boot',
-      'Inteligência artificial e machine learning aplicado a negócios',
-      'Gestão de projetos e liderança técnica',
-      'Qualidade de software, testes automatizados e CI/CD'
+      'Arquitetura de software e padrões de projeto (MVC, Repository, Factory, Observer)',
+      'Metodologias ágeis (Scrum, Kanban) e práticas de DevOps e CI/CD',
+      'Desenvolvimento de aplicações enterprise com Spring Boot e microserviços',
+      'Inteligência artificial, machine learning e análise de dados aplicados a negócios',
+      'Gestão de projetos de software e liderança técnica de equipes',
+      'Qualidade de software, testes automatizados (unitários, integração, E2E)'
     ],
-    technologies: ['Java', 'Spring Boot', 'Angular', 'Python', 'Docker', 'Kubernetes', 'AWS', 'Oracle', 'Maven', 'JUnit']
+    technologies: ['Java', 'Spring Boot', 'Angular', 'Python', 'Docker', 'Oracle', 'Maven', 'JUnit', 'AWS', 'Kubernetes']
   },
   {
     year: '2021-2023',
     title: 'Técnico em Análise e Desenvolvimento de Sistemas - SENAI',
-    description: 'Formação técnica com ênfase em programação, gestão de projetos e desenvolvimento de soluções tecnológicas.',
+    description: 'Formação técnica completa com ênfase em programação, gestão de projetos e desenvolvimento de soluções tecnológicas. Base sólida em fundamentos da computação e desenvolvimento web.',
     type: 'Formação',
     details: [
-      'Desenvolvimento full-stack com foco em tecnologias web modernas',
-      'Fundamentos de programação orientada a objetos e estruturas de dados',
-      'Modelagem e administração de bancos de dados relacionais',
-      'Gestão de projetos de software e metodologias ágeis',
-      'Desenvolvimento de sistemas desktop e web responsivos',
-      'Versionamento de código e trabalho colaborativo'
+      'Desenvolvimento full-stack com foco em tecnologias web modernas e responsivas',
+      'Fundamentos sólidos de programação orientada a objetos e estruturas de dados',
+      'Modelagem, administração e otimização de bancos de dados relacionais',
+      'Gestão de projetos de software usando metodologias ágeis e tradicionais',
+      'Desenvolvimento de sistemas desktop (Java Swing) e web responsivos',
+      'Versionamento de código com Git e trabalho colaborativo em equipe',
+      'UX/UI Design e prototipagem de interfaces com Figma'
     ],
-    technologies: ['JavaScript', 'Node.js', 'React', 'PHP', 'MySQL', 'HTML5', 'CSS3', 'Bootstrap', 'Git', 'Figma']
+    technologies: ['JavaScript', 'Node.js', 'React', 'MySQL', 'HTML5', 'CSS3', 'Bootstrap', 'Git', 'Figma', 'Java']
   }
 ];
 
@@ -211,10 +218,16 @@ skillCategories = [
 ];
 
   contactForm = this.fb.group({
-    name: ['', Validators.required],
+    name: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
-    message: ['', Validators.required]
+    subject: ['', [Validators.required, Validators.minLength(5)]],
+    projectType: ['', Validators.required],
+    message: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]]
   });
+
+  // Estados do formulário de contato
+  submitError = signal('');
+  isSubmittingForm = false;
 
   // Seções para navegação guiada
   sectionIds = ['home', 'skills', 'experience', 'projects', 'contact'];
@@ -607,18 +620,82 @@ private checkInitialHash() {
   }
 
   onSubmit(): void {
-    if (this.contactForm.invalid) return;
-    
-    this.submitting.set(true);
-    
-    setTimeout(() => {
-      this.submitting.set(false);
-      this.submitSuccess.set(true);
-      this.contactForm.reset();
+    if (this.contactForm.valid && !this.isSubmittingForm) {
+      this.isSubmittingForm = true;
+      this.submitting.set(true);
+      this.submitSuccess.set(false);
+      this.submitError.set('');
+
+      const formData = this.contactForm.value;
       
-      setTimeout(() => this.submitSuccess.set(false), 5000);
-    }, 1500);
+      // Simular envio do formulário (aqui você integraria com um serviço real)
+      setTimeout(() => {
+        try {
+          // Simular sucesso (90% das vezes)
+          if (Math.random() > 0.1) {
+            this.submitSuccess.set(true);
+            this.contactForm.reset();
+            console.log('Formulário enviado com sucesso:', formData);
+          } else {
+            // Simular erro
+            throw new Error('Erro simulado no envio');
+          }
+        } catch (error) {
+          this.submitError.set('Ocorreu um erro ao enviar sua mensagem. Tente novamente.');
+          console.error('Erro ao enviar formulário:', error);
+        } finally {
+          this.isSubmittingForm = false;
+          this.submitting.set(false);
+          
+          // Limpar mensagens após 5 segundos
+          setTimeout(() => {
+            this.submitSuccess.set(false);
+            this.submitError.set('');
+          }, 5000);
+        }
+      }, 2000); // Simular delay de rede
+    } else {
+      // Marcar todos os campos como touched para mostrar erros
+      Object.keys(this.contactForm.controls).forEach(key => {
+        this.contactForm.get(key)?.markAsTouched();
+      });
+    }
   }
+
+  // Método para ser chamado pelo componente filho
+  onContactFormSubmit = (formData: any): void => {
+    if (!this.isSubmittingForm) {
+      this.isSubmittingForm = true;
+      this.submitting.set(true);
+      this.submitSuccess.set(false);
+      this.submitError.set('');
+
+      // Simular envio do formulário
+      setTimeout(() => {
+        try {
+          // Simular sucesso (90% das vezes)
+          if (Math.random() > 0.1) {
+            this.submitSuccess.set(true);
+            console.log('Formulário enviado com sucesso:', formData);
+          } else {
+            throw new Error('Erro simulado no envio');
+          }
+        } catch (error) {
+          this.submitError.set('Ocorreu um erro ao enviar sua mensagem. Tente novamente.');
+          console.error('Erro ao enviar formulário:', error);
+        } finally {
+          this.isSubmittingForm = false;
+          this.submitting.set(false);
+          
+          // Limpar mensagens após 5 segundos
+          setTimeout(() => {
+            this.submitSuccess.set(false);
+            this.submitError.set('');
+          }, 5000);
+        }
+      }, 2000);
+    }
+  };
 
   get activeSectionIndex(): number {
     return this.sectionIds.indexOf(this.activeSection());
