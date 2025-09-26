@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface Experience {
@@ -17,171 +17,78 @@ interface Experience {
   templateUrl: './experience-section.component.html',
   styleUrls: ['./experience-section.component.scss'],
 })
-export class ExperienceSectionComponent implements OnInit, AfterViewInit {
+export class ExperienceSectionComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() experiences: Experience[] = [];
   @ViewChild('timelineContainer') timelineContainer!: ElementRef;
 
-  visibleExperiences: Experience[] = [];
+  // Animation state
+  isVisible = signal<boolean>(false);
+  animatedExperiences = signal<Set<number>>(new Set());
   private observer?: IntersectionObserver;
   private prefersReducedMotion: boolean = false;
-
-  // Paginação
-  currentPage: number = 1;
-  itemsPerPage: number = 3;
-  totalPages: number = 1;
-  pagesArray: number[] = [];
-
-  // Estados de transição
-  isLeaving = false;
-  isEntering = false;
-  switchDirection: 'next' | 'prev' | null = null;
 
   constructor(private cdr: ChangeDetectorRef) {
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 
   ngOnInit() {
-    this.totalPages = Math.ceil(this.experiences.length / this.itemsPerPage) || 1;
-    this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    this.updateVisibleExperiences();
+    // Initialization logic if needed
   }
 
   ngAfterViewInit(): void {
-    if (!this.prefersReducedMotion) {
-      this.initializeAnimations();
-    }
-    
-    // Adicionar classe animated com atraso para cada card
-    setTimeout(() => {
-      const cards = this.timelineContainer.nativeElement.querySelectorAll('.timeline-item');
-      cards.forEach((card: HTMLElement) => {
-        card.classList.add('animated');
-      });
-    }, 100);
+    this.setupIntersectionObserver();
   }
 
-  private initializeAnimations(): void {
+  private setupIntersectionObserver() {
     const options = {
       root: null,
-      rootMargin: '0px',
-      threshold: 0.1
+      rootMargin: '-10% 0px -10% 0px', // Trigger when 10% of the section is visible
+      threshold: 0.2
     };
 
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          this.observer?.unobserve(entry.target);
+        if (entry.isIntersecting && !this.isVisible()) {
+          this.isVisible.set(true);
+          this.startSequentialAnimation();
         }
       });
     }, options);
 
-    // Adia a observação para garantir que os elementos estejam no DOM
-    setTimeout(() => this.observeElements(), 0);
+    // Observe the experience section element
+    const experienceSection = document.querySelector('.experience-section');
+    if (experienceSection) {
+      this.observer.observe(experienceSection);
+    }
   }
 
-  private observeElements(): void {
-    const timelineItems = this.timelineContainer?.nativeElement.querySelectorAll('.timeline-item');
-    
-    if (timelineItems) {
-      timelineItems.forEach((item: Element, index: number) => {
-        const htmlItem = item as HTMLElement;
+  private startSequentialAnimation() {
+    if (!this.isVisible() || this.prefersReducedMotion) return;
+
+    // Animate experiences one by one with delay
+    this.experiences.forEach((_, index) => {
+      setTimeout(() => {
+        const currentAnimated = this.animatedExperiences();
+        const newAnimated = new Set(currentAnimated);
+        newAnimated.add(index);
+        this.animatedExperiences.set(newAnimated);
         
-        // Animação ultra simples
-        htmlItem.style.opacity = '0';
-        htmlItem.style.transform = 'translateY(20px)';
-        
-        setTimeout(() => {
-          htmlItem.style.transition = 'all 0.6s ease';
-          htmlItem.style.opacity = '1';
-          htmlItem.style.transform = 'translateY(0)';
-        }, index * 200);
-      });
-    }
+        // Add animation class to the specific timeline item
+        const timelineItem = document.querySelector(`.timeline-item:nth-child(${index + 1})`);
+        if (timelineItem) {
+          timelineItem.classList.add('animate-in');
+        }
+      }, index * 300); // 300ms delay between each experience
+    });
   }
 
-  // Lógica de Paginação
-  updateVisibleExperiences(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.visibleExperiences = this.experiences.slice(startIndex, endIndex);
-    
-    // Força a detecção de mudanças e re-observa os elementos
-    this.cdr.detectChanges();
-    if (!this.prefersReducedMotion) {
-      this.observeElements();
-    }
+  isExperienceAnimated(index: number): boolean {
+    return this.animatedExperiences().has(index);
   }
 
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updateVisibleExperiences();
-    }
-  }
-
-  private triggerSwitch(direction: 'next' | 'prev'): void {
-    if (this.prefersReducedMotion) {
-      return; // Evita animações em usuários com redução de movimento
-    }
-    this.switchDirection = direction;
-    this.isLeaving = true;
-    this.isEntering = false;
-    setTimeout(() => {
-      this.isLeaving = false;
-      this.isEntering = true;
-      setTimeout(() => {
-        this.isEntering = false;
-        this.switchDirection = null;
-      }, 300); // duração de entrada
-    }, 250); // duração de saída
-  }
-
-  goToPageAnimated(page: number): void {
-    if (page === this.currentPage) return;
-    const direction: 'next' | 'prev' = page > this.currentPage ? 'next' : 'prev';
-    this.triggerSwitch(direction);
-    setTimeout(() => {
-      this.currentPage = page;
-      this.updateVisibleExperiences();
-    }, 250);
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.triggerSwitch('next');
-      setTimeout(() => {
-        this.currentPage++;
-        this.updateVisibleExperiences();
-      }, 250);
-    }
-  }
-
-  prevPage(): void {
-    if (this.currentPage > 1) {
-      this.triggerSwitch('prev');
-      setTimeout(() => {
-        this.currentPage--;
-        this.updateVisibleExperiences();
-      }, 250);
-    }
-  }
-
-  isPrevDisabled(): boolean {
-    return this.currentPage === 1;
-  }
-
-  isNextDisabled(): boolean {
-    return this.currentPage === this.totalPages;
-  }
-
-  // Navegação por teclado
-  @HostListener('document:keydown', ['$event'])
-  handleKeyDown(event: KeyboardEvent) {
-    if (event.key === 'ArrowLeft') {
-      this.prevPage();
-    } else if (event.key === 'ArrowRight') {
-      this.nextPage();
+  ngOnDestroy() {
+    if (this.observer) {
+      this.observer.disconnect();
     }
   }
 }
