@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "pedrobicas.dev",
+  "framework": "angular",
   "builds": [
     {
       "src": "package.json",
@@ -13,9 +13,8 @@
   "routes": [
     {
       "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot))",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
+      "headers": { "cache-control": "s-maxage=31536000,immutable" },
+      "continue": true
     },
     {
       "src": "/(.*)",
@@ -23,6 +22,5 @@
     }
   ],
   "buildCommand": "npm run build:prod",
-  "outputDirectory": "dist/pedrobicas.dev",
-  "framework": "angular"
+  "outputDirectory": "dist/pedrobicas.dev"
 }
