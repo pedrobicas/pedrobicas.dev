@@ -118,7 +118,7 @@ export class PortifolioComponent implements OnInit, OnDestroy, AfterViewInit {
       name: 'Portfólio',
       description: 'Meu portfólio pessoal, responsivo e animado',
       techs: ['Angular', 'SCSS'],
-      github: 'https://github.com/seu-usuario/meu-portifolio',
+      github: 'https://github.com/pedrobicas/pedrobicas.dev',
       live: 'https://pedrobicas.com'
     },
     {

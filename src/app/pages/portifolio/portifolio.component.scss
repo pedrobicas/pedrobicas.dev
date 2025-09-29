@@ -9,15 +9,6 @@
   --nav-height: 80px;
 }
 
-[data-theme="light"] {
-  --bg-primary: #000000;
-  --bg-secondary: #000000;
-  --text-primary: #e6f1ff;
-  --text-secondary: #8892b0;
-  --accent: #0d47a1;
-  --accent-light: #1565c0;
-}
-
 // Mixins
 @mixin flex-center {
   display: flex;

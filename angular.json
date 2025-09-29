@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "meu-portifolio": {
+    "pedrobicas.dev": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -39,7 +39,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/meu-portifolio",
+            "outputPath": "dist/pedrobicas.dev",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -68,13 +68,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumWarning": "100kB",
+                  "maximumError": "200kB"
                 }
               ],
               "outputHashing": "all"
@@ -91,10 +91,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "meu-portifolio:build:production"
+              "buildTarget": "pedrobicas.dev:build:production"
             },
             "development": {
-              "buildTarget": "meu-portifolio:build:development"
+              "buildTarget": "pedrobicas.dev:build:development"
             }
           },
           "defaultConfiguration": "development"

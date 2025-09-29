@@ -1,4 +1,4 @@
-body, :host, .main-content{  
+:host, .main-content {  
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -8,14 +8,9 @@ body, :host, .main-content{
   width: 100%;
 }
 
-
-.main-content{
-  padding: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
+.main-content {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center
+  align-items: center;
 }
