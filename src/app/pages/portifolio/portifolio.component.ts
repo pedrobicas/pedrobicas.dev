@@ -41,8 +41,7 @@ export class PortifolioComponent implements OnInit, OnDestroy, AfterViewInit {
   taglineWords = ['Front-end', 'Back-end', 'Banco de Dados'];
   socialLinks = [
     { icon: 'fab fa-github', url: 'https://github.com/pedrobicas', label: 'GitHub' },
-    { icon: 'fab fa-linkedin-in', url: 'https://linkedin.com/in/pedrobicas', label: 'LinkedIn' },
-    { icon: 'fab fa-instagram', url: 'https://instagram.com/pedrobicas', label: 'Instagram' }
+    { icon: 'fab fa-linkedin-in', url: 'https://linkedin.com/in/pedrobicas', label: 'LinkedIn' }
   ];
 
   // ViewChild references for sections
