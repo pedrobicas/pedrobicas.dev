@@ -1,4 +1,29 @@
 
+<!-- Navigation -->
+<div class="portfolio-switcher">
+  <div class="switcher-container">
+    <div class="switcher-track">
+      <div class="switcher-thumb" [class.resume-active]="isResumeActive()"></div>
+    </div>
+    <div class="switcher-options">
+      <button 
+        class="switcher-option" 
+        [class.active]="!isResumeActive()"
+        (click)="navigateToPortfolio()"
+        title="Portfólio Interativo">
+        <i class="fas fa-rocket"></i>
+      </button>
+      <button 
+        class="switcher-option" 
+        [class.active]="isResumeActive()"
+        (click)="navigateToResume()"
+        title="Currículo Profissional">
+        <i class="fas fa-file-alt"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
 <main class="main-content">
   <router-outlet></router-outlet>
 </main>

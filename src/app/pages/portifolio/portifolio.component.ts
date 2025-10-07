@@ -14,7 +14,7 @@ import { ProjectsSectionComponent } from './components/projects-section/projects
 import { ContactSectionComponent } from './components/contact-section/contact-section.component';
 import { ExperienceSectionComponent } from './components/experience-section/experience-section.component';
 import { FloatingTerminalComponent } from './components/floating-terminal/floating-terminal.component';
-import { DynamicBackgroundComponent } from '../../components/dynamic-background/dynamic-background.component';
+import { DynamicBackgroundComponent } from './components/dynamic-background/dynamic-background.component';
 
 @Component({
   selector: 'app-home',
@@ -96,7 +96,7 @@ export class PortifolioComponent implements OnInit, OnDestroy, AfterViewInit {
       name: 'Crypto Analysis',
       description: 'Plataforma de análise técnica e previsão de criptomoedas com indicadores avançados, simulação de investimentos e análise de risco. Interface moderna em Streamlit, modelos SARIMAX e integração com CoinGecko.',
       techs: ['Python', 'Streamlit', 'Pandas', 'Plotly', 'CoinGecko API'],
-      github: 'https://github.com/pedrobicas/crypto-plataform',
+      github: 'https://github.com/pedrobicas/crypto-platform',
       live: 'https://crypto-plataform.streamlit.app/'
     },
     {
@@ -124,7 +124,7 @@ export class PortifolioComponent implements OnInit, OnDestroy, AfterViewInit {
       name: 'My Spotify Universe',
       description: 'Um projeto completo que integra com a API do Spotify, permitindo autenticação OAuth2 e acesso aos dados do usuário.',
       techs: ['React', 'Node', 'JavaScript'],
-      github: 'https://github.com/pedrobicas/spotify-project',
+      github: 'https://github.com/pedrobicas/my-spotify-universe',
       live: 'https://my-universe-spotify.vercel.app/dashboard'
     }
   ];
@@ -160,7 +160,7 @@ experiences = [
     technologies: ['Java', 'Spring Boot', 'Angular', 'Python', 'Docker', 'Oracle', 'Maven', 'JUnit', 'AWS', 'Kubernetes']
   },
   {
-    year: '2021-2023',
+    year: '2021-2022',
     title: 'Técnico em Análise e Desenvolvimento de Sistemas - SENAI',
     description: 'Formação técnica completa com ênfase em programação, gestão de projetos e desenvolvimento de soluções tecnológicas. Base sólida em fundamentos da computação e desenvolvimento web.',
     type: 'Formação',
