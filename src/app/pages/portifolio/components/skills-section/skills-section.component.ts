@@ -43,6 +43,21 @@ export class SkillsSectionComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.setupIntersectionObserver();
+    
+    // Listen for force refresh events from parent
+    if (this.iconGrid?.nativeElement) {
+      this.iconGrid.nativeElement.addEventListener('forceRefresh', () => {
+        this.forceRefresh();
+      });
+    }
+  }
+
+  private forceRefresh(): void {
+    // Force component to refresh and show data
+    this.isVisible.set(true);
+    setTimeout(() => {
+      this.setupCircuitAnimation();
+    }, 100);
   }
 
   private setupIntersectionObserver() {

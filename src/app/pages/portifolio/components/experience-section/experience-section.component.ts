@@ -37,6 +37,21 @@ export class ExperienceSectionComponent implements OnInit, AfterViewInit, OnDest
 
   ngAfterViewInit(): void {
     this.setupIntersectionObserver();
+    
+    // Listen for force refresh events from parent
+    if (this.timelineContainer?.nativeElement) {
+      this.timelineContainer.nativeElement.addEventListener('forceRefresh', () => {
+        this.forceRefresh();
+      });
+    }
+  }
+
+  private forceRefresh(): void {
+    // Force component to refresh and show data
+    this.isVisible.set(true);
+    setTimeout(() => {
+      this.startSequentialAnimation();
+    }, 100);
   }
 
   private setupIntersectionObserver() {

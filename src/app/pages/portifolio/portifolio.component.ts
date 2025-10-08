@@ -598,6 +598,9 @@ private checkInitialHash() {
           firstElement.classList.add('active');
         }
       }
+      
+      // Force trigger intersection observer for all sections
+      this.forceRefreshSections();
     }, 200);
     
     // Initialize particles after view is ready
@@ -606,6 +609,18 @@ private checkInitialHash() {
         this.initializeParticleSystem();
       }
     }, 100);
+  }
+
+  private forceRefreshSections(): void {
+    // Force refresh all section components to ensure they initialize properly
+    this.sectionIds.forEach(sectionId => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        // Trigger a manual intersection event to ensure components initialize
+        const event = new CustomEvent('forceRefresh', { bubbles: true });
+        element.dispatchEvent(event);
+      }
+    });
   }
 
   toggleTheme(): void {

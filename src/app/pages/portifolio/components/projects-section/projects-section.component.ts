@@ -142,6 +142,25 @@ export class ProjectsSectionComponent implements OnInit, OnDestroy {
     this.cardRefs.changes.subscribe(() => this.updateHeights());
     this.pillRefs.changes.subscribe(() => this.scrollActivePillIntoView());
     queueMicrotask(() => this.scrollActivePillIntoView());
+    
+    // Listen for force refresh events from parent
+    if (this.navTrackRef?.nativeElement) {
+      this.navTrackRef.nativeElement.addEventListener('forceRefresh', () => {
+        this.forceRefresh();
+      });
+    }
+  }
+
+  // Force refresh method to ensure proper re-initialization
+  forceRefresh() {
+    setTimeout(() => {
+      this.updateHeights();
+      this.scrollActivePillIntoView();
+      // Restart autoplay if needed
+      if (this.projects && this.projects.length > 1) {
+        this.startAutoplay();
+      }
+    }, 100);
   }
 
   @HostListener('window:resize')
