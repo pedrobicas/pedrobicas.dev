@@ -51,6 +51,11 @@ export class PortifolioComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('projectsSection') projectsSection!: ElementRef;
   @ViewChild('contactSection') contactSection!: ElementRef;
 
+  // ViewChild references for components
+  @ViewChild(SkillsSectionComponent) skillsSectionComponent!: SkillsSectionComponent;
+  @ViewChild(ExperienceSectionComponent) experienceSectionComponent!: ExperienceSectionComponent;
+  @ViewChild(ProjectsSectionComponent) projectsSectionComponent!: ProjectsSectionComponent;
+
   @ViewChild('firstName') firstName!: ElementRef;
   @ViewChild('lastName') lastName!: ElementRef;
 
@@ -613,14 +618,29 @@ private checkInitialHash() {
 
   private forceRefreshSections(): void {
     // Force refresh all section components to ensure they initialize properly
-    this.sectionIds.forEach(sectionId => {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        // Trigger a manual intersection event to ensure components initialize
-        const event = new CustomEvent('forceRefresh', { bubbles: true });
-        element.dispatchEvent(event);
+    setTimeout(() => {
+      // Direct component refresh using ViewChild references
+      if (this.skillsSectionComponent) {
+        this.skillsSectionComponent.forceRefresh();
       }
-    });
+      
+      if (this.experienceSectionComponent) {
+        this.experienceSectionComponent.forceRefresh();
+      }
+      
+      if (this.projectsSectionComponent) {
+        this.projectsSectionComponent.forceRefresh();
+      }
+      
+      // Also trigger the custom event as fallback
+      this.sectionIds.forEach(sectionId => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const event = new CustomEvent('forceRefresh', { bubbles: true });
+          element.dispatchEvent(event);
+        }
+      });
+    }, 100);
   }
 
   toggleTheme(): void {

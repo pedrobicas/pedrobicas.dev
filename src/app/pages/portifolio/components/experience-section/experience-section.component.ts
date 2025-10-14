@@ -46,8 +46,8 @@ export class ExperienceSectionComponent implements OnInit, AfterViewInit, OnDest
     }
   }
 
-  private forceRefresh(): void {
-    // Force component to refresh and show data
+  public forceRefresh(): void {
+    // Force visibility and re-initialize sequential animation
     this.isVisible.set(true);
     setTimeout(() => {
       this.startSequentialAnimation();

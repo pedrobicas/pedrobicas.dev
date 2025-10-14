@@ -1,4 +1,4 @@
-import { Component, Input, CUSTOM_ELEMENTS_SCHEMA, OnDestroy, OnInit, ElementRef, QueryList, ViewChildren, HostListener, ViewChild } from '@angular/core';
+import { Component, Input, CUSTOM_ELEMENTS_SCHEMA, OnDestroy, OnInit, ElementRef, QueryList, ViewChildren, HostListener, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -26,6 +26,8 @@ export class ProjectsSectionComponent implements OnInit, OnDestroy {
   @ViewChildren('cardRef') cardRefs!: QueryList<ElementRef<HTMLElement>>;
   @ViewChildren('pillRef') pillRefs!: QueryList<ElementRef<HTMLButtonElement>>;
   @ViewChild('navTrack') navTrackRef!: ElementRef<HTMLDivElement>;
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   carouselPrev() {
     if (this.projects.length === 0) return;
@@ -152,7 +154,7 @@ export class ProjectsSectionComponent implements OnInit, OnDestroy {
   }
 
   // Force refresh method to ensure proper re-initialization
-  forceRefresh() {
+  public forceRefresh() {
     setTimeout(() => {
       this.updateHeights();
       this.scrollActivePillIntoView();
@@ -174,9 +176,16 @@ export class ProjectsSectionComponent implements OnInit, OnDestroy {
       const activeCard = cards[this.activeProjectIndex]?.nativeElement;
       const activeHeight = activeCard ? activeCard.getBoundingClientRect().height : 420;
       // Add some breathing room for transforms/shadows
-      this.trackHeight = Math.ceil(activeHeight + 24);
+      const newHeight = Math.ceil(activeHeight + 24);
+      if (this.trackHeight !== newHeight) {
+        this.trackHeight = newHeight;
+        this.cdr.detectChanges();
+      }
     } catch {
-      this.trackHeight = 420;
+      if (this.trackHeight !== 420) {
+        this.trackHeight = 420;
+        this.cdr.detectChanges();
+      }
     }
   }
 
@@ -185,11 +194,23 @@ export class ProjectsSectionComponent implements OnInit, OnDestroy {
       const cards = this.cardRefs?.toArray() ?? [];
       const heights = cards.map(ref => ref.nativeElement.getBoundingClientRect().height);
       const maxHeight = heights.length ? Math.max(...heights) : 420;
-      this.containerHeight = Math.ceil(maxHeight + 110); // include navbar reserved space
+      const newContainerHeight = Math.ceil(maxHeight + 110); // include navbar reserved space
+      
+      if (this.containerHeight !== newContainerHeight) {
+        this.containerHeight = newContainerHeight;
+        this.cdr.detectChanges();
+      }
+      
       this.updateTrackHeight();
     } catch {
-      this.containerHeight = 520;
-      this.trackHeight = 420;
+      if (this.containerHeight !== 520) {
+        this.containerHeight = 520;
+        this.cdr.detectChanges();
+      }
+      if (this.trackHeight !== 420) {
+        this.trackHeight = 420;
+        this.cdr.detectChanges();
+      }
     }
   }
 
