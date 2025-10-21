@@ -122,6 +122,12 @@ export class ResumePortfolioComponent {
   ];
 
   projects: Project[] = [
+      {
+      name: 'Postlocal',
+      description: 'Plataforma completa para geração de conteúdo para redes sociais com IA.',
+      technologies: ['React', 'Node', 'JavaScript', 'Python'],
+      link: 'https://github.com/pedrobicas/postlocal'
+    },
     {
       name: 'Crypto Analysis Platform',
       description: 'Plataforma completa para análise de criptomoedas com dados em tempo real, gráficos interativos e sistema de alertas personalizados.',

@@ -10,15 +10,19 @@
         class="switcher-option" 
         [class.active]="!isResumeActive()"
         (click)="navigateToPortfolio()"
-        title="Portfólio Interativo">
-        <i class="fas fa-rocket"></i>
+        title="Portfólio Interativo"
+        aria-label="Navegar para o portfólio interativo">
+        <i class="fas fa-rocket" aria-hidden="true"></i>
+        <span class="option-text">Portfólio</span>
       </button>
       <button 
         class="switcher-option" 
         [class.active]="isResumeActive()"
         (click)="navigateToResume()"
-        title="Currículo Profissional">
-        <i class="fas fa-file-alt"></i>
+        title="Currículo Profissional"
+        aria-label="Navegar para o currículo profissional">
+        <i class="fas fa-file-alt" aria-hidden="true"></i>
+        <span class="option-text">Currículo</span>
       </button>
     </div>
   </div>

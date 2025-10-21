@@ -98,6 +98,12 @@ export class PortifolioComponent implements OnInit, OnDestroy, AfterViewInit {
   // Projetos em destaque
   projects = [
     {
+      name: 'Postlocal',
+      description: 'Plataforma completa para geração de conteúdo para redes sociais com IA.',
+      techs: ['React', 'Node', 'JavaScript', 'Python'],
+      github: 'https://github.com/pedrobicas/postlocal'
+    },
+    {
       name: 'Crypto Analysis',
       description: 'Plataforma de análise técnica e previsão de criptomoedas com indicadores avançados, simulação de investimentos e análise de risco. Interface moderna em Streamlit, modelos SARIMAX e integração com CoinGecko.',
       techs: ['Python', 'Streamlit', 'Pandas', 'Plotly', 'CoinGecko API'],
